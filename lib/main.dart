@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
 
+import 'package:flutter/services.dart';
+
 /*
-- Text와 TextField가 윈도창에 따라 flexible하게 만들것
-- 시간이 흐를수록 마이너스 점수 매겨서 시간을 거슬러 더 빠르게 점수를 쌓아가야 하는 압박감 만들기: 전역변수 시간, 속도
 - 영문 텍스트 한글 텍스트 랜덤으로 가져와서 문자열 처리하기, 문단을 어떻게 진행할 것인가?
+- 점수 체계, 문구, 링크 등 배치
 */
 
 Future<void> main() async {
@@ -41,7 +42,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  TextStyle commonTextStyle = TextStyle(
+  TextStyle commonTextStyle = const TextStyle(
     letterSpacing: 2.0,
     fontSize: 16,
     color: Colors.black54
@@ -56,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String lastCharacter='';
 
-  String originText = 'You have pushed the button this many times';
+  String originText = 'You have pushed the button this many times You have pushed the button this many times You have pushed the button this many times';
   String deducedText = '';
   bool resp = false;
 
@@ -90,10 +91,16 @@ class _MyHomePageState extends State<MyHomePage> {
       int cursorPosition = controller.selection.baseOffset;
       text = controller.value.text;
     });
-    Timer.periodic(Duration(seconds: 1), (Timer t) {
-      if(curwid>2) {
-        curwid = curwid - (1 * (curwid*0.2).ceil()); // 0.2 를 조절하면 시간에 따른 침식 속도를 조절할 수 있다 0.2는 정지하면 5초만에 속도 1됨
-      }
+    Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      setState(() {
+        if(curwid>1) {
+          curwid = (curwid - (1 * (curwid*0.2).ceil())).ceilToDouble(); // 0.2 를 조절하면 시간에 따른 침식 속도를 조절할 수 있다 0.2는 정지하면 5초만에 속도 1됨
+        }
+        else {
+          curwid=1;
+        }
+      });
+
     });
   }
 
@@ -127,34 +134,39 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Container(
+      body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return Container(
     color: backCol,
     child: Center(
         child: Container(
-            width: 550,
-            height: 250,
+            width: constraints.maxWidth * 0.8,
+            height: constraints.maxHeight * 0.75,
             color: Colors.white,
             child: Stack(
               children: <Widget>[
                 Positioned(
-                  top: 70,
-                  left: 70,
-                  child: Container(
-                    width: 500,
-                    height: 200,
+                  top: 20,
+                  left: 25,
+                  child: SizedBox(
+                    width: constraints.maxWidth * 0.75,
+                    height: constraints.maxHeight * 0.7,
                     child: Text(
                       originText,
                       style: commonTextStyle,
+                      softWrap: true,
                     ),
                   ),
                 ),
                 Positioned(
-                  top: 72,
-                  left: 70,
-                  child: Container(
-                    width: 500,
-                    height: 200,
-                    child:TextField(
+                  top: 22,
+                  left: 25,
+                  child: SizedBox(
+                    width: constraints.maxWidth * 0.75,
+                    height: constraints.maxHeight * 0.7,
+                    child: TextField(
+                      maxLengthEnforcement: MaxLengthEnforcement.none,
+                      maxLines: null,
                       controller: controller,
                       autofocus: true,
                       focusNode: myFocusNode,
@@ -162,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       showCursor: true,
                       cursorColor: currCol,
                       cursorErrorColor: Colors.red,
-                      cursorOpacityAnimates: true,
+                      cursorOpacityAnimates: false,
                       onChanged: (txt) {
                         lastCharacter = text.isEmpty ? '' : text[text.length - 1];
 
@@ -179,13 +191,18 @@ class _MyHomePageState extends State<MyHomePage> {
                             _calculateTypingSpeed(txt);
                             resp = true;
                             currCol = Colors.black;
-                            curwid = curwid + _typingSpeed/100;
-
+                            if(curwid<150) {
+                              curwid = curwid + _typingSpeed / 100;
+                            }
                             if(deducedText.length>txt.length) {
                               _typingSpeed=0.0;
                               resp= false;
                               currCol = Colors.teal;
                             }
+                            text=text.substring(1,text.length);
+                            controller.text=text;
+                            originText=originText.substring(1,originText.length);
+
                           }
 
                           else {
@@ -205,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                         });
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.symmetric(vertical: 0.0),
                           isCollapsed: true
@@ -214,21 +231,23 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ),
-                Positioned(
+
+          Positioned(
                   top: 102,
                   left: 70,
-                  child: Container(
+                  child: SizedBox(
                     width: 500,
                     height: 200,
                     child: Text('speed: $curwid \n bool: $resp\n last: $lastCharacter text: $text\n ori: $originText\n deu: $deducedText \n $_typingSpeed'),
                   ),
                 ),
+
               ],
             ),
           ),
 
       ),
-      ),
+      ); }),
     );
   }
 }
