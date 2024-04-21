@@ -5,7 +5,8 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 /*
-- 점수 체계, 엔딩 텍스트 변경, 카피라이팅 링크 등 배치
+- 엔딩(re,next) 왼쪽상단
+- 카피라이팅 ?링크(설명글,커뮤니티) 배치
 */
 
 Future<void> main() async {
@@ -61,6 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
     color: Colors.black54
   );
 
+  int oddScore = 0;
+
   final TextEditingController controller = TextEditingController();
 
   String text ='';
@@ -69,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String originText = '';
   String deducedText = '';
-  bool resp = false;
+  bool? resp;
 
 
   Color currCol = Colors.black54;
@@ -124,6 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Color backCol = const Color(0xFF80EEE8);
 
+  int oddCalc = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,112 +142,146 @@ class _MyHomePageState extends State<MyHomePage> {
             return Container(
     color: backCol,
     child: Center(
-        child: Container(
-            width: constraints.maxWidth * 0.8,
-            height: constraints.maxHeight * 0.75,
-            color: Colors.white,
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  top: 20,
-                  left: 25,
-                  child: SizedBox(
-                    width: constraints.maxWidth * 0.75,
-                    height: constraints.maxHeight * 0.7,
-                    child: Text(
-                      originText,
-                      style: commonTextStyle,
-                      softWrap: true,
-                    ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: constraints.maxWidth * 0.8,
+              height: 32,
+              color: Colors.transparent,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('re - next'),
+                  oddCalc==0 ?
+                  Text(
+                    '${oddScore.toString()} ()',
+                    style: commonTextStyle.copyWith(color: Colors.white ),
+                  ) : oddCalc>0 ? Text(
+                    '${oddScore.toString()} ($oddCalc)',
+                    style: commonTextStyle.copyWith(color: Colors.white ),
+                  ): Text(
+                    '${oddScore.toString()} ($oddCalc)',
+                    style: commonTextStyle.copyWith(color: Colors.white ),
                   ),
-                ),
-                Positioned(
-                  top: 22,
-                  left: 25,
-                  child: SizedBox(
-                    width: constraints.maxWidth * 0.75,
-                    height: constraints.maxHeight * 0.7,
-                    child: TextField(
-                      maxLengthEnforcement: MaxLengthEnforcement.none,
-                      maxLines: null,
-                      controller: controller,
-                      autofocus: true,
-                      focusNode: myFocusNode,
-                      cursorWidth: curwid,
-                      showCursor: true,
-                      cursorColor: currCol,
-                      cursorErrorColor: Colors.red,
-                      cursorOpacityAnimates: false,
-                      onChanged: (txt) {
-
-
-                        setState(() {
-
-
-
-                          if(txt.substring(0,controller.selection.baseOffset)==originText.substring(0,controller.selection.baseOffset) &&
-                              txt.substring(0,txt.length)==originText.substring(0,txt.length)
-                          )
-
-                          {
-                            _calculateTypingSpeed(txt);
-                            resp = true;
-                            currCol = Colors.black;
-                            if(curwid<150) {
-                              curwid = curwid + _typingSpeed / 100;
-                            }
-                            if(deducedText.length>txt.length) {
-                              _typingSpeed=0.0;
-                              resp= false;
-                              currCol = Colors.teal;
-                            }
-                            text=text.substring(1,text.length);
-                            controller.text=text;
-                            originText=originText.substring(1,originText.length);
-
-                          }
-
-                          else {
-                            _typingSpeed=0.0;
-                            resp= false;
-                            currCol = Colors.red;
-                            // text=text.substring(0,text.length -1);
-                            // controller.text=text;
-                          }
-
-                          if(resp==false) {
-                            curwid=1;
-                          }
-
-                          backCol = Color((Random().nextInt(0xFFFFFF)).toInt()).withOpacity(1.0);
-                          deducedText = txt;
-
-                        });
-                      },
-                      decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 0.0),
-                          isCollapsed: true
-                      ),
-                      style: commonTextStyle.copyWith(color: currCol)
-                    ),
-                  ),
-                ),
-/*
-          Positioned(
-                  top: 102,
-                  left: 70,
-                  child: SizedBox(
-                    width: 500,
-                    height: 200,
-                    child: Text('speed: $curwid \n bool: $resp\n  text: $text\n ori: $originText\n deu: $deducedText \n $_typingSpeed'),
-                  ),
-                ),
-                */
-
-              ],
+                ],
+              ),
             ),
-          ),
+            Container(
+                width: constraints.maxWidth * 0.8,
+                height: constraints.maxHeight * 0.75,
+                color: Colors.white,
+                child: Stack(
+                  children: <Widget>[
+                    Positioned(
+                      top: 20,
+                      left: 25,
+                      child: SizedBox(
+                        width: constraints.maxWidth * 0.75,
+                        height: constraints.maxHeight * 0.7,
+                        child: Text(
+                          originText,
+                          style: commonTextStyle,
+                          softWrap: true,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 22,
+                      left: 25,
+                      child: SizedBox(
+                        width: constraints.maxWidth * 0.75,
+                        height: constraints.maxHeight * 0.7,
+                        child: TextField(
+                          maxLengthEnforcement: MaxLengthEnforcement.none,
+                          maxLines: null,
+                          controller: controller,
+                          autofocus: true,
+                          focusNode: myFocusNode,
+                          cursorWidth: curwid,
+                          showCursor: true,
+                          cursorColor: currCol,
+                          cursorErrorColor: Colors.red,
+                          cursorOpacityAnimates: false,
+                          onChanged: (txt) {
+
+
+                            setState(() {
+
+
+
+                              if(txt.substring(0,controller.selection.baseOffset)==originText.substring(0,controller.selection.baseOffset) &&
+                                  txt.substring(0,txt.length)==originText.substring(0,txt.length)
+                              )
+
+                              {
+                                _calculateTypingSpeed(txt);
+                                resp = true;
+                                currCol = Colors.black;
+                                if(curwid<150) {
+                                  curwid = curwid + _typingSpeed / 100;
+                                }
+                                if(deducedText.length>txt.length) {
+                                  _typingSpeed=0.0;
+                                  resp= false;
+                                  currCol = Colors.teal;
+                                }
+                                text=text.substring(1,text.length);
+                                controller.text=text;
+                                originText=originText.substring(1,originText.length);
+
+                                oddScore=oddScore+curwid.toInt();
+                                oddCalc=curwid.toInt();
+                              }
+
+                              else {
+                                _typingSpeed=0.0;
+                                resp= false;
+                                currCol = Colors.red;
+                                if((oddScore-(curwid.toInt()*10))>0) {
+                                  oddScore = oddScore - (curwid.toInt() * 10);
+                                  oddCalc=-(curwid.toInt()*10);
+                                } else {
+                                  oddCalc=-oddScore;
+                                  oddScore=0;
+                                }
+                              }
+
+                              if(resp==false) {
+                                curwid=1;
+                              }
+
+                              backCol = Color((Random().nextInt(0xFFFFFF)).toInt()).withOpacity(1.0);
+                              deducedText = txt;
+
+                            });
+                          },
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(vertical: 0.0),
+                              isCollapsed: true
+                          ),
+                          style: commonTextStyle.copyWith(color: currCol)
+                        ),
+                      ),
+                    ),
+            /*
+              Positioned(
+                      top: 102,
+                      left: 70,
+                      child: SizedBox(
+                        width: 500,
+                        height: 200,
+                        child: Text('speed: $curwid \n bool: $resp\n  text: $text\n ori: $originText\n deu: $deducedText \n $_typingSpeed'),
+                      ),
+                    ),
+                    */
+
+                  ],
+                ),
+              ),
+          ],
+        ),
 
       ),
       ); }),
