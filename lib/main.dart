@@ -6,9 +6,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
 
 /*
-- 커뮤니티, 설명글
-- 파비콘, 아이콘 배치
-- html에 meta 데이터입력
+- 웹 앱에 adsense 붙이는 방법
+- 커뮤니티(설명글), typeodd 설명글, html meta 데이터 입력, github pages 배포, 각종 SNS에 올리기
 */
 
 Future<void> main() async {
@@ -114,9 +113,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _launchUrl() async {
-    final Uri _url = Uri.parse('https://www.google.com');
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
+    final Uri url = Uri.parse('https://www.reddit.com/r/waytoeurekamoment/comments/1cau04b/typeodd_type_faster_than_anxiety');
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
     }
   }
 
@@ -159,15 +158,17 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title,
           style: commonTextStyle.copyWith(fontWeight: FontWeight.bold, color: Colors.white)),
         leading:
-          IconButton(
-            icon: Icon(Icons.help_outline),
+        const Icon(Icons.text_rotation_angleup, color: Colors.black,),
+        actions: [
+        IconButton(
+            icon: const Icon(Icons.help_outline),
             tooltip: 'way to Eureka Moment',
             color: Colors.white,
             onPressed: () {
               _launchUrl();
-          FocusScope.of(context).requestFocus(myFocusNode);
+              FocusScope.of(context).requestFocus(myFocusNode);
             }
-          ),
+        ),],
       ),
       body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
@@ -184,9 +185,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  oddCalc==0 || originText.length==0 ?
+                  oddCalc==0 || originText.isEmpty ?
                   Text(
-                    '${oddScore.toString()}',
+                    oddScore.toString(),
                     style: commonTextStyle.copyWith(color: Colors.white),
                   ) : oddCalc>0 ? Text(
                     '${oddScore.toString()} (+$oddCalc)',
@@ -197,8 +198,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Row(
                     children: [
-                      originText.length==0 ? IconButton(
-                        icon: Icon(Icons.repeat_outlined),
+                      originText.isEmpty ? IconButton(
+                        icon: const Icon(Icons.repeat_outlined),
                         tooltip: 'repeat',
                         color: Colors.white,
                         onPressed: () {
@@ -218,7 +219,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                       ) : const Text(''),
                       IconButton(
-                        icon: Icon(Icons.arrow_right_alt_outlined),
+                        icon: const Icon(Icons.arrow_right_alt_outlined),
                         tooltip: 'next',
                         color: Colors.white,
                         onPressed: () {
@@ -335,7 +336,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   backCol = Color((Random().nextInt(0xFFFFFF)).toInt()).withOpacity(1.0);
                                   deducedText = txt;
 
-                                  if(originText.length==0) {
+                                  if(originText.isEmpty) {
                                     myFocusNode.unfocus();
                                   }
 
@@ -360,7 +361,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  originText.length!=0 ?
+                  originText.isNotEmpty ?
                   Text(
                     'Type faster than anxiety',
                     style: commonTextStyle.copyWith(color: Colors.white),
