@@ -6,8 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
 
 /*
-- 웹 앱에 adsense 붙이는 방법
-- 커뮤니티(설명글), typeodd 설명글, html meta 데이터 입력, github pages 배포, 각종 SNS에 올리기
+- html meta 데이터 입력, github pages 배포, 각종 SNS에 올리기
 */
 
 Future<void> main() async {
@@ -113,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _launchUrl() async {
-    final Uri url = Uri.parse('https://www.reddit.com/r/waytoeurekamoment/comments/1cau04b/typeodd_type_faster_than_anxiety');
+    final Uri url = Uri.parse('https://www.reddit.com/r/waytoeurekamoment/comments/1cax5y5/typeodd_type_faster_than_anxiety');
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }
