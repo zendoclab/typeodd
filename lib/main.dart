@@ -205,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           setState(() {
                             originText = blogText[textNum];
                             oddScore = 0;
-                            String text ='';
+                            text ='';
                             deducedText = '';
                             resp = null;
                             currCol = Colors.black54;
@@ -234,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             }
                             originText = getRandomText(blogText, textNum);
                             oddScore = 0;
-                            String text ='';
+                            text ='';
                             deducedText = '';
                             resp = null;
                             currCol = Colors.black54;
