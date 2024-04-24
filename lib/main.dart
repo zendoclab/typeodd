@@ -151,9 +151,11 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title,
           style: commonTextStyle.copyWith(fontWeight: FontWeight.bold, color: Colors.white)),
-        leading:
-        const Icon(Icons.text_rotation_angleup, color: Colors.black,),
-        actions: [
+        leading: Tooltip(
+          message: 'explore power beyond anxiety',
+        child: const Icon(Icons.text_rotation_angleup, color: Colors.black,),
+        ),
+    actions: [
         IconButton(
             icon: const Icon(Icons.help_outline),
             tooltip: 'zendoc lab',
