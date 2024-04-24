@@ -72090,7 +72090,7 @@ ai(){return new A.KE(new A.GR(B.xa,$.ah()),B.B,B.hH,B.k)}}
 A.KE.prototype={
 tH(){var s=0,r=A.T(t.H),q
 var $async$tH=A.U(function(a,b){if(a===1)return A.Q(b,r)
-while(true)switch(s){case 0:q=A.j1("https://www.reddit.com/r/waytoeurekamoment/comments/1cax5y5/typeodd_type_faster_than_anxiety",0,null)
+while(true)switch(s){case 0:q=A.j1("https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html",0,null)
 s=2
 return A.V(A.adQ(q),$async$tH)
 case 2:if(!b)throw A.e(A.cd("Could not launch "+q.k(0)))
@@ -72114,7 +72114,7 @@ O(a){var s,r=null,q=A.a4(a).ay,p=q.k2
 q=p==null?q.c:p
 this.a.toString
 p=A.fi("typeodd",r,r,r,r,B.bP.a7P(B.i,B.cs),r,r)
-s=A.b([A.Vy(B.i,B.Ci,new A.a6i(this,a),r,"way to Eureka Moment")],t.E)
+s=A.b([A.Vy(B.i,B.Ci,new A.a6i(this,a),r,"zendoc lab")],t.E)
 return new A.vX(new A.rj(B.Ck,p,s,q,new A.Lz(r,r,1/0,56),r),new A.DT(new A.a6j(this),r),r)}}
 A.a6l.prototype={
 $0(){var s=this.a
