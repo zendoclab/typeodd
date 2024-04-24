@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'package:flutter/services.dart';
-
-/*
-- html meta 데이터 입력, github pages 배포, 각종 SNS에 올리기
-*/
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -112,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _launchUrl() async {
-    final Uri url = Uri.parse('https://www.reddit.com/r/waytoeurekamoment/comments/1cax5y5/typeodd_type_faster_than_anxiety');
+    final Uri url = Uri.parse('https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html');
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }
@@ -161,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
         IconButton(
             icon: const Icon(Icons.help_outline),
-            tooltip: 'way to Eureka Moment',
+            tooltip: 'zendoc lab',
             color: Colors.white,
             onPressed: () {
               _launchUrl();
