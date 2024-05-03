@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
+import 'package:soundpool/soundpool.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,8 +29,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage(
+      {super.key,
+      required this.title});
+
 
   final String title;
 
@@ -62,18 +68,14 @@ List<String> blogText = [
 int textNum = 0;
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  TextStyle commonTextStyle = const TextStyle(
-    letterSpacing: 2.0,
-    fontSize: 16,
-    color: Colors.black54
-  );
+  TextStyle commonTextStyle =
+      const TextStyle(letterSpacing: 2.0, fontSize: 16, color: Colors.black54);
 
   int oddScore = 0;
 
   final TextEditingController controller = TextEditingController();
 
-  String text ='';
+  String text = '';
 
   late FocusNode myFocusNode;
 
@@ -81,15 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
   String deducedText = '';
   bool? resp;
 
-
   Color currCol = Colors.black54;
-
 
   DateTime? _lastKeystroke;
 
   double _typingSpeed = 0;
-
-
 
   Color backCol = const Color(0xFF80EEE8);
 
@@ -107,16 +105,35 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _launchUrl() async {
-    final Uri url = Uri.parse('https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html');
+    final Uri url = Uri.parse(
+        'https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html');
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }
   }
 
+  Soundpool? _pool;
+  SoundpoolOptions _soundpoolOptions = SoundpoolOptions();
+
+  void _initPool(SoundpoolOptions soundpoolOptions) {
+    _pool?.dispose();
+    setState(() {
+      _soundpoolOptions = soundpoolOptions;
+      _pool = Soundpool.fromOptions(options: _soundpoolOptions);
+    });
+  }
+  
+  void _loadSounds() {
+    _soundId = _loadSound();
+    _cheeringId = _loadCheering();
+  }
+
   @override
   void initState() {
     super.initState();
-    textNum=Random().nextInt(blogText.length);
+    _initPool(_soundpoolOptions);
+    _loadSounds();
+    textNum = Random().nextInt(blogText.length);
     myFocusNode = FocusNode();
     controller.addListener(() {
       text = controller.value.text;
@@ -126,14 +143,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
     Timer.periodic(const Duration(seconds: 1), (Timer t) {
       setState(() {
-        if(curwid>1) {
-          curwid = (curwid - (1 * (curwid*0.2).ceil())).ceilToDouble(); // 0.2 를 조절하면 시간에 따른 침식 속도를 조절할 수 있다 0.2는 정지하면 5초만에 속도 1됨
-        }
-        else {
-          curwid=1;
+        if (curwid > 1) {
+          curwid = (curwid - (1 * (curwid * 0.2).ceil()))
+              .ceilToDouble(); // 0.2 를 조절하면 시간에 따른 침식 속도를 조절할 수 있다 0.2는 정지하면 5초만에 속도 1됨
+        } else {
+          curwid = 1;
         }
       });
-
     });
   }
 
@@ -141,7 +157,28 @@ class _MyHomePageState extends State<MyHomePage> {
   void dispose() {
     myFocusNode.dispose();
     controller.dispose();
+    _pool?.dispose();
     super.dispose();
+  }
+
+  double _volume = 0.3;
+  double _rate = 1.0;
+  late Future<int?> _soundId;
+  late Future<int?> _cheeringId;
+  int? _alarmSoundStreamId;
+
+  Future<int?> _loadSound() async {
+    return await _pool?.loadUri("https://zendoclab.github.io/typeodd/assets/assets/sounds/typesound1.mp3");
+  }
+
+  Future<int?> _loadCheering() async {
+    return await _pool?.loadUri("https://zendoclab.github.io/typeodd/assets/assets/sounds/typesound2.mp3");
+  }
+
+  Future<void> _playSound() async {
+    var _alarmSound = await (Random().nextBool() ? _soundId : _cheeringId);
+    _pool?.setVolume(soundId: _alarmSound, volume: _volume);
+    _alarmSoundStreamId = await _pool?.play(_alarmSound!);
   }
 
   @override
@@ -150,228 +187,277 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title,
-          style: commonTextStyle.copyWith(fontWeight: FontWeight.bold, color: Colors.white)),
+            style: commonTextStyle.copyWith(
+                fontWeight: FontWeight.bold, color: Colors.white)),
         leading: Tooltip(
           message: 'explore power beyond anxiety',
-        child: const Icon(Icons.text_rotation_angleup, color: Colors.black,),
+          child: const Icon(
+            Icons.text_rotation_angleup,
+            color: Colors.black,
+          ),
         ),
-    actions: [
-        IconButton(
-            icon: const Icon(Icons.help_outline),
-            tooltip: 'zendoc lab',
-            color: Colors.white,
-            onPressed: () {
-              _launchUrl();
-              FocusScope.of(context).requestFocus(myFocusNode);
-            }
-        ),],
+        actions: [
+          IconButton(
+              icon: const Icon(Icons.help_outline),
+              tooltip: 'zendoc lab',
+              color: Colors.white,
+              onPressed: () {
+                _launchUrl();
+                FocusScope.of(context).requestFocus(myFocusNode);
+              }),
+        ],
       ),
       body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return Container(
-    color: backCol,
-    child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        return Stack(
           children: [
             Container(
-              width: constraints.maxWidth * 0.8,
-              height: 40,
-              color: Colors.transparent,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  oddCalc==0 || originText.isEmpty ?
-                  Text(
-                    oddScore.toString(),
-                    style: commonTextStyle.copyWith(color: Colors.white),
-                  ) : oddCalc>0 ? Text(
-                    '${oddScore.toString()} (+$oddCalc)',
-                    style: commonTextStyle.copyWith(color: Colors.white),
-                  ): Text(
-                    '${oddScore.toString()} ($oddCalc)',
-                    style: commonTextStyle.copyWith(color: Colors.white),
-                  ),
-                  Row(
-                    children: [
-                      originText.isEmpty ? IconButton(
-                        icon: const Icon(Icons.repeat_outlined),
-                        tooltip: 'repeat',
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            originText = blogText[textNum];
-                            oddScore = 0;
-                            text ='';
-                            deducedText = '';
-                            resp = null;
-                            currCol = Colors.black54;
-                            _typingSpeed = 0;
-                            backCol = const Color(0xFF80EEE8);
-                            oddCalc = 0;
-                            curwid = 1;
-                            FocusScope.of(context).requestFocus(myFocusNode);
-                          });
-                        },
-                      ) : const Text(''),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_right_alt_outlined),
-                        tooltip: 'next',
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            String getRandomText(List<String> bText, int Num) {
-                              int textNumCom = Random().nextInt(blogText.length);
-                              if (Num != textNumCom) {
-                                textNum=textNumCom;
-                                return blogText[textNumCom];
-                              } else {
-                                return getRandomText(bText, textNumCom);
-                              }
-                            }
-                            originText = getRandomText(blogText, textNum);
-                            oddScore = 0;
-                            text ='';
-                            deducedText = '';
-                            resp = null;
-                            currCol = Colors.black54;
-                            _typingSpeed = 0;
-                            backCol = const Color(0xFF80EEE8);
-                            oddCalc = 0;
-                            curwid = 1;
-                            FocusScope.of(context).requestFocus(myFocusNode);
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
+              child: Center(
+                child: SizedBox(
+                  width: constraints.maxWidth,
+                  height: constraints.maxHeight,
+                  child: FittedBox(
+                      // clipBehavior: Clip.hardEdge,
+                      // alignment: Alignment.center,
+                      fit: BoxFit.cover,
+                      child:Text(originText,
+                       // overflow: TextOverflow.clip,
+                       // softWrap: true,
+                      )),
+                ),
               ),
             ),
             Container(
-                width: constraints.maxWidth * 0.8,
-                height: constraints.maxHeight * 0.75,
-                color: Colors.white,
-                child: Stack(
-                  children: <Widget>[
-                    Positioned(
-                      top: 20,
-                      left: 25,
-                      child: SizedBox(
-                        width: constraints.maxWidth * 0.75,
-                        height: constraints.maxHeight * 0.7,
-                        child: Text(
-                          originText,
-                          style: commonTextStyle,
-                          softWrap: true,
-                        ),
+              color: Color(0xFF80EEE8).withOpacity(0.95),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: constraints.maxWidth * 0.8,
+                      height: 40,
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          oddCalc == 0 || originText.isEmpty
+                              ? Text(
+                                  oddScore.toString(),
+                                  style:
+                                      commonTextStyle.copyWith(color: Colors.white),
+                                )
+                              : oddCalc > 0
+                                  ? Text(
+                                      '${oddScore.toString()} (+$oddCalc)',
+                                      style: commonTextStyle.copyWith(
+                                          color: Colors.white),
+                                    )
+                                  : Text(
+                                      '${oddScore.toString()} ($oddCalc)',
+                                      style: commonTextStyle.copyWith(
+                                          color: Colors.white),
+                                    ),
+                          Row(
+                            children: [
+                              originText.isEmpty
+                                  ? IconButton(
+                                      icon: const Icon(Icons.repeat_outlined),
+                                      tooltip: 'repeat',
+                                      color: Colors.white,
+                                      onPressed: () {
+                                        setState(() {
+                                          originText = blogText[textNum];
+                                          oddScore = 0;
+                                          text = '';
+                                          deducedText = '';
+                                          resp = null;
+                                          currCol = Colors.black54;
+                                          _typingSpeed = 0;
+                                          backCol = const Color(0xFF80EEE8);
+                                          oddCalc = 0;
+                                          curwid = 1;
+                                          FocusScope.of(context)
+                                              .requestFocus(myFocusNode);
+                                        });
+                                      },
+                                    )
+                                  : const Text(''),
+                              IconButton(
+                                icon: const Icon(Icons.arrow_right_alt_outlined),
+                                tooltip: 'next',
+                                color: Colors.white,
+                                onPressed: () {
+                                  setState(() {
+                                    String getRandomText(
+                                        List<String> bText, int Num) {
+                                      int textNumCom =
+                                          Random().nextInt(blogText.length);
+                                      if (Num != textNumCom) {
+                                        textNum = textNumCom;
+                                        return blogText[textNumCom];
+                                      } else {
+                                        return getRandomText(bText, textNumCom);
+                                      }
+                                    }
+
+                                    originText = getRandomText(blogText, textNum);
+                                    oddScore = 0;
+                                    text = '';
+                                    deducedText = '';
+                                    resp = null;
+                                    currCol = Colors.black54;
+                                    _typingSpeed = 0;
+                                    backCol = const Color(0xFF80EEE8);
+                                    oddCalc = 0;
+                                    curwid = 1;
+                                    FocusScope.of(context)
+                                        .requestFocus(myFocusNode);
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    Positioned(
-                      top: 22,
-                      left: 25,
-                      child: SizedBox(
-                        width: constraints.maxWidth * 0.75,
-                        height: constraints.maxHeight * 0.7,
-                        child: TextField(
-                              maxLengthEnforcement: MaxLengthEnforcement.none,
-                              maxLines: null,
-                              controller: controller,
-                              autofocus: true,
-                              focusNode: myFocusNode,
-                              cursorWidth: curwid,
-                              showCursor: true,
-                              cursorColor: currCol,
-                              cursorErrorColor: Colors.red,
-                              cursorOpacityAnimates: false,
-                              onChanged: (txt) {
-
-
-                                setState(() {
-                                  if(txt.substring(0,controller.selection.baseOffset)==originText.substring(0,controller.selection.baseOffset) &&
-                                      txt.substring(0,txt.length)==originText.substring(0,txt.length)
-                                  )
-
-                                  {
-                                    _calculateTypingSpeed(txt);
-                                    resp = true;
-                                    currCol = Colors.black;
-                                    if(curwid<150) {
-                                      curwid = curwid + _typingSpeed / 100;
-                                    }
-                                    if(deducedText.length>txt.length) {
-                                      _typingSpeed=0.0;
-                                      resp= false;
-                                      currCol = Colors.teal;
-                                    }
-                                    text=text.substring(1,text.length);
-                                    controller.text=text;
-                                    originText=originText.substring(1,originText.length);
-
-                                    oddScore=oddScore+curwid.toInt();
-                                    oddCalc=curwid.toInt();
-                                  }
-
-                                  else {
-                                    _typingSpeed=0.0;
-                                    resp= false;
-                                    currCol = Colors.red;
-                                    if((oddScore-(curwid.toInt()*10))>0) {
-                                      oddScore = oddScore - (curwid.toInt() * 10);
-                                      oddCalc=-(curwid.toInt()*10);
-                                    } else {
-                                      oddCalc=-oddScore;
-                                      oddScore=0;
-                                    }
-                                  }
-
-                                  if(resp==false) {
-                                    curwid=1;
-                                  }
-
-                                  backCol = Color((Random().nextInt(0xFFFFFF)).toInt()).withOpacity(1.0);
-                                  deducedText = txt;
-
-                                  if(originText.isEmpty) {
-                                    myFocusNode.unfocus();
-                                  }
-
-                                });
-                              },
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 0.0),
-                                  isCollapsed: true
+                    Container(
+                      width: constraints.maxWidth * 0.8,
+                      height: constraints.maxHeight * 0.75,
+                      color: Colors.white,
+                      child: Stack(
+                        children: <Widget>[
+                          Positioned(
+                            top: 20,
+                            left: 25,
+                            child: SizedBox(
+                              width: constraints.maxWidth * 0.75,
+                              height: constraints.maxHeight * 0.7,
+                              child: Text(
+                                originText,
+                                style: commonTextStyle,
+                                softWrap: true,
                               ),
-                              style: commonTextStyle.copyWith(color: currCol)
                             ),
+                          ),
+                          Positioned(
+                            top: 22,
+                            left: 25,
+                            child: SizedBox(
+                              width: constraints.maxWidth * 0.75,
+                              height: constraints.maxHeight * 0.7,
+                              child: TextField(
+                                  maxLengthEnforcement: MaxLengthEnforcement.none,
+                                  maxLines: null,
+                                  controller: controller,
+                                  autofocus: true,
+                                  focusNode: myFocusNode,
+                                  cursorWidth: curwid,
+                                  showCursor: true,
+                                  cursorColor: currCol,
+                                  cursorErrorColor: Colors.red,
+                                  cursorOpacityAnimates: false,
+                                  onChanged: (txt) {
+                                    setState(() {
+                                      if (txt.substring(
+                                                  0,
+                                                  controller
+                                                      .selection.baseOffset) ==
+                                              originText.substring(
+                                                  0,
+                                                  controller
+                                                      .selection.baseOffset) &&
+                                          txt.substring(0, txt.length) ==
+                                              originText.substring(0, txt.length)) {
+                                        _playSound();
+
+                                        _calculateTypingSpeed(txt);
+                                        resp = true;
+                                        currCol = Color((Random().nextInt(0xFFFFFF))
+                                                .toInt())
+                                            .withOpacity(0.95);
+                                        if (curwid < 150) {
+                                          curwid = curwid + _typingSpeed / 100;
+                                        }
+                                        if (deducedText.length > txt.length) {
+                                          _typingSpeed = 0.0;
+                                          resp = false;
+                                          currCol = Colors.teal;
+                                        }
+                                        text = text.substring(1, text.length);
+                                        controller.text = text;
+                                        originText = originText.substring(
+                                            1, originText.length);
+
+                                        oddScore = oddScore + curwid.toInt();
+                                        oddCalc = curwid.toInt();
+                                      } else {
+                                        _typingSpeed = 0.0;
+                                        resp = false;
+                                        currCol = Colors.redAccent;
+                                        if ((oddScore - (curwid.toInt() * 10)) >
+                                            0) {
+                                          oddScore =
+                                              oddScore - (curwid.toInt() * 10);
+                                          oddCalc = -(curwid.toInt() * 10);
+                                        } else {
+                                          oddCalc = -oddScore;
+                                          oddScore = 0;
+                                        }
+                                      }
+
+                                      if (resp == false) {
+                                        curwid = 1;
+                                      }
+
+                                      backCol = Color(
+                                              (Random().nextInt(0xFFFFFF)).toInt())
+                                          .withOpacity(1.0);
+                                      deducedText = txt;
+
+                                      if (originText.isEmpty) {
+                                        myFocusNode.unfocus();
+                                      }
+                                    });
+                                  },
+                                  decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      contentPadding:
+                                          EdgeInsets.symmetric(vertical: 0.0),
+                                      isCollapsed: true),
+                                  style: commonTextStyle.copyWith(color: currCol)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: constraints.maxWidth * 0.8,
+                      height: 40,
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          originText.isNotEmpty
+                              ? Text(
+                                  'Type faster than anxiety',
+                                  style:
+                                      commonTextStyle.copyWith(color: Colors.white),
+                                )
+                              : Text(
+                                  'Explore power beyond anxiety',
+                                  style:
+                                      commonTextStyle.copyWith(color: Colors.white),
+                                ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-            Container(
-              width: constraints.maxWidth * 0.8,
-              height: 40,
-              color: Colors.transparent,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  originText.isNotEmpty ?
-                  Text(
-                    'Type faster than anxiety',
-                    style: commonTextStyle.copyWith(color: Colors.white),
-                  ) : Text(
-                    'Explore power beyond anxiety',
-                    style: commonTextStyle.copyWith(color: Colors.white),
-                  ),
-                ],
-              ),
             ),
           ],
-        ),
-      ),
-      ); }),
+        );
+      }),
     );
   }
 }
