@@ -71505,7 +71505,7 @@ s.a.c.l()
 s.aI()},
 tu(){var s=0,r=A.Q(t.bo),q,p=this,o
 var $async$tu=A.R(function(a,b){if(a===1)return A.N(b,r)
-while(true)switch(s){case 0:o=p.a.c.ho("https://github.com/zendoclab/typeodd/tree/main/assets/assets/sounds/typesound1.mp3")
+while(true)switch(s){case 0:o=p.a.c.ho("https://zendoclab.github.io/typeodd/assets/assets/sounds/typesound1.mp3")
 s=3
 return A.X(t.wE.b(o)?o:A.f1(o,t.bo),$async$tu)
 case 3:q=b
@@ -71515,7 +71515,7 @@ case 1:return A.O(q,r)}})
 return A.P($async$tu,r)},
 tt(){var s=0,r=A.Q(t.bo),q,p=this,o
 var $async$tt=A.R(function(a,b){if(a===1)return A.N(b,r)
-while(true)switch(s){case 0:o=p.a.c.ho("https://github.com/zendoclab/typeodd/tree/main/assets/assets/sounds/typesound2.mp3")
+while(true)switch(s){case 0:o=p.a.c.ho("https://zendoclab.github.io/typeodd/assets/assets/sounds/typesound2.mp3")
 s=3
 return A.X(t.wE.b(o)?o:A.f1(o,t.bo),$async$tt)
 case 3:q=b
