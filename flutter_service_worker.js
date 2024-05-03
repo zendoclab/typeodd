@@ -3,13 +3,15 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"assets/AssetManifest.bin": "c44ad1b2459b09044119e16e72629f0b",
-"assets/AssetManifest.bin.json": "7d602ced2a761c4fa6277426f6b031ed",
-"assets/AssetManifest.json": "0d9b20b091021b986ac7bf7052f25102",
+const RESOURCES = {"assets/AssetManifest.bin": "3b76c687fa503cef0d670c810ad0df66",
+"assets/AssetManifest.bin.json": "edd382763136ba46771665cce0d9b7c5",
+"assets/AssetManifest.json": "92592d36031ace237a6410c4b4df0de5",
+"assets/assets/sounds/typesound1.mp3": "88d82d9ca1c8f35c476b677795680a20",
+"assets/assets/sounds/typesound2.mp3": "19bb37ac2dad98f37efab47c160e17fc",
 "assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
 "assets/fonts/MaterialIcons-Regular.otf": "4e43a87b3869bb75ab013733e6f31e20",
 "assets/images/zendoc.jpg": "bc6d655adb91f938c8a065fb812d0b5a",
-"assets/NOTICES": "7663f08989ce147fcba9ca5d22cdbbd8",
+"assets/NOTICES": "612c923bd4a7b86e5d4943e01aadade2",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "e986ebe42ef785b27164c36a9abc7818",
 "assets/shaders/ink_sparkle.frag": "ecc85a2e95f5e9f53123dcaf8cb9b6ce",
 "canvaskit/canvaskit.js": "c86fbd9e7b17accae76e5ad116583dc4",
@@ -28,9 +30,9 @@ const RESOURCES = {"assets/AssetManifest.bin": "c44ad1b2459b09044119e16e72629f0b
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
-"index.html": "1724bda2a477c4d08d83df6b91be7e93",
-"/": "1724bda2a477c4d08d83df6b91be7e93",
-"main.dart.js": "3bd4023f3e548a545ca00d0e3c03116d",
+"index.html": "f54eb39b9d280d7383bbdab20e7fc381",
+"/": "f54eb39b9d280d7383bbdab20e7fc381",
+"main.dart.js": "bf0bf4c77eab386c8c1f7f2d1184edd4",
 "manifest.json": "f1a9dddf5a7bb17c11c908b2fba99a9b",
 "version.json": "3d9e8fc1a4552c1885e0c02fcf7394fb"};
 // The application shell files that are downloaded before a service worker can
