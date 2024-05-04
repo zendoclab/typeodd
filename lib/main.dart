@@ -142,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Timer.periodic(const Duration(seconds: 1), (Timer t) {
       setState(() {
         if (curwid > 1) {
-          curwid = (curwid - (1 * (curwid * 0.2).ceil()))
+          curwid = (curwid - (1 * (curwid * 0.25).ceil()))
               .ceilToDouble(); // 0.2 를 조절하면 시간에 따른 침식 속도를 조절할 수 있다 0.2는 정지하면 5초만에 속도 1됨
         } else {
           curwid = 1;
@@ -220,7 +220,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       // clipBehavior: Clip.hardEdge,
                       // alignment: Alignment.center,
                       fit: BoxFit.cover,
-                      child: Text(originText, style: commonTextStyle.copyWith(color: currCol)
+                      child: Text(originText,
+                          style: commonTextStyle.copyWith(color: currCol)
                           // overflow: TextOverflow.clip,
                           // softWrap: true,
                           )),
@@ -333,8 +334,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Stack(
                         children: <Widget>[
                           Positioned(
-                            top: 20,
-                            left: 25,
+                            top: 16,
+                            left: 16,
                             child: SizedBox(
                               width: constraints.maxWidth * 0.75,
                               height: constraints.maxHeight * 0.7,
@@ -343,6 +344,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 style: commonTextStyle.copyWith(
                                     color: Colors.black54.withOpacity(0.54)),
                                 softWrap: true,
+                                overflow: TextOverflow.clip,
                               ),
                             ),
                           ),
@@ -358,8 +360,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           Positioned(
-                            top: 22,
-                            left: 25,
+                            top: 18,
+                            left: 16,
                             child: SizedBox(
                               width: constraints.maxWidth * 0.75,
                               height: constraints.maxHeight * 0.7,
@@ -370,14 +372,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                   controller: controller,
                                   autofocus: true,
                                   focusNode: myFocusNode,
-                                  cursorWidth: curwid,
+                                  cursorWidth: curwid < 2 ? 1 : curwid * 1.5,
                                   showCursor: true,
-                                  cursorColor: curwid<50 ?  Color.fromARGB(245, 200, 200, 200) : Color.fromARGB(245, 100, 100, 100),
+                                  cursorColor: curwid > 39
+                                      ? Color.fromARGB(245, 100, 100, 100)
+                                      : Color.fromARGB(245, 200, 200, 200),
                                   cursorErrorColor: Colors.red,
                                   cursorOpacityAnimates: false,
                                   onChanged: (txt) {
                                     setState(() {
-                                      if (txt.length>0 && txt.substring(
+                                      if (txt.length > 0 &&
+                                          txt.substring(
                                                   0,
                                                   controller
                                                       .selection.baseOffset) ==
@@ -390,15 +395,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   0, txt.length)) {
                                         _playSound();
 
-
-
                                         _calculateTypingSpeed(txt);
                                         resp = true;
                                         currCol = Color(
                                                 (Random().nextInt(0xFFFFFF))
                                                     .toInt())
                                             .withOpacity(0.95);
-                                        if (curwid < 150) {
+                                        if (curwid < 250) {
                                           curwid = curwid + _typingSpeed / 100;
                                         }
                                         if (deducedText.length > txt.length) {
@@ -411,36 +414,33 @@ class _MyHomePageState extends State<MyHomePage> {
                                         originText = originText.substring(
                                             1, originText.length);
 
-                                        oddScore = oddScore + curwid.toInt();
-                                        oddCalc = curwid.toInt();
+                                        oddScore = oddScore + (curwid/10).ceil();
+                                        oddCalc = (curwid/10).ceil();
                                       } else {
                                         _typingSpeed = 0.0;
                                         resp = false;
                                         currCol = Colors.redAccent;
-                                        if ((oddScore - (curwid.toInt() * 10)) >
+                                        if ((oddScore - (curwid.toInt())) >
                                             0) {
                                           oddScore =
-                                              oddScore - (curwid.toInt() * 10);
-                                          oddCalc = -(curwid.toInt() * 10);
+                                              oddScore - (curwid.toInt());
+                                          oddCalc = -(curwid.toInt());
                                         } else {
                                           oddCalc = -oddScore;
                                           oddScore = 0;
                                         }
                                       }
 
-                                      if(curwid.toInt()>49) {
+                                      if (curwid.toInt() > 39) {
                                         if (colSat > 3) {
-                                          colSat = colSat - 3;
-                                        }
-                                        else {
+                                          colSat = colSat - 2;
+                                        } else {
                                           colSat = 0;
                                         }
-                                      }
-                                      else {
+                                      } else {
                                         if (colSat < 252) {
                                           colSat = colSat + 3;
-                                        }
-                                        else {
+                                        } else {
                                           colSat = 255;
                                         }
                                       }
