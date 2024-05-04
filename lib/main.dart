@@ -29,12 +29,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class MyHomePage extends StatefulWidget {
-  const MyHomePage(
-      {super.key,
-      required this.title});
-
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -95,6 +91,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   double curwid = 1;
 
+  int colSat = 0;
+
   void _calculateTypingSpeed(String value) {
     final now = DateTime.now();
     if (_lastKeystroke != null) {
@@ -122,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _pool = Soundpool.fromOptions(options: _soundpoolOptions);
     });
   }
-  
+
   void _loadSounds() {
     _soundId = _loadSound();
     _cheeringId = _loadCheering();
@@ -168,11 +166,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int? _alarmSoundStreamId;
 
   Future<int?> _loadSound() async {
-    return await _pool?.loadUri("https://zendoclab.github.io/typeodd/assets/assets/sounds/typesound1.mp3");
+    return await _pool?.loadUri(
+        "https://zendoclab.github.io/typeodd/assets/assets/sounds/typesound1.mp3");
   }
 
   Future<int?> _loadCheering() async {
-    return await _pool?.loadUri("https://zendoclab.github.io/typeodd/assets/assets/sounds/typesound2.mp3");
+    return await _pool?.loadUri(
+        "https://zendoclab.github.io/typeodd/assets/assets/sounds/typesound2.mp3");
   }
 
   Future<void> _playSound() async {
@@ -220,15 +220,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       // clipBehavior: Clip.hardEdge,
                       // alignment: Alignment.center,
                       fit: BoxFit.cover,
-                      child:Text(originText,
-                       // overflow: TextOverflow.clip,
-                       // softWrap: true,
-                      )),
+                      child: Text(originText, style: commonTextStyle.copyWith(color: currCol)
+                          // overflow: TextOverflow.clip,
+                          // softWrap: true,
+                          )),
                 ),
               ),
             ),
             Container(
-              color: Color(0xFF80EEE8).withOpacity(0.95),
+              color: Color(0xFF80EEE8).withOpacity(0.85),
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -243,8 +243,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           oddCalc == 0 || originText.isEmpty
                               ? Text(
                                   oddScore.toString(),
-                                  style:
-                                      commonTextStyle.copyWith(color: Colors.white),
+                                  style: commonTextStyle.copyWith(
+                                      color: Colors.white),
                                 )
                               : oddCalc > 0
                                   ? Text(
@@ -259,7 +259,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                           Row(
                             children: [
-                              originText.isEmpty
+                              originText.isEmpty || colSat > 230
                                   ? IconButton(
                                       icon: const Icon(Icons.repeat_outlined),
                                       tooltip: 'repeat',
@@ -267,6 +267,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       onPressed: () {
                                         setState(() {
                                           originText = blogText[textNum];
+                                          controller.clear();
+                                          colSat = 0;
                                           oddScore = 0;
                                           text = '';
                                           deducedText = '';
@@ -283,11 +285,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                     )
                                   : const Text(''),
                               IconButton(
-                                icon: const Icon(Icons.arrow_right_alt_outlined),
+                                icon:
+                                    const Icon(Icons.arrow_right_alt_outlined),
                                 tooltip: 'next',
                                 color: Colors.white,
                                 onPressed: () {
                                   setState(() {
+                                    controller.clear();
+                                    colSat = 0;
                                     String getRandomText(
                                         List<String> bText, int Num) {
                                       int textNumCom =
@@ -300,7 +305,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       }
                                     }
 
-                                    originText = getRandomText(blogText, textNum);
+                                    originText =
+                                        getRandomText(blogText, textNum);
                                     oddScore = 0;
                                     text = '';
                                     deducedText = '';
@@ -323,7 +329,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                       width: constraints.maxWidth * 0.8,
                       height: constraints.maxHeight * 0.75,
-                      color: Colors.white,
+                      color: Colors.white.withAlpha(220),
                       child: Stack(
                         children: <Widget>[
                           Positioned(
@@ -334,8 +340,20 @@ class _MyHomePageState extends State<MyHomePage> {
                               height: constraints.maxHeight * 0.7,
                               child: Text(
                                 originText,
-                                style: commonTextStyle,
+                                style: commonTextStyle.copyWith(
+                                    color: Colors.black54.withOpacity(0.54)),
                                 softWrap: true,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            left: 0,
+                            child: SizedBox(
+                              width: constraints.maxWidth * 0.8,
+                              height: constraints.maxHeight * 0.75,
+                              child: Container(
+                                color: Colors.white.withAlpha(colSat),
                               ),
                             ),
                           ),
@@ -346,19 +364,20 @@ class _MyHomePageState extends State<MyHomePage> {
                               width: constraints.maxWidth * 0.75,
                               height: constraints.maxHeight * 0.7,
                               child: TextField(
-                                  maxLengthEnforcement: MaxLengthEnforcement.none,
+                                  maxLengthEnforcement:
+                                      MaxLengthEnforcement.none,
                                   maxLines: null,
                                   controller: controller,
                                   autofocus: true,
                                   focusNode: myFocusNode,
                                   cursorWidth: curwid,
                                   showCursor: true,
-                                  cursorColor: currCol,
+                                  cursorColor: curwid<50 ?  Color.fromARGB(245, 200, 200, 200) : Color.fromARGB(245, 100, 100, 100),
                                   cursorErrorColor: Colors.red,
                                   cursorOpacityAnimates: false,
                                   onChanged: (txt) {
                                     setState(() {
-                                      if (txt.substring(
+                                      if (txt.length>0 && txt.substring(
                                                   0,
                                                   controller
                                                       .selection.baseOffset) ==
@@ -367,13 +386,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   controller
                                                       .selection.baseOffset) &&
                                           txt.substring(0, txt.length) ==
-                                              originText.substring(0, txt.length)) {
+                                              originText.substring(
+                                                  0, txt.length)) {
                                         _playSound();
+
+
 
                                         _calculateTypingSpeed(txt);
                                         resp = true;
-                                        currCol = Color((Random().nextInt(0xFFFFFF))
-                                                .toInt())
+                                        currCol = Color(
+                                                (Random().nextInt(0xFFFFFF))
+                                                    .toInt())
                                             .withOpacity(0.95);
                                         if (curwid < 150) {
                                           curwid = curwid + _typingSpeed / 100;
@@ -405,12 +428,30 @@ class _MyHomePageState extends State<MyHomePage> {
                                         }
                                       }
 
+                                      if(curwid.toInt()>49) {
+                                        if (colSat > 3) {
+                                          colSat = colSat - 3;
+                                        }
+                                        else {
+                                          colSat = 0;
+                                        }
+                                      }
+                                      else {
+                                        if (colSat < 252) {
+                                          colSat = colSat + 3;
+                                        }
+                                        else {
+                                          colSat = 255;
+                                        }
+                                      }
+
                                       if (resp == false) {
                                         curwid = 1;
                                       }
 
                                       backCol = Color(
-                                              (Random().nextInt(0xFFFFFF)).toInt())
+                                              (Random().nextInt(0xFFFFFF))
+                                                  .toInt())
                                           .withOpacity(1.0);
                                       deducedText = txt;
 
@@ -424,7 +465,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       contentPadding:
                                           EdgeInsets.symmetric(vertical: 0.0),
                                       isCollapsed: true),
-                                  style: commonTextStyle.copyWith(color: currCol)),
+                                  style:
+                                      commonTextStyle.copyWith(color: currCol)),
                             ),
                           ),
                         ],
@@ -440,13 +482,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           originText.isNotEmpty
                               ? Text(
                                   'Type faster than anxiety',
-                                  style:
-                                      commonTextStyle.copyWith(color: Colors.white),
+                                  style: commonTextStyle.copyWith(
+                                      color: Colors.white),
                                 )
                               : Text(
                                   'Explore power beyond anxiety',
-                                  style:
-                                      commonTextStyle.copyWith(color: Colors.white),
+                                  style: commonTextStyle.copyWith(
+                                      color: Colors.white),
                                 ),
                         ],
                       ),
