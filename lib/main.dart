@@ -58,9 +58,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-Map<String, String> blogText = {'Ishmael': 'calldddd', 'History': 'bbcddddd', 'Naples': 'bbcdddddddd'};
-
-Map<String, String> blogText1 = {
+Map<String, String> blogText = {
   'Ishmael':
       'Call me Ishmael. Some years ago never mind how long precisely having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people\'s hats off then, I account it high time to get to sea as soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato throws himself upon his sword; I quietly take to the ship. There is nothing surprising in this. If they but knew it, almost all men in their degree, some time or other, cherish very nearly the same feelings towards the ocean with me.',
   'History':
@@ -106,6 +104,10 @@ Map<String, String> blogText1 = {
 int textNum = 0;
 
 int oddScore = 0;
+
+String ranker = '';
+
+List<dynamic> rankList = [];
 
 class _MyHomePageState extends State<MyHomePage> {
   TextStyle commonTextStyle =
@@ -211,10 +213,10 @@ class _MyHomePageState extends State<MyHomePage> {
   double _rate = 1.0;
   late Future<int?> _soundId;
   late Future<int?> _cheeringId;
-  int? _alarmSoundStreamId;
 
   DateTime? now;
   String? nowTime;
+  List<List<dynamic>> docuranker = [];
 
   Future<int?> _loadSound() async {
     return await _pool?.loadUri(
@@ -229,32 +231,82 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _playSound() async {
     var _alarmSound = await (Random().nextBool() ? _soundId : _cheeringId);
     _pool?.setVolume(soundId: _alarmSound, volume: _volume);
-    _alarmSoundStreamId = await _pool?.play(_alarmSound!);
+    await _pool?.play(_alarmSound!);
   }
 
+
   void getMinScoreDoc(String originT) async {
+    now = DateTime.now();
+    nowTime =
+    "${now?.year}-${now?.month}-${now?.day} ${now?.hour}:${now?.minute}";
 
     QuerySnapshot querySnapshot1 = await db.collection(originT).get();
-    List<DocumentSnapshot> documents = querySnapshot1.docs;
-    now = DateTime.now();
-    nowTime = "${now?.year}-${now?.month}-${now?.day} ${now?.hour}:${now?.minute}";
+    if (querySnapshot1.size != 0) {
 
-    if(documents.isEmpty || documents.length < 5) {
-      db.collection(originT).add({"username": userName, "score" : oddScore, "time": nowTime});
+      List<DocumentSnapshot> documents = querySnapshot1.docs;
+
+    DocumentSnapshot lowestScoreDocument = documents[0];
+    for (DocumentSnapshot document in documents) {
+      docuranker.add([
+        document['username'].toString(),
+        int.parse(document['score'].toString()),
+        document['time'].toString()
+      ]);
+      if (document['score'] <= lowestScoreDocument['score']) {
+        lowestScoreDocument = document;
+      }
+    }
+
+    int minScore = lowestScoreDocument['score'];
+
+    if (documents.isEmpty || documents.length < 5) {
+      db.collection(originT).add(
+          {"username": userName, "score": oddScore, "time": nowTime});
+      docuranker.add([userName, oddScore, nowTime]);
     }
     else {
-      DocumentSnapshot lowestScoreDocument = documents[0];
-      for (DocumentSnapshot document in documents) {
-        if (document['score'] <= lowestScoreDocument['score']) {
-          lowestScoreDocument = document;
-        }
-      }
-      int minScore = lowestScoreDocument['score'];
+      if (minScore < oddScore) {
+        lowestScoreDocument.reference.delete();
 
-      if(minScore<oddScore) {
-          lowestScoreDocument.reference.delete();
-          db.collection(originT).add({"username": userName, "score" : oddScore, "time": nowTime});
+        docuranker.removeWhere((element) =>
+        element[0] == lowestScoreDocument['username'].toString() &&
+            element[2] == lowestScoreDocument['time'].toString());
+
+        db.collection(originT).add(
+            {"username": userName, "score": oddScore, "time": nowTime});
+        docuranker.add([userName, oddScore, nowTime]);
       }
+      else {
+
+      }
+    }
+    var sortedList = docuranker.map((e) => e).toList()
+      ?..sort((a, b) => b[1].compareTo(a[1]));
+    // sortedList.map((e) => ranker = ranker + '${e.toString()}\n\n');
+
+    setState(() {
+      sortedList.forEach((e) => ranker =
+      '$ranker${e[1].toString()} \(${e[0].toString()}\) ${e[2]
+          .toString()}\n');
+    });
+
+      docuranker = [];
+      sortedList = [];
+  }
+else {
+      db.collection(originT).add(
+          {"username": userName, "score": oddScore, "time": nowTime});
+      docuranker.add([userName, oddScore, nowTime]);
+      var sortedList = docuranker.map((e) => e).toList()
+        ?..sort((a, b) => b[1].compareTo(a[1]));
+      setState(() {
+        sortedList.forEach((e) => ranker =
+        '$ranker${e[1].toString()} \(${e[0].toString()}\) ${e[2]
+            .toString()}\n');
+      });
+
+      docuranker = [];
+      sortedList = [];
     }
   }
 
@@ -313,19 +365,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Container(
                       width: constraints.maxWidth * 0.8,
-                      height: 40,
+                      height: constraints.maxHeight * 0.1,
                       color: Colors.transparent,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Expanded(
-                              flex: 3,
-                              child: Text(
-                                originTitle,
-                                style: commonTextStyle,
-                              )),
-                          Expanded(
-                            flex: 2,
+                            flex: 6,
                             child: oddCalc == 0 || originText.isEmpty
                                 ? Text(
                                     userName!=null ? '${oddScore.toString()} ($userName)' : oddScore.toString(),
@@ -342,10 +388,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
                           ),
                           Expanded(
-                              flex: 2,
+                              flex: 4,
+                              child: Text(
+                                originTitle,
+                                style: commonTextStyle,
+                              )),
+                          Expanded(
+                              flex: 4,
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.end,
                                 children: [
                                   originText.isEmpty || colSat > 230
                                       ? IconButton(
@@ -369,6 +421,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               _typingSpeed = 0;
                                               oddCalc = 0;
                                               curwid = 1;
+                                              ranker = '';
                                               FocusScope.of(context)
                                                   .requestFocus(myFocusNode);
                                             });
@@ -410,6 +463,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         _typingSpeed = 0;
                                         oddCalc = 0;
                                         curwid = 1;
+                                        ranker = '';
                                         FocusScope.of(context)
                                             .requestFocus(myFocusNode);
                                       });
@@ -433,7 +487,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               width: constraints.maxWidth * 0.75,
                               height: constraints.maxHeight * 0.7,
                               child: Text(
-                                originText,
+                                ranker.length<1 ? originText : 'Hall of Fame\n\n$ranker',
                                 style: commonTextStyle,
                                 softWrap: true,
                                 overflow: TextOverflow.clip,
@@ -544,12 +598,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       deducedText = txt;
 
                                       if (originText.isEmpty) {
-                                        myFocusNode.unfocus();
-
-                                        // null check하고 firestore, hive 다시 체크, blogtext1
-
-
-                                        print(box.get('userName'));
+                                        myFocusNode.unfocus();;
 
                                         if (userName == null) {
                                           db
@@ -558,11 +607,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                               .get()
                                               .then((value) {
                                                 userName = Random().nextBool() ? "EUREKA_${value.data()?.values.firstOrNull}" : "AHA_${value.data()?.values.firstOrNull}";
-                                                print("added username as $userName");
+
                                             box.put("userName",userName);
                                             int total = value.data()?.values.firstOrNull as int;
                                             db?.collection("ranker").doc("total").set({"total": total+1});
-                                                print("firestore:${total+1}");
                                           });
 
                                         }
@@ -586,20 +634,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Container(
                       width: constraints.maxWidth * 0.8,
-                      height: 40,
+                      height: constraints.maxHeight * 0.15,
                       color: Colors.transparent,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           originText.isNotEmpty
-                              ? Text(
-                                  'Type faster than anxiety',
+                              ? Expanded(child: Text(
+            'type faster than anxiety: to keep text visible, to get higher score',
+            style: commonTextStyle,
+            ))
+                              : Expanded(child:Text(
+                                  'explore power beyond anxiety: to come to mind',
                                   style: commonTextStyle,
-                                )
-                              : Text(
-                                  'Explore power beyond anxiety',
-                                  style: commonTextStyle,
-                                ),
+                                )),
                         ],
                       ),
                     ),
@@ -610,10 +658,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         );
       }),
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        box.delete('userName');
-        print("deleted userName");
-      },),
     );
   }
 }
