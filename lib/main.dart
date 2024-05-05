@@ -58,10 +58,10 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-Map<String, String> blogText1 = {'Ishamel': 'Call'};
+Map<String, String> blogText = {'Ishmael': 'calldddd', 'History': 'bbcddddd', 'Naples': 'bbcdddddddd'};
 
-Map<String, String> blogText = {
-  'Ishamel':
+Map<String, String> blogText1 = {
+  'Ishmael':
       'Call me Ishmael. Some years ago never mind how long precisely having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people\'s hats off then, I account it high time to get to sea as soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato throws himself upon his sword; I quietly take to the ship. There is nothing surprising in this. If they but knew it, almost all men in their degree, some time or other, cherish very nearly the same feelings towards the ocean with me.',
   'History':
       'History which is derived from written materials must necessarily begin only where civilisation has advanced to so ripe a state, that the songs of the bard, and the traditions of the priest, have ceased to satisfy the cravings of the human mind for mastery over the past and the future. It has been too generally assumed that history is an inconceivable thing independent of written materials. Historians have accordingly, with a transient and incredulous glance at the fabulous infancy of nations, been too frequently content to leave their annals imperfect and maimed of those chapters that should record the deeply interesting story of their origin and rise. This mode of dealing with history is happily no longer sanctioned by the example of the ablest of its modern investigators. They are at length learning to analyze the myths which their predecessors rejected; and the results have already rewarded their toil, though much still remains obscure, or utterly unknown.',
@@ -105,11 +105,12 @@ Map<String, String> blogText = {
 
 int textNum = 0;
 
+int oddScore = 0;
+
 class _MyHomePageState extends State<MyHomePage> {
   TextStyle commonTextStyle =
       const TextStyle(letterSpacing: 2.0, fontSize: 16, color: Color(0xFF4a484d));
 
-  int oddScore = 0;
 
   final TextEditingController controller = TextEditingController();
 
@@ -174,6 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Hive.openBox("typeoddBox");
     box = Hive.box("typeoddBox");
+    userName = box.get("userName");
     _initPool(_soundpoolOptions);
     _loadSounds();
     textNum = Random().nextInt(blogText.length);
@@ -211,6 +213,9 @@ class _MyHomePageState extends State<MyHomePage> {
   late Future<int?> _cheeringId;
   int? _alarmSoundStreamId;
 
+  DateTime? now;
+  String? nowTime;
+
   Future<int?> _loadSound() async {
     return await _pool?.loadUri(
         "https://zendoclab.github.io/typeodd/assets/assets/sounds/typesound1.mp3");
@@ -225,6 +230,32 @@ class _MyHomePageState extends State<MyHomePage> {
     var _alarmSound = await (Random().nextBool() ? _soundId : _cheeringId);
     _pool?.setVolume(soundId: _alarmSound, volume: _volume);
     _alarmSoundStreamId = await _pool?.play(_alarmSound!);
+  }
+
+  void getMinScoreDoc(String originT) async {
+
+    QuerySnapshot querySnapshot1 = await db.collection(originT).get();
+    List<DocumentSnapshot> documents = querySnapshot1.docs;
+    now = DateTime.now();
+    nowTime = "${now?.year}-${now?.month}-${now?.day} ${now?.hour}:${now?.minute}";
+
+    if(documents.isEmpty || documents.length < 5) {
+      db.collection(originT).add({"username": userName, "score" : oddScore, "time": nowTime});
+    }
+    else {
+      DocumentSnapshot lowestScoreDocument = documents[0];
+      for (DocumentSnapshot document in documents) {
+        if (document['score'] <= lowestScoreDocument['score']) {
+          lowestScoreDocument = document;
+        }
+      }
+      int minScore = lowestScoreDocument['score'];
+
+      if(minScore<oddScore) {
+          lowestScoreDocument.reference.delete();
+          db.collection(originT).add({"username": userName, "score" : oddScore, "time": nowTime});
+      }
+    }
   }
 
   @override
@@ -297,7 +328,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             flex: 2,
                             child: oddCalc == 0 || originText.isEmpty
                                 ? Text(
-                                    oddScore.toString(),
+                                    userName!=null ? '${oddScore.toString()} ($userName)' : oddScore.toString(),
                                     style: commonTextStyle,
                                   )
                                 : oddCalc > 0
@@ -517,26 +548,27 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                         // null check하고 firestore, hive 다시 체크, blogtext1
 
-                                        userName = box.get("userName");
 
                                         print(box.get('userName'));
 
                                         if (userName == null) {
-
                                           db
-                                              .collection("ranker")
+                                              ?.collection("ranker")
                                               .doc("total")
                                               .get()
                                               .then((value) {
-                                                userName = "eureka_${value.data()?.values.firstOrNull}";
+                                                userName = Random().nextBool() ? "EUREKA_${value.data()?.values.firstOrNull}" : "AHA_${value.data()?.values.firstOrNull}";
+                                                print("added username as $userName");
                                             box.put("userName",userName);
                                             int total = value.data()?.values.firstOrNull as int;
-                                            db.collection("ranker").doc("total").set({"total": total+1});
-
-                                                print("firestore:${value.data()?.values.firstOrNull}");
+                                            db?.collection("ranker").doc("total").set({"total": total+1});
+                                                print("firestore:${total+1}");
                                           });
 
                                         }
+
+                                        getMinScoreDoc(originTitle);
+
                                       }
                                     });
                                   },
@@ -578,6 +610,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         );
       }),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        box.delete('userName');
+        print("deleted userName");
+      },),
     );
   }
 }
