@@ -577,10 +577,10 @@ else {
                                             _typingSpeed = 0.0;
                                             resp = false;
                                             currCol = Colors.redAccent;
-                                            if ((oddScore - (curwid.toInt())) > 0) {
+                                            if ((oddScore - (oddScore*0.3).ceil()) > 0) {
+                                              oddCalc = -(oddScore*0.3).ceil();
                                               oddScore =
-                                                  oddScore - (curwid.toInt());
-                                              oddCalc = -(curwid.toInt());
+                                              oddScore - (oddScore*0.3).ceil();
                                             } else {
                                               oddCalc = -oddScore;
                                               oddScore = 0;
