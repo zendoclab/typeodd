@@ -43732,7 +43732,7 @@ while(true)switch(s){case 0:l=t.m.a(self)
 if(l.firebase_core!=null){s=1
 break}o=A.aa(l.flutterfire_web_sdk_version)
 if(o==null)o=null
-n=o==null?"10.11.0":o
+n=o==null?"10.11.1":o
 m=p.ga4_()
 l=$.Vg().gaw(0)
 s=3
@@ -79519,7 +79519,7 @@ m=e.r
 m===$&&A.a()
 l=e.ay
 k=l<2?1:l*1.5
-l=l>39?A.X(245,100,100,100):A.X(245,200,200,200)
+l=l>39?A.X(245,100,100,100):A.X(245,180,180,180)
 j=B.bi.bI(e.Q)
 a=A.hD(i,A.tc(B.d7,A.b([o,n,A.yz(i,A.i2(new A.Ac(e.e,m,B.Db,B.jT,j,!0,B.KT,B.KU,i,!0,B.rI,new A.afh(e),k,!1,l,B.H3,!0,i),p,a),i,i,16,i,18,i)],q),B.aL,B.cX),B.v,s,i,i,i,f*0.6,i,i,i,i,b)
 c=A.hD(i,A.jF(A.XA(A.b([r,a,A.hD(i,A.KJ(A.b([e.w.length!==0?A.qA(A.eA("** type faster than anxiety:\nto keep text visible, to get higher score",i,i,i,i,B.bi.Dw(new A.u(h),B.bS),i,i),1):A.qA(A.eA("explore power beyond anxiety: to come to mind",i,i,i,i,B.bi.Dw(new A.u(h),B.bS),i,i),1)],q),B.bE,B.rx,B.cL),B.v,B.C,i,i,i,f*0.15,i,i,i,i,b)],q),B.bE,B.rx,B.cL),i,i),B.v,c,i,i,i,i,i,i,i,i,i)
