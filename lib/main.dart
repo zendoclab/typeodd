@@ -11,7 +11,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 import 'package:hive/hive.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 
 late FirebaseFirestore db;
 late Box box;
@@ -31,11 +30,6 @@ Future<void> main() async {
       default:
     }
   }
-  await FirebaseAppCheck.instance.activate(
-    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-    androidProvider: AndroidProvider.debug,
-    appleProvider: AppleProvider.appAttest,
-  );
   box = await Hive.openBox('typeoddBox');
   runApp(const MyApp());
 }
