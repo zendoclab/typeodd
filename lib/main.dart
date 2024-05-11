@@ -242,42 +242,55 @@ class _MyHomePageState extends State<MyHomePage> {
   void getMinScoreDoc(String originT) async {
     now = DateTime.now();
     nowTime =
-    "${now?.year}-${now?.month}-${now?.day} ${now?.hour}:${now?.minute}";
+    "${now?.year}-${now?.month}-${now?.day} ${now?.hour}:${now?.minute}:${now?.second}";
+    List<DocumentSnapshot> documents;
 
     QuerySnapshot querySnapshot1 = await db.collection(originT).get();
     if (querySnapshot1.size != 0) {
 
-      List<DocumentSnapshot> documents = querySnapshot1.docs;
+      documents = querySnapshot1.docs;
 
-    DocumentSnapshot lowestScoreDocument = documents[0];
-    for (DocumentSnapshot document in documents) {
+      List rankerRaw;
+      if(documents[0]['ranker'].contains('&')) {
+        rankerRaw = documents[0]['ranker'].split('&');
+      }
+      else {
+        rankerRaw = [documents[0]['ranker']];
+      }
+    String lowestScoreRanker = rankerRaw[0].toString();
+    for (dynamic ranker in rankerRaw) {
+      List<dynamic> rankerSplit = ranker.split('|');
       docuranker.add([
-        document['username'].toString(),
-        int.parse(document['score'].toString()),
-        document['time'].toString()
+        rankerSplit[0],
+        int.parse(rankerSplit[1]),
+        rankerSplit[2],
       ]);
-      if (document['score'] <= lowestScoreDocument['score']) {
-        lowestScoreDocument = document;
+
+      if (int.parse(rankerSplit[1]) <= int.parse(lowestScoreRanker.split('|')[1])) {
+        lowestScoreRanker = ranker;
       }
     }
 
-    int minScore = lowestScoreDocument['score'];
+    int minScore = int.parse(lowestScoreRanker.split('|')[1]);
 
-    if (documents.isEmpty || documents.length < 5) {
-      db.collection(originT).add(
-          {"username": userName, "score": oddScore, "time": nowTime});
+    String rankerTailed='';
+
+    if (documents.isEmpty || rankerRaw.length < 5) {
+      db.collection(originT).doc(originT).update(
+          {"ranker" : documents[0]['ranker'].toString() + '&' + userName! + '|' + oddScore.toString() + '|' + nowTime.toString()});
       docuranker.add([userName, oddScore, nowTime]);
     }
     else {
+      print(minScore);
+      print(oddScore);
       if (minScore < oddScore) {
-        lowestScoreDocument.reference.delete();
+        rankerTailed = rankerRaw.where((x) => x!=lowestScoreRanker).toList().map((e) => e).join('&');
+
+        db.collection(originT).doc(originT).update({'ranker': rankerTailed +'&' + userName! + '|' + oddScore.toString() + '|' + nowTime.toString() });
 
         docuranker.removeWhere((element) =>
-        element[0] == lowestScoreDocument['username'].toString() &&
-            element[2] == lowestScoreDocument['time'].toString());
-
-        db.collection(originT).add(
-            {"username": userName, "score": oddScore, "time": nowTime});
+        element[0] == lowestScoreRanker.split('|')[0].toString() &&
+            element[2] == lowestScoreRanker.split('|')[2].toString());
         docuranker.add([userName, oddScore, nowTime]);
       }
       else {
@@ -298,8 +311,8 @@ class _MyHomePageState extends State<MyHomePage> {
       sortedList = [];
   }
 else {
-      db.collection(originT).add(
-          {"username": userName, "score": oddScore, "time": nowTime});
+      db.collection(originT).doc(originT).set(
+          {"ranker": userName.toString()+ '|' + oddScore.toString() + '|' + nowTime.toString()});
       docuranker.add([userName, oddScore, nowTime]);
       var sortedList = docuranker.map((e) => e).toList()
         ?..sort((a, b) => b[1].compareTo(a[1]));
