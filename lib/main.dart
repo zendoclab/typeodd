@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
@@ -100,6 +101,27 @@ Map<String, String> blogText = {
       'Almustafa, the chosen and the beloved, who was a dawn unto his own day, had waited twelve years in the city of Orphalese for his ship that was to return and bear him back to the isle of his birth. And in the twelfth year, on the seventh day of Ielool, the month of reaping, he climbed the hill without the city walls and looked seaward; and he beheld his ship coming with the mist. Then the gates of his heart were flung open, and his joy flew far over the sea. And he closed his eyes and prayed in the silences of his soul.',
   'Woodhouse':
       'Sixteen years had Miss Taylor been in Mr. Woodhouse\'s family, less as a governess than a friend, very fond of both daughters, but particularly of Emma. Between them it was more the intimacy of sisters. Even before Miss Taylor had ceased to hold the nominal office of governess, the mildness of her temper had hardly allowed her to impose any restraint; and the shadow of authority being now long passed away, they had been living together as friend and friend very mutually attached, and Emma doing just what she liked; highly esteeming Miss Taylor\'s judgment, but directed chiefly by her own.'
+, 'Practice':
+      'the quick brown fox jumps over the lazy dog. this sentence is often used for typing practice since it contains every letter of the alphabet. typing can be a useful skill in many different situations, whether you\'re a student writing a paper, a job applicant creating a resume, or a professional drafting an email. it\'s important to practice regularly to improve your speed and accuracy.',
+ 'Knight':
+'once upon a time, in a land far, far away, there lived a brave knight and a beautiful princess. the knight was always going on adventures and fighting dragons, while the princess stayed in the castle, dreaming of the world outside. one day, the knight returned from his latest adventure with a magical golden apple. he gave it to the princess, who took a bite and was instantly transported to a magical forest.'
+, 'Bookstore':
+'in the heart of the city, there was a small, unassuming bookstore. it was filled from floor to ceiling with books of all kinds - novels, biographies, cookbooks, and more. the owner of the bookstore was an old man who loved nothing more than to read. he would spend his days surrounded by books, happily lost in the worlds they contained. it was the perfect life for a book lover like him.'
+  , 'Beach':
+'the sun was setting, casting long shadows across the beach. the waves gently lapped at the shore, creating a soothing rhythm that echoed in the quiet evening. a lone figure walked along the water\'s edge, leaving footprints in the wet sand. she stopped to pick up a seashell, holding it up to her ear to listen to the sound of the ocean. it was a moment of peace in a chaotic world.'
+,
+  'Forest':
+  'the forest was alive with the sounds of nature. birds chirped in the trees, their songs echoing through the dense foliage. a squirrel scampered up a tree trunk, its bushy tail flicking as it disappeared into the leaves. a deer grazed peacefully in a clearing, its ears twitching at every sound. it was a scene of pure, untouched nature, a reminder of the beauty that exists in the world.',
+  'Music':
+  'music has the power to move us, to stir our emotions and awaken our senses. a simple melody can bring back a flood of memories, while a complex symphony can take us on a journey of musical discovery. whether it\'s a catchy pop song, a soulful blues tune, or a powerful classical piece, music speaks to us on a level that words alone cannot reach.',
+  'Technology':
+  'the world of technology is constantly evolving, with new innovations and discoveries being made every day. from the smartphones in our pockets to the satellites orbiting our planet, technology has transformed the way we live our lives. it has made communication easier, information more accessible, and entertainment more enjoyable. but with these advancements come challenges and responsibilities that we must be prepared to face.',
+  'Traveling':
+  'traveling is a wonderful way to experience new cultures, meet new people, and broaden your horizons. whether you\'re exploring a bustling city, hiking in the mountains, or relaxing on a tropical beach, every travel experience is unique. it\'s not just about the places you go, but also the people you meet and the memories you make along the way. so pack your bags and set off on your next adventure.',
+  'Art':
+  'art is a form of expression, a way for individuals to communicate their thoughts, feelings, and ideas. it can take many forms, from painting and sculpture to music and dance. art can inspire, provoke, and challenge us. it can make us see the world in a new light, or give us insight into the human condition. art is a reflection of who we are, and a testament to our creativity and imagination.',
+  'Universe':
+  'the universe is a vast and mysterious place, filled with billions of galaxies, each containing billions of stars. we are just a tiny speck in the grand scheme of things, yet we have the ability to explore and understand the cosmos. through science and technology, we have been able to uncover some of the secrets of the universe, from the life cycle of stars to the existence of black holes. the more we learn, the more we realize how much there is still to discover.'
 };
 
 int textNum = 0;
@@ -293,14 +315,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (documents.isEmpty || rankerRaw.length < 5) {
       db.collection(originT).doc(originT).update(
-          {"ranker" : documents[0]['ranker'].toString() + '&' + userName! + '|' + oddScore.toString() + '|' + nowTime.toString()});
+          {"ranker" : '${documents[0]['ranker']}&${userName!}|$oddScore|$nowTime'});
       docuranker.add([userName, oddScore, nowTime]);
     }
     else {
       if (minScore < oddScore) {
         rankerTailed = rankerRaw.where((x) => x!=lowestScoreRanker).toList().map((e) => e).join('&');
 
-        db.collection(originT).doc(originT).update({'ranker': rankerTailed +'&' + userName! + '|' + oddScore.toString() + '|' + nowTime.toString() });
+        db.collection(originT).doc(originT).update({'ranker': '$rankerTailed&${userName!}|$oddScore|$nowTime' });
 
         docuranker.removeWhere((element) =>
         element[0] == lowestScoreRanker.split('|')[0].toString() &&
@@ -316,9 +338,11 @@ class _MyHomePageState extends State<MyHomePage> {
     // sortedList.map((e) => ranker = ranker + '${e.toString()}\n\n');
 
     setState(() {
-      sortedList.forEach((e) => ranker =
+      for (var e in sortedList) {
+        ranker =
       '$ranker${e[1].toString()} (${e[0].toString()}) ${e[2]
-          .toString()}\n');
+          .toString()}\n';
+      }
     });
 
       docuranker = [];
@@ -326,14 +350,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 else {
       db.collection(originT).doc(originT).set(
-          {"ranker": userName.toString()+ '|' + oddScore.toString() + '|' + nowTime.toString()});
+          {"ranker": '$userName|$oddScore|$nowTime'});
       docuranker.add([userName, oddScore, nowTime]);
       var sortedList = docuranker.map((e) => e).toList()
         ..sort((a, b) => b[1].compareTo(a[1]));
       setState(() {
-        sortedList.forEach((e) => ranker =
+        for (var e in sortedList) {
+          ranker =
         '$ranker${e[1].toString()} (${e[0].toString()}) ${e[2]
-            .toString()}\n');
+            .toString()}\n';
+        }
       });
 
       docuranker = [];
@@ -377,18 +403,16 @@ else {
         return
             Stack(
               children: [
-                Center(
+                Positioned(
+                  right: 0,
                   child: SizedBox(
                     width: constraints.maxWidth,
                     height: constraints.maxHeight,
                     child: FittedBox(
-                        // clipBehavior: Clip.hardEdge,
-                        // alignment: Alignment.center,
+                        alignment: Alignment.center,
                         fit: BoxFit.cover,
                         child: Text(originText,
                             style: commonTextStyle.copyWith(color: currCol)
-                            // overflow: TextOverflow.clip,
-                            // softWrap: true,
                             )),
                   ),
                 ),
@@ -521,7 +545,7 @@ else {
                                   width: constraints.maxWidth * 0.75,
                                   height: constraints.maxHeight * 0.7,
                                   child: Text(
-                                    ranker.length<1 ? originText : 'Hall of Fame\n\n$ranker',
+                                    ranker.isEmpty ? originText : 'Hall of Fame\n\n$ranker',
                                     style: commonTextStyle,
                                     softWrap: true,
                                     overflow: TextOverflow.clip,
@@ -561,7 +585,7 @@ else {
                                       cursorOpacityAnimates: false,
                                       onChanged: (txt) {
                                         setState(() {
-                                          if (txt.length > 0 &&
+                                          if (txt.isNotEmpty &&
                                               txt.substring(
                                                       0,
                                                       controller
@@ -743,7 +767,7 @@ else {
                                       ],
                                     ),
 
-                                    const Expanded(child: HtmlWidget('<iframe src="https://test-3eo.pages.dev/"></iframe>',renderMode: RenderMode.listView,),),
+                                    const Expanded(child: HtmlWidget('<iframe src="https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html#main"></iframe>',renderMode: RenderMode.listView,),),
 
 
                                   ],
