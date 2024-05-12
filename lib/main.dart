@@ -33,22 +33,6 @@ Future<void> main() async {
     }
   }
   box = await Hive.openBox('typeoddBox');
-  if (html.window.navigator.userAgent.contains('Mobi')) {
-    // Mobile-specific code
-    html.document.head?.appendHtml("""<style>
-    iframe {
-  width: 100% !important;
-  min-width: 100%;
-  height: 80vh !important;
-  align-self: center;
-  border: 0;
-}
-  </style>
-  <script>
-    document.addEventListener('touch start', {});
-  </script>""");
-  } else {
-  }
   runApp(const MyApp());
 }
 
