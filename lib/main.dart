@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 import 'package:hive/hive.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 late FirebaseFirestore db;
 late Box box;
@@ -40,13 +41,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'typeodd – typing game as meditation',
+      title: 'typeodd',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF717075)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'typeodd – typing game as meditation'),
+      home: const MyHomePage(title: 'typeodd'),
     );
   }
 }
@@ -336,26 +337,26 @@ else {
             style: commonTextStyle.copyWith(
                 fontWeight: FontWeight.bold, color: Colors.white)),
         leading: Tooltip(
-          message: 'explore power beyond anxiety',
+          message: 'typing game as meditation',
           child: const Icon(
             Icons.text_rotation_angleup,
             color: Colors.black,
           ),
         ),
-        actions: [IconButton(
-              icon: showHelp ? const Icon(Icons.close) : const Icon(Icons.help_outline),
-              tooltip: 'what is it?',
-              color: Colors.white,
-              onPressed: () {
-                if(showHelp) {
-                  FocusScope.of(context).requestFocus(myFocusNode);
-                }
-                setState(() {
-                  showHelp = !showHelp;
-                });
-                // _launchUrl();
-                // FocusScope.of(context).requestFocus(myFocusNode);
-              }),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: IconButton(
+                icon: Image.asset('images/zendoclogo-min.PNG', fit: BoxFit.scaleDown,),
+                tooltip: 'zendoc lab',
+                color: Colors.white,
+                onPressed: () {
+                  setState(() {
+                    _launchUrl();
+                    FocusScope.of(context).requestFocus(myFocusNode);
+                  });
+                }),
+          ),
         ],
       ),
       body: LayoutBuilder(
@@ -394,7 +395,7 @@ else {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Expanded(
-                                flex: 6,
+                                flex: 1,
                                 child: oddCalc == 0 || originText.isEmpty
                                     ? Text(
                                         userName!=null ? '${oddScore.toString()} ($userName)' : oddScore.toString(),
@@ -410,14 +411,9 @@ else {
                                             style: commonTextStyle,
                                           ),
                               ),
+
                               Expanded(
-                                  flex: 4,
-                                  child: Text(
-                                    originTitle,
-                                    style: commonTextStyle,
-                                  )),
-                              Expanded(
-                                  flex: 4,
+                                  flex: 1,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.end,
@@ -492,6 +488,10 @@ else {
                                           });
                                         },
                                       ),
+                                      Text(
+                                        originTitle,
+                                        style: commonTextStyle,
+                                      )
                                     ],
                                   )),
                             ],
@@ -657,22 +657,50 @@ else {
                         ),
                         Container(
                           width: constraints.maxWidth * 0.8,
-                          height: constraints.maxHeight * 0.15,
+                          height: constraints.maxHeight * 0.1,
                           color: Colors.transparent,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          child: originText.isNotEmpty
+                              ? Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              originText.isNotEmpty
-                                  ? Expanded(child: Text(
-                '** type faster than anxiety:\nto keep text visible, to get higher score',
-                style: commonTextStyle.copyWith(
-                    fontWeight: FontWeight.bold, color: Color(0xFF331832)),
-                ))
-                                  : Expanded(child:Text(
-                                      'explore power beyond anxiety: to come to mind',
-                                      style: commonTextStyle.copyWith(
-                                          fontWeight: FontWeight.bold, color: Color(0xFF331832)),
-                                    )),
+                               Text(
+                                                  'typing game as meditation',
+                                                  style: commonTextStyle.copyWith(color: Color(0xFF331832)),
+                                                  ),
+                              IconButton(
+                                  icon: const Icon(Icons.help_outline),
+                                  color: Color(0xFF331832),
+                                  onPressed: () {
+                                    if(showHelp) {
+                                      FocusScope.of(context).requestFocus(myFocusNode);
+                                    }
+                                    setState(() {
+                                      showHelp = !showHelp;
+                                    });
+                                    // _launchUrl();
+                                    // FocusScope.of(context).requestFocus(myFocusNode);
+                                  }),
+                            ],
+                          ) : Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'share your achievement',
+                                style: commonTextStyle.copyWith(color: Color(0xFF331832)),
+                              ),
+                              IconButton(
+                                  icon: const Icon(Icons.share),
+                                  color: Color(0xFF331832),
+                                  onPressed: () {
+                                    if(showHelp) {
+                                      FocusScope.of(context).requestFocus(myFocusNode);
+                                    }
+                                    setState(() {
+                                      showHelp = !showHelp;
+                                    });
+                                    // _launchUrl();
+                                    // FocusScope.of(context).requestFocus(myFocusNode);
+                                  }),
                             ],
                           ),
                         ),
@@ -689,34 +717,39 @@ else {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Expanded(
-                                      flex: 5,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Text("when you’re grappling with a challenging problem "
-                                            "or endeavoring to create something new\n\n"
-                                            "try this serious typing practice game as meditation\n\n"
-                                            "it is designed to help you move beyond immersion to inspiration\n\n"
-                                            "you may need a decent physical keyboard"
-                                            ,
-                                            style: commonTextStyle.copyWith(fontSize: 16, color: Colors.white)),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: IconButton(
-                                          icon: const CircleAvatar(
-                                            radius: 24,
-                                              backgroundImage:
-                                              AssetImage('images/zendoc.jpg')),
-                                          tooltip: 'talk to author',
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [IconButton(
+                                          icon: const Icon(Icons.close),
+                                          tooltip: 'close',
                                           color: Colors.white,
-                                          onPressed: () {
-                                            setState(() {
-                                              _launchUrl();
-                                              FocusScope.of(context).requestFocus(myFocusNode);
-                                            });
-                                          }),
+                                  onPressed: () {
+                                    if(showHelp) {
+                                      FocusScope.of(context).requestFocus(myFocusNode);
+                                    }
+                                    setState(() {
+                                      showHelp = !showHelp;
+                                    });
+                                    // _launchUrl();
+                                    // FocusScope.of(context).requestFocus(myFocusNode);
+                                  }),
+                                        TextButton(onPressed: () {
+                                          if(showHelp) {
+                                            FocusScope.of(context).requestFocus(myFocusNode);
+                                          }
+                                          setState(() {
+                                            showHelp = !showHelp;
+                                          });
+                                          // _launchUrl();
+                                          // FocusScope.of(context).requestFocus(myFocusNode);
+                                        }, child: Text("close", style: commonTextStyle.copyWith(
+                                            fontWeight: FontWeight.bold, color: Colors.white)),),
+                                      ],
                                     ),
+
+                                    Expanded(child: HtmlWidget('<iframe src="https://test-3eo.pages.dev/"></iframe>',renderMode: RenderMode.listView,),),
+
+
                                   ],
                                 ),
                               )),
