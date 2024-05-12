@@ -35,21 +35,9 @@
 
   <title>typeodd – typing game as meditation</title>
   <link rel="manifest" href="manifest.json">
-  <style>
-    iframe {
-  width: 100% !important;
-  min-width: 100%;
-  height: 80vh !important;
-  align-self: center;
-  border: 0;
-}
-  </style>
-  <script>
-    document.addEventListener('touchstart', {});
-  </script>
   <script>
     // The value below is injected by flutter build, do not touch.
-    const serviceWorkerVersion = "3630480845";
+    const serviceWorkerVersion = "4038758683";
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
@@ -66,20 +54,20 @@
   gtag('config', 'G-XW4V1QNXT8');
 </script>
 <body>
-  <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
-        }
-      });
+<script>
+  window.addEventListener('load', function(ev) {
+    // Download main.dart.js
+    _flutter.loader.loadEntrypoint({
+      serviceWorker: {
+        serviceWorkerVersion: serviceWorkerVersion,
+      },
+      onEntrypointLoaded: function(engineInitializer) {
+        engineInitializer.initializeEngine().then(function(appRunner) {
+          appRunner.runApp();
+        });
+      }
     });
-  </script>
+  });
+</script>
 </body>
 </html>
