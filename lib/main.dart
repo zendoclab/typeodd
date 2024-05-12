@@ -142,6 +142,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String? userName;
 
+  bool showHelp = false;
+
   void _calculateTypingSpeed(String value) {
     final now = DateTime.now();
     if (_lastKeystroke != null) {
@@ -202,6 +204,24 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       });
     });
+
+    if (userName == null) {
+      showHelp = true;
+      db
+          .collection("ranker")
+          .doc("total")
+          .get()
+          .then((value) {
+        userName = Random().nextBool() ? "EUREKA_${value.data()?.values.firstOrNull}" : "AHA_${value.data()?.values.firstOrNull}";
+
+        box.put("userName",userName);
+        int total = value.data()?.values.firstOrNull as int;
+        db.collection("ranker").doc("total").set({"total": total+1});
+      });
+    }
+    else {
+      showHelp = false;
+    }
   }
 
   @override
@@ -216,8 +236,6 @@ class _MyHomePageState extends State<MyHomePage> {
   double _rate = 1.0;
   late Future<int?> _soundId;
   late Future<int?> _cheeringId;
-
-  bool showHelp = false;
 
   DateTime? now;
   String? nowTime;
@@ -621,22 +639,7 @@ else {
                                           deducedText = txt;
             
                                           if (originText.isEmpty) {
-                                            myFocusNode.unfocus();;
-            
-                                            if (userName == null) {
-                                              db
-                                                  ?.collection("ranker")
-                                                  .doc("total")
-                                                  .get()
-                                                  .then((value) {
-                                                    userName = Random().nextBool() ? "EUREKA_${value.data()?.values.firstOrNull}" : "AHA_${value.data()?.values.firstOrNull}";
-            
-                                                box.put("userName",userName);
-                                                int total = value.data()?.values.firstOrNull as int;
-                                                db?.collection("ranker").doc("total").set({"total": total+1});
-                                              });
-            
-                                            }
+                                            myFocusNode.unfocus();
             
                                             getMinScoreDoc(originTitle);
             
@@ -712,7 +715,7 @@ else {
                   child: Container
                     (width: constraints.maxWidth*0.9,
                      height: constraints.maxHeight*0.9,
-                     color: const Color(0xFF331832).withOpacity(0.97),
+                     color: const Color(0xFF331832).withOpacity(0.85),
                               child: Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -757,6 +760,14 @@ else {
           ],
         );
       }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          box.clear();
+        },
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+
   }
 }
