@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
@@ -11,6 +12,7 @@ import 'firebase_options.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:share_plus/share_plus.dart';
+import 'dart:html' as html;
 
 late FirebaseFirestore db;
 late Box box;
@@ -31,6 +33,22 @@ Future<void> main() async {
     }
   }
   box = await Hive.openBox('typeoddBox');
+  if (html.window.navigator.userAgent.contains('Mobi')) {
+    // Mobile-specific code
+    html.document.head?.appendHtml("""<style>
+    iframe {
+  width: 100% !important;
+  min-width: 100%;
+  height: 80vh !important;
+  align-self: center;
+  border: 0;
+}
+  </style>
+  <script>
+    document.addEventListener('touch start', {});
+  </script>""");
+  } else {
+  }
   runApp(const MyApp());
 }
 
@@ -100,28 +118,27 @@ Map<String, String> blogText = {
   'Almustafa':
       'Almustafa, the chosen and the beloved, who was a dawn unto his own day, had waited twelve years in the city of Orphalese for his ship that was to return and bear him back to the isle of his birth. And in the twelfth year, on the seventh day of Ielool, the month of reaping, he climbed the hill without the city walls and looked seaward; and he beheld his ship coming with the mist. Then the gates of his heart were flung open, and his joy flew far over the sea. And he closed his eyes and prayed in the silences of his soul.',
   'Woodhouse':
-      'Sixteen years had Miss Taylor been in Mr. Woodhouse\'s family, less as a governess than a friend, very fond of both daughters, but particularly of Emma. Between them it was more the intimacy of sisters. Even before Miss Taylor had ceased to hold the nominal office of governess, the mildness of her temper had hardly allowed her to impose any restraint; and the shadow of authority being now long passed away, they had been living together as friend and friend very mutually attached, and Emma doing just what she liked; highly esteeming Miss Taylor\'s judgment, but directed chiefly by her own.'
-, 'Practice':
+      'Sixteen years had Miss Taylor been in Mr. Woodhouse\'s family, less as a governess than a friend, very fond of both daughters, but particularly of Emma. Between them it was more the intimacy of sisters. Even before Miss Taylor had ceased to hold the nominal office of governess, the mildness of her temper had hardly allowed her to impose any restraint; and the shadow of authority being now long passed away, they had been living together as friend and friend very mutually attached, and Emma doing just what she liked; highly esteeming Miss Taylor\'s judgment, but directed chiefly by her own.',
+  'Practice':
       'the quick brown fox jumps over the lazy dog. this sentence is often used for typing practice since it contains every letter of the alphabet. typing can be a useful skill in many different situations, whether you\'re a student writing a paper, a job applicant creating a resume, or a professional drafting an email. it\'s important to practice regularly to improve your speed and accuracy.',
- 'Knight':
-'once upon a time, in a land far, far away, there lived a brave knight and a beautiful princess. the knight was always going on adventures and fighting dragons, while the princess stayed in the castle, dreaming of the world outside. one day, the knight returned from his latest adventure with a magical golden apple. he gave it to the princess, who took a bite and was instantly transported to a magical forest.'
-, 'Bookstore':
-'in the heart of the city, there was a small, unassuming bookstore. it was filled from floor to ceiling with books of all kinds - novels, biographies, cookbooks, and more. the owner of the bookstore was an old man who loved nothing more than to read. he would spend his days surrounded by books, happily lost in the worlds they contained. it was the perfect life for a book lover like him.'
-  , 'Beach':
-'the sun was setting, casting long shadows across the beach. the waves gently lapped at the shore, creating a soothing rhythm that echoed in the quiet evening. a lone figure walked along the water\'s edge, leaving footprints in the wet sand. she stopped to pick up a seashell, holding it up to her ear to listen to the sound of the ocean. it was a moment of peace in a chaotic world.'
-,
+  'Knight':
+      'once upon a time, in a land far, far away, there lived a brave knight and a beautiful princess. the knight was always going on adventures and fighting dragons, while the princess stayed in the castle, dreaming of the world outside. one day, the knight returned from his latest adventure with a magical golden apple. he gave it to the princess, who took a bite and was instantly transported to a magical forest.',
+  'Bookstore':
+      'in the heart of the city, there was a small, unassuming bookstore. it was filled from floor to ceiling with books of all kinds - novels, biographies, cookbooks, and more. the owner of the bookstore was an old man who loved nothing more than to read. he would spend his days surrounded by books, happily lost in the worlds they contained. it was the perfect life for a book lover like him.',
+  'Beach':
+      'the sun was setting, casting long shadows across the beach. the waves gently lapped at the shore, creating a soothing rhythm that echoed in the quiet evening. a lone figure walked along the water\'s edge, leaving footprints in the wet sand. she stopped to pick up a seashell, holding it up to her ear to listen to the sound of the ocean. it was a moment of peace in a chaotic world.',
   'Forest':
-  'the forest was alive with the sounds of nature. birds chirped in the trees, their songs echoing through the dense foliage. a squirrel scampered up a tree trunk, its bushy tail flicking as it disappeared into the leaves. a deer grazed peacefully in a clearing, its ears twitching at every sound. it was a scene of pure, untouched nature, a reminder of the beauty that exists in the world.',
+      'the forest was alive with the sounds of nature. birds chirped in the trees, their songs echoing through the dense foliage. a squirrel scampered up a tree trunk, its bushy tail flicking as it disappeared into the leaves. a deer grazed peacefully in a clearing, its ears twitching at every sound. it was a scene of pure, untouched nature, a reminder of the beauty that exists in the world.',
   'Music':
-  'music has the power to move us, to stir our emotions and awaken our senses. a simple melody can bring back a flood of memories, while a complex symphony can take us on a journey of musical discovery. whether it\'s a catchy pop song, a soulful blues tune, or a powerful classical piece, music speaks to us on a level that words alone cannot reach.',
+      'music has the power to move us, to stir our emotions and awaken our senses. a simple melody can bring back a flood of memories, while a complex symphony can take us on a journey of musical discovery. whether it\'s a catchy pop song, a soulful blues tune, or a powerful classical piece, music speaks to us on a level that words alone cannot reach.',
   'Technology':
-  'the world of technology is constantly evolving, with new innovations and discoveries being made every day. from the smartphones in our pockets to the satellites orbiting our planet, technology has transformed the way we live our lives. it has made communication easier, information more accessible, and entertainment more enjoyable. but with these advancements come challenges and responsibilities that we must be prepared to face.',
+      'the world of technology is constantly evolving, with new innovations and discoveries being made every day. from the smartphones in our pockets to the satellites orbiting our planet, technology has transformed the way we live our lives. it has made communication easier, information more accessible, and entertainment more enjoyable. but with these advancements come challenges and responsibilities that we must be prepared to face.',
   'Traveling':
-  'traveling is a wonderful way to experience new cultures, meet new people, and broaden your horizons. whether you\'re exploring a bustling city, hiking in the mountains, or relaxing on a tropical beach, every travel experience is unique. it\'s not just about the places you go, but also the people you meet and the memories you make along the way. so pack your bags and set off on your next adventure.',
+      'traveling is a wonderful way to experience new cultures, meet new people, and broaden your horizons. whether you\'re exploring a bustling city, hiking in the mountains, or relaxing on a tropical beach, every travel experience is unique. it\'s not just about the places you go, but also the people you meet and the memories you make along the way. so pack your bags and set off on your next adventure.',
   'Art':
-  'art is a form of expression, a way for individuals to communicate their thoughts, feelings, and ideas. it can take many forms, from painting and sculpture to music and dance. art can inspire, provoke, and challenge us. it can make us see the world in a new light, or give us insight into the human condition. art is a reflection of who we are, and a testament to our creativity and imagination.',
+      'art is a form of expression, a way for individuals to communicate their thoughts, feelings, and ideas. it can take many forms, from painting and sculpture to music and dance. art can inspire, provoke, and challenge us. it can make us see the world in a new light, or give us insight into the human condition. art is a reflection of who we are, and a testament to our creativity and imagination.',
   'Universe':
-  'the universe is a vast and mysterious place, filled with billions of galaxies, each containing billions of stars. we are just a tiny speck in the grand scheme of things, yet we have the ability to explore and understand the cosmos. through science and technology, we have been able to uncover some of the secrets of the universe, from the life cycle of stars to the existence of black holes. the more we learn, the more we realize how much there is still to discover.'
+      'the universe is a vast and mysterious place, filled with billions of galaxies, each containing billions of stars. we are just a tiny speck in the grand scheme of things, yet we have the ability to explore and understand the cosmos. through science and technology, we have been able to uncover some of the secrets of the universe, from the life cycle of stars to the existence of black holes. the more we learn, the more we realize how much there is still to discover.'
 };
 
 int textNum = 0;
@@ -133,9 +150,8 @@ String ranker = '';
 List<dynamic> rankList = [];
 
 class _MyHomePageState extends State<MyHomePage> {
-  TextStyle commonTextStyle =
-      const TextStyle(letterSpacing: 2.0, fontSize: 16, color: Color(0xFF4a484d));
-
+  TextStyle commonTextStyle = const TextStyle(
+      letterSpacing: 2.0, fontSize: 16, color: Color(0xFF4a484d));
 
   final TextEditingController controller = TextEditingController();
 
@@ -227,19 +243,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (userName == null) {
       showHelp = true;
-      db
-          .collection("ranker")
-          .doc("total")
-          .get()
-          .then((value) {
-        userName = Random().nextBool() ? "EUREKA_${value.data()?.values.firstOrNull}" : "AHA_${value.data()?.values.firstOrNull}";
+      db.collection("ranker").doc("total").get().then((value) {
+        userName = Random().nextBool()
+            ? "EUREKA_${value.data()?.values.firstOrNull}"
+            : "AHA_${value.data()?.values.firstOrNull}";
 
-        box.put("userName",userName);
+        box.put("userName", userName);
         int total = value.data()?.values.firstOrNull as int;
-        db.collection("ranker").doc("total").set({"total": total+1});
+        db.collection("ranker").doc("total").set({"total": total + 1});
       });
-    }
-    else {
+    } else {
       showHelp = false;
     }
   }
@@ -276,89 +289,88 @@ class _MyHomePageState extends State<MyHomePage> {
     await _pool?.play(alarmSound!);
   }
 
-
   void getMinScoreDoc(String originT) async {
     now = DateTime.now();
     nowTime =
-    "${now?.year}-${now?.month}-${now?.day} ${now?.hour}:${now?.minute}:${now?.second}";
+        "${now?.year}-${now?.month}-${now?.day} ${now?.hour}:${now?.minute}:${now?.second}";
     List<DocumentSnapshot> documents;
 
     QuerySnapshot querySnapshot1 = await db.collection(originT).get();
     if (querySnapshot1.size != 0) {
-
       documents = querySnapshot1.docs;
 
       List rankerRaw;
-      if(documents[0]['ranker'].contains('&')) {
+      if (documents[0]['ranker'].contains('&')) {
         rankerRaw = documents[0]['ranker'].split('&');
-      }
-      else {
+      } else {
         rankerRaw = [documents[0]['ranker']];
       }
-    String lowestScoreRanker = rankerRaw[0].toString();
-    for (dynamic ranker in rankerRaw) {
-      List<dynamic> rankerSplit = ranker.split('|');
-      docuranker.add([
-        rankerSplit[0],
-        int.parse(rankerSplit[1]),
-        rankerSplit[2],
-      ]);
+      String lowestScoreRanker = rankerRaw[0].toString();
+      for (dynamic ranker in rankerRaw) {
+        List<dynamic> rankerSplit = ranker.split('|');
+        docuranker.add([
+          rankerSplit[0],
+          int.parse(rankerSplit[1]),
+          rankerSplit[2],
+        ]);
 
-      if (int.parse(rankerSplit[1]) <= int.parse(lowestScoreRanker.split('|')[1])) {
-        lowestScoreRanker = ranker;
+        if (int.parse(rankerSplit[1]) <=
+            int.parse(lowestScoreRanker.split('|')[1])) {
+          lowestScoreRanker = ranker;
+        }
       }
-    }
 
-    int minScore = int.parse(lowestScoreRanker.split('|')[1]);
+      int minScore = int.parse(lowestScoreRanker.split('|')[1]);
 
-    String rankerTailed='';
+      String rankerTailed = '';
 
-    if (documents.isEmpty || rankerRaw.length < 5) {
-      db.collection(originT).doc(originT).update(
-          {"ranker" : '${documents[0]['ranker']}&${userName!}|$oddScore|$nowTime'});
-      docuranker.add([userName, oddScore, nowTime]);
-    }
-    else {
-      if (minScore < oddScore) {
-        rankerTailed = rankerRaw.where((x) => x!=lowestScoreRanker).toList().map((e) => e).join('&');
-
-        db.collection(originT).doc(originT).update({'ranker': '$rankerTailed&${userName!}|$oddScore|$nowTime' });
-
-        docuranker.removeWhere((element) =>
-        element[0] == lowestScoreRanker.split('|')[0].toString() &&
-            element[2] == lowestScoreRanker.split('|')[2].toString());
+      if (documents.isEmpty || rankerRaw.length < 5) {
+        db.collection(originT).doc(originT).update({
+          "ranker": '${documents[0]['ranker']}&${userName!}|$oddScore|$nowTime'
+        });
         docuranker.add([userName, oddScore, nowTime]);
-      }
-      else {
+      } else {
+        if (minScore < oddScore) {
+          rankerTailed = rankerRaw
+              .where((x) => x != lowestScoreRanker)
+              .toList()
+              .map((e) => e)
+              .join('&');
 
-      }
-    }
-    var sortedList = docuranker.map((e) => e).toList()
-      ..sort((a, b) => b[1].compareTo(a[1]));
-    // sortedList.map((e) => ranker = ranker + '${e.toString()}\n\n');
+          db.collection(originT).doc(originT).update(
+              {'ranker': '$rankerTailed&${userName!}|$oddScore|$nowTime'});
 
-    setState(() {
-      for (var e in sortedList) {
-        ranker =
-      '$ranker${e[1].toString()} (${e[0].toString()}) ${e[2]
-          .toString()}\n';
+          docuranker.removeWhere((element) =>
+              element[0] == lowestScoreRanker.split('|')[0].toString() &&
+              element[2] == lowestScoreRanker.split('|')[2].toString());
+          docuranker.add([userName, oddScore, nowTime]);
+        } else {}
       }
-    });
+      var sortedList = docuranker.map((e) => e).toList()
+        ..sort((a, b) => b[1].compareTo(a[1]));
+      // sortedList.map((e) => ranker = ranker + '${e.toString()}\n\n');
+
+      setState(() {
+        for (var e in sortedList) {
+          ranker =
+              '$ranker${e[1].toString()} (${e[0].toString()}) ${e[2].toString()}\n';
+        }
+      });
 
       docuranker = [];
       sortedList = [];
-  }
-else {
-      db.collection(originT).doc(originT).set(
-          {"ranker": '$userName|$oddScore|$nowTime'});
+    } else {
+      db
+          .collection(originT)
+          .doc(originT)
+          .set({"ranker": '$userName|$oddScore|$nowTime'});
       docuranker.add([userName, oddScore, nowTime]);
       var sortedList = docuranker.map((e) => e).toList()
         ..sort((a, b) => b[1].compareTo(a[1]));
       setState(() {
         for (var e in sortedList) {
           ranker =
-        '$ranker${e[1].toString()} (${e[0].toString()}) ${e[2]
-            .toString()}\n';
+              '$ranker${e[1].toString()} (${e[0].toString()}) ${e[2].toString()}\n';
         }
       });
 
@@ -386,7 +398,10 @@ else {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: IconButton(
-                icon: Image.asset('images/zendoclogo-min.PNG', fit: BoxFit.scaleDown,),
+                icon: Image.asset(
+                  'images/zendoclogo-min.PNG',
+                  fit: BoxFit.scaleDown,
+                ),
                 tooltip: 'zendoc lab',
                 color: Colors.white,
                 onPressed: () {
@@ -400,377 +415,392 @@ else {
       ),
       body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-        return
-            Stack(
-              children: [
-                Positioned(
-                  right: 0,
-                  child: SizedBox(
-                    width: constraints.maxWidth,
-                    height: constraints.maxHeight,
-                    child: FittedBox(
-                        alignment: Alignment.center,
-                        fit: BoxFit.cover,
-                        child: Text(originText,
-                            style: commonTextStyle.copyWith(color: currCol)
-                            )),
-                  ),
-                ),
-                Container(
-                  color: const Color(0xFFc4c2c7).withOpacity(0.7),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: constraints.maxWidth * 0.8,
-                          height: constraints.maxHeight * 0.1,
-                          color: Colors.transparent,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Expanded(
-                                flex: 1,
-                                child: oddCalc == 0 || originText.isEmpty
-                                    ? Text(
-                                        userName!=null ? '${oddScore.toString()} ($userName)' : oddScore.toString(),
-                                        style: commonTextStyle,
-                                      )
-                                    : oddCalc > 0
-                                        ? Text(
-                                            '${oddScore.toString()} (+$oddCalc)',
-                                            style: commonTextStyle,
-                                          )
-                                        : Text(
-                                            '${oddScore.toString()} ($oddCalc)',
-                                            style: commonTextStyle,
-                                          ),
-                              ),
-
-                              Expanded(
-                                  flex: 1,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.end,
-                                    children: [
-                                      originText.isEmpty || colSat > 230
-                                          ? IconButton(
-                                              icon:
-                                                  const Icon(Icons.repeat_outlined),
-                                              tooltip: 'repeat',
-                                              color: const Color(0xFF4a484d),
-                                              onPressed: () {
-                                                setState(() {
-                                                  originText = blogText.values
-                                                      .toList()[textNum];
-                                                  originTitle = blogText.keys
-                                                      .toList()[textNum];
-                                                  controller.clear();
-                                                  colSat = 0;
-                                                  oddScore = 0;
-                                                  text = '';
-                                                  deducedText = '';
-                                                  resp = null;
-                                                  currCol = Colors.black54;
-                                                  _typingSpeed = 0;
-                                                  oddCalc = 0;
-                                                  curwid = 1;
-                                                  ranker = '';
-                                                  FocusScope.of(context)
-                                                      .requestFocus(myFocusNode);
-                                                });
-                                              },
-                                            )
-                                          : const Text(''),
-                                      IconButton(
-                                        icon: const Icon(
-                                            Icons.arrow_right_alt_outlined),
-                                        tooltip: 'next',
-                                        color: const Color(0xFF4a484d),
-                                        onPressed: () {
-                                          setState(() {
-                                            controller.clear();
-                                            colSat = 0;
-                                            String getRandomText(
-                                                List<String> bText, int bNum) {
-                                              int textNumCom =
-                                                  Random().nextInt(blogText.length);
-                                              if (bNum != textNumCom) {
-                                                textNum = textNumCom;
-                                                originTitle = blogText.keys
-                                                    .toList()[textNumCom];
-                                                return blogText.values
-                                                    .toList()[textNumCom];
-                                              } else {
-                                                return getRandomText(
-                                                    bText, textNumCom);
-                                              }
-                                            }
-            
-                                            originText = getRandomText(
-                                                blogText.values.toList(), textNum);
-                                            oddScore = 0;
-                                            text = '';
-                                            deducedText = '';
-                                            resp = null;
-                                            currCol = Colors.black54;
-                                            _typingSpeed = 0;
-                                            oddCalc = 0;
-                                            curwid = 1;
-                                            ranker = '';
-                                            FocusScope.of(context)
-                                                .requestFocus(myFocusNode);
-                                          });
-                                        },
-                                      ),
-                                      Text(
-                                        originTitle,
-                                        style: commonTextStyle,
-                                      )
-                                    ],
-                                  )),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: constraints.maxWidth * 0.8,
-                          height: constraints.maxHeight * 0.6,
-                          color: const Color(0xFFF1E4E8).withAlpha(220),
-                          child: Stack(
-                            children: <Widget>[
-                              Positioned(
-                                top: 16,
-                                left: 16,
-                                child: SizedBox(
-                                  width: constraints.maxWidth * 0.75,
-                                  height: constraints.maxHeight * 0.7,
-                                  child: Text(
-                                    ranker.isEmpty ? originText : 'Hall of Fame\n\n$ranker',
+        return Stack(
+          children: [
+            Positioned(
+              right: 0,
+              child: SizedBox(
+                width: constraints.maxWidth,
+                height: constraints.maxHeight,
+                child: FittedBox(
+                    alignment: Alignment.center,
+                    fit: BoxFit.cover,
+                    child: Text(originText,
+                        style: commonTextStyle.copyWith(color: currCol))),
+              ),
+            ),
+            Container(
+              color: const Color(0xFFc4c2c7).withOpacity(0.7),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: constraints.maxWidth * 0.8,
+                      height: constraints.maxHeight * 0.1,
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: oddCalc == 0 || originText.isEmpty
+                                ? Text(
+                                    userName != null
+                                        ? '${oddScore.toString()} ($userName)'
+                                        : oddScore.toString(),
                                     style: commonTextStyle,
-                                    softWrap: true,
-                                    overflow: TextOverflow.clip,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 0,
-                                left: 0,
-                                child: SizedBox(
-                                  width: constraints.maxWidth * 0.8,
-                                  height: constraints.maxHeight * 0.75,
-                                  child: Container(
-                                    color: Colors.white.withAlpha(colSat),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 18,
-                                left: 16,
-                                child: SizedBox(
-                                  width: constraints.maxWidth * 0.75,
-                                  height: constraints.maxHeight * 0.7,
-                                  child: TextField(
-                                      maxLengthEnforcement:
-                                          MaxLengthEnforcement.none,
-                                      maxLines: null,
-                                      controller: controller,
-                                      autofocus: true,
-                                      focusNode: myFocusNode,
-                                      cursorWidth: curwid < 2 ? 1 : curwid * 1.5,
-                                      showCursor: true,
-                                      cursorColor: curwid > 39
-                                          ? const Color.fromARGB(245, 100, 100, 100)
-                                          : const Color.fromARGB(245, 180, 180, 180),
-                                      cursorErrorColor: Colors.red,
-                                      cursorOpacityAnimates: false,
-                                      onChanged: (txt) {
-                                        setState(() {
-                                          if (txt.isNotEmpty &&
-                                              txt.substring(
-                                                      0,
-                                                      controller
-                                                          .selection.baseOffset) ==
-                                                  originText.substring(
-                                                      0,
-                                                      controller
-                                                          .selection.baseOffset) &&
-                                              txt.substring(0, txt.length) ==
-                                                  originText.substring(
-                                                      0, txt.length)) {
-                                            _playSound();
-            
-                                            _calculateTypingSpeed(txt);
-                                            resp = true;
-                                            currCol = Color(
-                                                    (Random().nextInt(0xFFFFFF))
-                                                        .toInt())
-                                                .withOpacity(0.95);
-                                            if (curwid < 250) {
-                                              curwid = curwid + _typingSpeed / 100;
-                                            }
-                                            if (deducedText.length > txt.length) {
-                                              _typingSpeed = 0.0;
-                                              resp = false;
-                                              currCol = Colors.teal;
-                                            }
-                                            text = text.substring(1, text.length);
-                                            controller.text = text;
-                                            originText = originText.substring(
-                                                1, originText.length);
-            
-                                            oddScore =
-                                                oddScore + (curwid / 10).ceil();
-                                            oddCalc = (curwid / 10).ceil();
-                                          } else {
-                                            _typingSpeed = 0.0;
-                                            resp = false;
-                                            currCol = Colors.redAccent;
-                                            if ((oddScore - (oddScore*0.3).ceil()) > 0) {
-                                              oddCalc = -(oddScore*0.3).ceil();
-                                              oddScore =
-                                              oddScore - (oddScore*0.3).ceil();
-                                            } else {
-                                              oddCalc = -oddScore;
-                                              oddScore = 0;
-                                            }
-                                          }
-            
-                                          if (curwid.toInt() > 39) {
-                                            if (colSat > 3) {
-                                              colSat = colSat - 2;
-                                            } else {
+                                  )
+                                : oddCalc > 0
+                                    ? Text(
+                                        '${oddScore.toString()} (+$oddCalc)',
+                                        style: commonTextStyle,
+                                      )
+                                    : Text(
+                                        '${oddScore.toString()} ($oddCalc)',
+                                        style: commonTextStyle,
+                                      ),
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  originText.isEmpty || colSat > 230
+                                      ? IconButton(
+                                          icon:
+                                              const Icon(Icons.repeat_outlined),
+                                          tooltip: 'repeat',
+                                          color: const Color(0xFF4a484d),
+                                          onPressed: () {
+                                            setState(() {
+                                              originText = blogText.values
+                                                  .toList()[textNum];
+                                              originTitle = blogText.keys
+                                                  .toList()[textNum];
+                                              controller.clear();
                                               colSat = 0;
-                                            }
+                                              oddScore = 0;
+                                              text = '';
+                                              deducedText = '';
+                                              resp = null;
+                                              currCol = Colors.black54;
+                                              _typingSpeed = 0;
+                                              oddCalc = 0;
+                                              curwid = 1;
+                                              ranker = '';
+                                              FocusScope.of(context)
+                                                  .requestFocus(myFocusNode);
+                                            });
+                                          },
+                                        )
+                                      : const Text(''),
+                                  IconButton(
+                                    icon: const Icon(
+                                        Icons.arrow_right_alt_outlined),
+                                    tooltip: 'next',
+                                    color: const Color(0xFF4a484d),
+                                    onPressed: () {
+                                      setState(() {
+                                        controller.clear();
+                                        colSat = 0;
+                                        String getRandomText(
+                                            List<String> bText, int bNum) {
+                                          int textNumCom =
+                                              Random().nextInt(blogText.length);
+                                          if (bNum != textNumCom) {
+                                            textNum = textNumCom;
+                                            originTitle = blogText.keys
+                                                .toList()[textNumCom];
+                                            return blogText.values
+                                                .toList()[textNumCom];
                                           } else {
-                                            if (colSat < 252) {
-                                              colSat = colSat + 3;
-                                            } else {
-                                              colSat = 255;
-                                            }
+                                            return getRandomText(
+                                                bText, textNumCom);
                                           }
-            
-                                          if (resp == false) {
-                                            curwid = 1;
-                                          }
-            
-                                          deducedText = txt;
-            
-                                          if (originText.isEmpty) {
-                                            myFocusNode.unfocus();
-            
-                                            getMinScoreDoc(originTitle);
-            
-                                          }
-                                        });
-                                      },
-                                      decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          contentPadding:
-                                              EdgeInsets.symmetric(vertical: 0.0),
-                                          isCollapsed: true),
-                                      style:
-                                          commonTextStyle.copyWith(color: currCol)),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: constraints.maxWidth * 0.8,
-                          height: constraints.maxHeight * 0.1,
-                          color: Colors.transparent,
-                          child: originText.isNotEmpty
-                              ? Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                               Text(
-                                                  'typing game as meditation',
-                                                  style: commonTextStyle.copyWith(color: const Color(0xFF331832)),
-                                                  ),
-                              IconButton(
-                                  icon: const Icon(Icons.help_outline),
-                                  color: const Color(0xFF331832),
-                                  onPressed: () {
-                                    if(showHelp) {
-                                      FocusScope.of(context).requestFocus(myFocusNode);
-                                    }
-                                    setState(() {
-                                      showHelp = !showHelp;
-                                    });
-                                    // _launchUrl();
-                                    // FocusScope.of(context).requestFocus(myFocusNode);
-                                  }),
-                            ],
-                          ) : Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                'share your achievement',
-                                style: commonTextStyle.copyWith(color: const Color(0xFF331832)),
-                              ),
-                              IconButton(
-                                  icon: const Icon(Icons.share),
-                                  color: const Color(0xFF331832),
-                                  onPressed: () {
-                                    Share.shareUri(Uri.parse('https://zendoclab.github.io/typeodd/'));
-                                  }),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                showHelp ? Center(
-                  child: Container
-                    (width: constraints.maxWidth*0.9,
-                     height: constraints.maxHeight*0.9,
-                     color: const Color(0xFF331832).withOpacity(0.85),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [IconButton(
-                                          icon: const Icon(Icons.close),
-                                          tooltip: 'close',
-                                          color: Colors.white,
-                                  onPressed: () {
-                                    if(showHelp) {
-                                      FocusScope.of(context).requestFocus(myFocusNode);
-                                    }
-                                    setState(() {
-                                      showHelp = !showHelp;
-                                    });
-                                    // _launchUrl();
-                                    // FocusScope.of(context).requestFocus(myFocusNode);
-                                  }),
-                                        TextButton(onPressed: () {
-                                          if(showHelp) {
-                                            FocusScope.of(context).requestFocus(myFocusNode);
-                                          }
-                                          setState(() {
-                                            showHelp = !showHelp;
-                                          });
-                                          // _launchUrl();
-                                          // FocusScope.of(context).requestFocus(myFocusNode);
-                                        }, child: Text("close", style: commonTextStyle.copyWith(
-                                            fontWeight: FontWeight.bold, color: Colors.white)),),
-                                      ],
-                                    ),
+                                        }
 
-                                    const Expanded(child: HtmlWidget('<iframe src="https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html#main"></iframe>',renderMode: RenderMode.listView,),),
-
-
-                                  ],
-                                ),
+                                        originText = getRandomText(
+                                            blogText.values.toList(), textNum);
+                                        oddScore = 0;
+                                        text = '';
+                                        deducedText = '';
+                                        resp = null;
+                                        currCol = Colors.black54;
+                                        _typingSpeed = 0;
+                                        oddCalc = 0;
+                                        curwid = 1;
+                                        ranker = '';
+                                        FocusScope.of(context)
+                                            .requestFocus(myFocusNode);
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    originTitle,
+                                    style: commonTextStyle,
+                                  )
+                                ],
                               )),
-                ) : const Center()
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: constraints.maxWidth * 0.8,
+                      height: constraints.maxHeight * 0.6,
+                      color: const Color(0xFFF1E4E8).withAlpha(220),
+                      child: Stack(
+                        children: <Widget>[
+                          Positioned(
+                            top: 16,
+                            left: 16,
+                            child: SizedBox(
+                              width: constraints.maxWidth * 0.75,
+                              height: constraints.maxHeight * 0.7,
+                              child: Text(
+                                ranker.isEmpty
+                                    ? originText
+                                    : 'Hall of Fame\n\n$ranker',
+                                style: commonTextStyle,
+                                softWrap: true,
+                                overflow: TextOverflow.clip,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            left: 0,
+                            child: SizedBox(
+                              width: constraints.maxWidth * 0.8,
+                              height: constraints.maxHeight * 0.75,
+                              child: Container(
+                                color: Colors.white.withAlpha(colSat),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 18,
+                            left: 16,
+                            child: SizedBox(
+                              width: constraints.maxWidth * 0.75,
+                              height: constraints.maxHeight * 0.7,
+                              child: TextField(
+                                  maxLengthEnforcement:
+                                      MaxLengthEnforcement.none,
+                                  maxLines: null,
+                                  controller: controller,
+                                  autofocus: true,
+                                  focusNode: myFocusNode,
+                                  cursorWidth: curwid < 2 ? 1 : curwid * 1.5,
+                                  showCursor: true,
+                                  cursorColor: curwid > 39
+                                      ? const Color.fromARGB(245, 100, 100, 100)
+                                      : const Color.fromARGB(
+                                          245, 180, 180, 180),
+                                  cursorErrorColor: Colors.red,
+                                  cursorOpacityAnimates: false,
+                                  onChanged: (txt) {
+                                    setState(() {
+                                      if (txt.isNotEmpty &&
+                                          txt.substring(
+                                                  0,
+                                                  controller
+                                                      .selection.baseOffset) ==
+                                              originText.substring(
+                                                  0,
+                                                  controller
+                                                      .selection.baseOffset) &&
+                                          txt.substring(0, txt.length) ==
+                                              originText.substring(
+                                                  0, txt.length)) {
+                                        _playSound();
+
+                                        _calculateTypingSpeed(txt);
+                                        resp = true;
+                                        currCol = Color(
+                                                (Random().nextInt(0xFFFFFF))
+                                                    .toInt())
+                                            .withOpacity(0.95);
+                                        if (curwid < 250) {
+                                          curwid = curwid + _typingSpeed / 100;
+                                        }
+                                        if (deducedText.length > txt.length) {
+                                          _typingSpeed = 0.0;
+                                          resp = false;
+                                          currCol = Colors.teal;
+                                        }
+                                        text = text.substring(1, text.length);
+                                        controller.text = text;
+                                        originText = originText.substring(
+                                            1, originText.length);
+
+                                        oddScore =
+                                            oddScore + (curwid / 10).ceil();
+                                        oddCalc = (curwid / 10).ceil();
+                                      } else {
+                                        _typingSpeed = 0.0;
+                                        resp = false;
+                                        currCol = Colors.redAccent;
+                                        if ((oddScore -
+                                                (oddScore * 0.3).ceil()) >
+                                            0) {
+                                          oddCalc = -(oddScore * 0.3).ceil();
+                                          oddScore = oddScore -
+                                              (oddScore * 0.3).ceil();
+                                        } else {
+                                          oddCalc = -oddScore;
+                                          oddScore = 0;
+                                        }
+                                      }
+
+                                      if (curwid.toInt() > 39) {
+                                        if (colSat > 3) {
+                                          colSat = colSat - 2;
+                                        } else {
+                                          colSat = 0;
+                                        }
+                                      } else {
+                                        if (colSat < 252) {
+                                          colSat = colSat + 3;
+                                        } else {
+                                          colSat = 255;
+                                        }
+                                      }
+
+                                      if (resp == false) {
+                                        curwid = 1;
+                                      }
+
+                                      deducedText = txt;
+
+                                      if (originText.isEmpty) {
+                                        myFocusNode.unfocus();
+
+                                        getMinScoreDoc(originTitle);
+                                      }
+                                    });
+                                  },
+                                  decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      contentPadding:
+                                          EdgeInsets.symmetric(vertical: 0.0),
+                                      isCollapsed: true),
+                                  style:
+                                      commonTextStyle.copyWith(color: currCol)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: constraints.maxWidth * 0.8,
+                      height: constraints.maxHeight * 0.1,
+                      color: Colors.transparent,
+                      child: originText.isNotEmpty
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'typing game as meditation',
+                                  style: commonTextStyle.copyWith(
+                                      color: const Color(0xFF331832)),
+                                ),
+                                IconButton(
+                                    icon: const Icon(Icons.help_outline),
+                                    color: const Color(0xFF331832),
+                                    onPressed: () {
+                                      if (showHelp) {
+                                        FocusScope.of(context)
+                                            .requestFocus(myFocusNode);
+                                      }
+                                      setState(() {
+                                        showHelp = !showHelp;
+                                      });
+                                      // _launchUrl();
+                                      // FocusScope.of(context).requestFocus(myFocusNode);
+                                    }),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'share your achievement',
+                                  style: commonTextStyle.copyWith(
+                                      color: const Color(0xFF331832)),
+                                ),
+                                IconButton(
+                                    icon: const Icon(Icons.share),
+                                    color: const Color(0xFF331832),
+                                    onPressed: () {
+                                      Share.shareUri(Uri.parse(
+                                          'https://zendoclab.github.io/typeodd/'));
+                                    }),
+                              ],
+                            ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            showHelp
+                ? Center(
+                    child: Container(
+                        width: constraints.maxWidth * 0.9,
+                        height: constraints.maxHeight * 0.9,
+                        color: const Color(0xFF331832).withOpacity(0.85),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                      icon: const Icon(Icons.close),
+                                      tooltip: 'close',
+                                      color: Colors.white,
+                                      onPressed: () {
+                                        if (showHelp) {
+                                          FocusScope.of(context)
+                                              .requestFocus(myFocusNode);
+                                        }
+                                        setState(() {
+                                          showHelp = !showHelp;
+                                        });
+                                      }),
+                                  TextButton(
+                                    onPressed: () {
+                                      if (showHelp) {
+                                        FocusScope.of(context)
+                                            .requestFocus(myFocusNode);
+                                      }
+                                      setState(() {
+                                        showHelp = !showHelp;
+                                      });
+                                    },
+                                    child: Text("close",
+                                        style: commonTextStyle.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white)),
+                                  ),
+                                ],
+                              ),
+                              const Expanded(
+                                child: HtmlWidget(
+                                  '<iframe src="https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html#main"></iframe>',
+                                  renderMode: RenderMode.listView,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
+                  )
+                : const Center()
           ],
         );
       }),
     );
-
   }
 }
