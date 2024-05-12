@@ -12,7 +12,6 @@ import 'firebase_options.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:html' as html;
 
 late FirebaseFirestore db;
 late Box box;
