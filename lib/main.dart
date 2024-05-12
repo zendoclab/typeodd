@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
@@ -162,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Soundpool? _pool;
-  SoundpoolOptions _soundpoolOptions = SoundpoolOptions();
+  SoundpoolOptions _soundpoolOptions = const SoundpoolOptions();
 
   void _initPool(SoundpoolOptions soundpoolOptions) {
     _pool?.dispose();
@@ -232,8 +230,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  double _volume = 0.3;
-  double _rate = 1.0;
+  final double _volume = 0.3;
   late Future<int?> _soundId;
   late Future<int?> _cheeringId;
 
@@ -252,9 +249,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _playSound() async {
-    var _alarmSound = await (Random().nextBool() ? _soundId : _cheeringId);
-    _pool?.setVolume(soundId: _alarmSound, volume: _volume);
-    await _pool?.play(_alarmSound!);
+    var alarmSound = await (Random().nextBool() ? _soundId : _cheeringId);
+    _pool?.setVolume(soundId: alarmSound, volume: _volume);
+    await _pool?.play(alarmSound!);
   }
 
 
@@ -300,8 +297,6 @@ class _MyHomePageState extends State<MyHomePage> {
       docuranker.add([userName, oddScore, nowTime]);
     }
     else {
-      print(minScore);
-      print(oddScore);
       if (minScore < oddScore) {
         rankerTailed = rankerRaw.where((x) => x!=lowestScoreRanker).toList().map((e) => e).join('&');
 
@@ -317,12 +312,12 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
     var sortedList = docuranker.map((e) => e).toList()
-      ?..sort((a, b) => b[1].compareTo(a[1]));
+      ..sort((a, b) => b[1].compareTo(a[1]));
     // sortedList.map((e) => ranker = ranker + '${e.toString()}\n\n');
 
     setState(() {
       sortedList.forEach((e) => ranker =
-      '$ranker${e[1].toString()} \(${e[0].toString()}\) ${e[2]
+      '$ranker${e[1].toString()} (${e[0].toString()}) ${e[2]
           .toString()}\n');
     });
 
@@ -334,10 +329,10 @@ else {
           {"ranker": userName.toString()+ '|' + oddScore.toString() + '|' + nowTime.toString()});
       docuranker.add([userName, oddScore, nowTime]);
       var sortedList = docuranker.map((e) => e).toList()
-        ?..sort((a, b) => b[1].compareTo(a[1]));
+        ..sort((a, b) => b[1].compareTo(a[1]));
       setState(() {
         sortedList.forEach((e) => ranker =
-        '$ranker${e[1].toString()} \(${e[0].toString()}\) ${e[2]
+        '$ranker${e[1].toString()} (${e[0].toString()}) ${e[2]
             .toString()}\n');
       });
 
@@ -354,9 +349,9 @@ else {
         title: Text(widget.title,
             style: commonTextStyle.copyWith(
                 fontWeight: FontWeight.bold, color: Colors.white)),
-        leading: Tooltip(
+        leading: const Tooltip(
           message: 'typing game as meditation',
-          child: const Icon(
+          child: Icon(
             Icons.text_rotation_angleup,
             color: Colors.black,
           ),
@@ -382,21 +377,19 @@ else {
         return
             Stack(
               children: [
-                Container(
-                  child: Center(
-                    child: SizedBox(
-                      width: constraints.maxWidth,
-                      height: constraints.maxHeight,
-                      child: FittedBox(
-                          // clipBehavior: Clip.hardEdge,
-                          // alignment: Alignment.center,
-                          fit: BoxFit.cover,
-                          child: Text(originText,
-                              style: commonTextStyle.copyWith(color: currCol)
-                              // overflow: TextOverflow.clip,
-                              // softWrap: true,
-                              )),
-                    ),
+                Center(
+                  child: SizedBox(
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight,
+                    child: FittedBox(
+                        // clipBehavior: Clip.hardEdge,
+                        // alignment: Alignment.center,
+                        fit: BoxFit.cover,
+                        child: Text(originText,
+                            style: commonTextStyle.copyWith(color: currCol)
+                            // overflow: TextOverflow.clip,
+                            // softWrap: true,
+                            )),
                   ),
                 ),
                 Container(
@@ -518,7 +511,7 @@ else {
                         Container(
                           width: constraints.maxWidth * 0.8,
                           height: constraints.maxHeight * 0.6,
-                          color: Color(0xFFF1E4E8).withAlpha(220),
+                          color: const Color(0xFFF1E4E8).withAlpha(220),
                           child: Stack(
                             children: <Widget>[
                               Positioned(
@@ -562,8 +555,8 @@ else {
                                       cursorWidth: curwid < 2 ? 1 : curwid * 1.5,
                                       showCursor: true,
                                       cursorColor: curwid > 39
-                                          ? Color.fromARGB(245, 100, 100, 100)
-                                          : Color.fromARGB(245, 180, 180, 180),
+                                          ? const Color.fromARGB(245, 100, 100, 100)
+                                          : const Color.fromARGB(245, 180, 180, 180),
                                       cursorErrorColor: Colors.red,
                                       cursorOpacityAnimates: false,
                                       onChanged: (txt) {
@@ -668,11 +661,11 @@ else {
                             children: <Widget>[
                                Text(
                                                   'typing game as meditation',
-                                                  style: commonTextStyle.copyWith(color: Color(0xFF331832)),
+                                                  style: commonTextStyle.copyWith(color: const Color(0xFF331832)),
                                                   ),
                               IconButton(
                                   icon: const Icon(Icons.help_outline),
-                                  color: Color(0xFF331832),
+                                  color: const Color(0xFF331832),
                                   onPressed: () {
                                     if(showHelp) {
                                       FocusScope.of(context).requestFocus(myFocusNode);
@@ -689,11 +682,11 @@ else {
                             children: <Widget>[
                               Text(
                                 'share your achievement',
-                                style: commonTextStyle.copyWith(color: Color(0xFF331832)),
+                                style: commonTextStyle.copyWith(color: const Color(0xFF331832)),
                               ),
                               IconButton(
                                   icon: const Icon(Icons.share),
-                                  color: Color(0xFF331832),
+                                  color: const Color(0xFF331832),
                                   onPressed: () {
                                     if(showHelp) {
                                       FocusScope.of(context).requestFocus(myFocusNode);
@@ -750,7 +743,7 @@ else {
                                       ],
                                     ),
 
-                                    Expanded(child: HtmlWidget('<iframe src="https://test-3eo.pages.dev/"></iframe>',renderMode: RenderMode.listView,),),
+                                    const Expanded(child: HtmlWidget('<iframe src="https://test-3eo.pages.dev/"></iframe>',renderMode: RenderMode.listView,),),
 
 
                                   ],
