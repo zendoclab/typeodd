@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
@@ -11,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:share_plus/share_plus.dart';
 
 late FirebaseFirestore db;
 late Box box;
@@ -492,10 +492,10 @@ else {
                                             controller.clear();
                                             colSat = 0;
                                             String getRandomText(
-                                                List<String> bText, int Num) {
+                                                List<String> bText, int bNum) {
                                               int textNumCom =
                                                   Random().nextInt(blogText.length);
-                                              if (Num != textNumCom) {
+                                              if (bNum != textNumCom) {
                                                 textNum = textNumCom;
                                                 originTitle = blogText.keys
                                                     .toList()[textNumCom];
@@ -712,14 +712,7 @@ else {
                                   icon: const Icon(Icons.share),
                                   color: const Color(0xFF331832),
                                   onPressed: () {
-                                    if(showHelp) {
-                                      FocusScope.of(context).requestFocus(myFocusNode);
-                                    }
-                                    setState(() {
-                                      showHelp = !showHelp;
-                                    });
-                                    // _launchUrl();
-                                    // FocusScope.of(context).requestFocus(myFocusNode);
+                                    Share.shareUri(Uri.parse('https://zendoclab.github.io/typeodd/'));
                                   }),
                             ],
                           ),
@@ -777,13 +770,6 @@ else {
           ],
         );
       }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          box.clear();
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
 
   }
