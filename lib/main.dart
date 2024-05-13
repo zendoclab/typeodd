@@ -452,7 +452,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                         originTitle,
                                         style: commonTextStyle,
                                       ),
-                                      SizedBox(width: 16.0),
                                       originText.isEmpty || colSat > 230
                                           ? IconButton(
                                         icon:
