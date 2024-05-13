@@ -542,7 +542,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Text(
                                     ranker.isEmpty
                                         ? originText
-                                        : 'Hall of Fame\n\n$ranker',
+                                        : 'Hall of Fame ($originTitle)\n\n$ranker',
                                     style: commonTextStyle,
                                     softWrap: true,
                                     overflow: TextOverflow.clip,
