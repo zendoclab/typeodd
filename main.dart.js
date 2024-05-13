@@ -110179,7 +110179,7 @@ a=A.a4(220,241,228,232)
 q=h*0.75
 p=g*0.7
 o=$.C4
-o=A.qo(i,new A.cp(q,p,A.dG(o.length===0?f.w:"Hall of Fame\n\n"+o,i,B.bS,i,!0,B.bV,i,i,i),i),i,i,16,i,16,i)
+o=A.qo(i,new A.cp(q,p,A.dG(o.length===0?f.w:"Hall of Fame ("+f.x+")\n\n"+o,i,B.bS,i,!0,B.bV,i,i,i),i),i,i,16,i,16,i)
 n=A.qo(i,new A.cp(c,g*0.75,A.bV(i,i,B.o,A.a4(f.ch,255,255,255),i,i,i,i,i,i),i),i,i,0,i,0,i)
 m=f.r
 m===$&&A.b()
