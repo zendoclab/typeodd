@@ -480,7 +480,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           });
                                         },
                                       )
-                                          : const Text(''),
+                                          : Container(),
                                       IconButton(
                                         icon: const Icon(
                                             Icons.arrow_right_alt_outlined),
