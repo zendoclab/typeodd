@@ -110166,33 +110166,32 @@ r===$&&A.b()
 s.rD(r)},
 $S:0}
 A.aFS.prototype={
-$2(a,a0){var s,r,q,p,o,n,m,l,k,j=null,i=a0.b,h=a0.d,g=this.a,f=A.qo(j,new A.cp(i,h,A.aUR(B.P,A.dG(g.w,j,j,j,j,B.bV.c9(g.Q),j,j,j),B.o,B.o3),j),j,j,j,0,j,j),e=A.a4(B.d.aS(178.5),196,194,199),d=i*0.8,c=h*0.1,b=g.ax
-if(b===0||g.w.length===0){b=g.CW
+$2(a0,a1){var s,r,q,p,o,n,m,l,k,j,i=null,h=a1.b,g=a1.d,f=this.a,e=A.qo(i,new A.cp(h,g,A.aUR(B.P,A.dG(f.w,i,i,i,i,B.bV.c9(f.Q),i,i,i),B.o,B.o3),i),i,i,i,0,i,i),d=A.a4(B.d.aS(178.5),196,194,199),c=h*0.8,b=g*0.1,a=f.ax
+if(a===0||f.w.length===0){a=f.CW
 s=$.h5
-s=A.dG(b!=null?B.e.j(s)+" ("+A.e(g.CW)+")":B.e.j(s),j,j,j,j,B.bV,j,j,j)
-b=s}else{s=$.h5
-b=b>0?A.dG(B.e.j(s)+" (+"+g.ax+")",j,j,j,j,B.bV,j,j,j):A.dG(B.e.j(s)+" ("+g.ax+")",j,j,j,j,B.bV,j,j,j)}b=A.pz(b,1)
-s=g.w.length===0||g.ch>230?A.jW(B.k0,B.Ot,j,new A.aFJ(g,a),j,j,"repeat"):B.abc
+s=A.dG(a!=null?B.e.j(s)+" ("+A.e(f.CW)+")":B.e.j(s),i,i,i,i,B.bV,i,i,i)
+a=s}else{s=$.h5
+a=a>0?A.dG(B.e.j(s)+" (+"+f.ax+")",i,i,i,i,B.bV,i,i,i):A.dG(B.e.j(s)+" ("+f.ax+")",i,i,i,i,B.bV,i,i,i)}a=A.pz(a,1)
+s=f.w.length===0||f.ch>230?A.jW(B.k0,B.Ot,i,new A.aFJ(f,a0),i,i,"repeat"):B.abc
 r=t.p
-s=A.bV(j,A.hp(A.a([b,A.pz(A.hp(A.a([s,A.jW(B.k0,B.Or,j,new A.aFK(g,a),j,j,"next"),A.dG(g.x,j,j,j,j,B.bV,j,j,j)],r),B.a_,B.i4,B.ak),1)],r),B.a_,B.i5,B.ak),B.o,B.z,j,j,c,j,j,d)
-b=A.a4(220,241,228,232)
-i*=0.75
-q=h*0.7
-p=$.C4
-p=A.qo(j,new A.cp(i,q,A.dG(p.length===0?g.w:"Hall of Fame\n\n"+p,j,B.bS,j,!0,B.bV,j,j,j),j),j,j,16,j,16,j)
-o=A.qo(j,new A.cp(d,h*0.75,A.bV(j,j,B.o,A.a4(g.ch,255,255,255),j,j,j,j,j,j),j),j,j,0,j,0,j)
-n=g.r
-n===$&&A.b()
-m=g.ay
-l=m<2?1:m*1.5
-m=m>39?B.IJ:B.IK
-k=B.bV.c9(g.Q)
-i=A.bV(j,A.ke(B.bX,A.a([p,o,A.qo(j,new A.cp(i,q,new A.Jp(g.e,n,B.OE,B.mX,k,!0,B.a5t,B.a5u,j,!0,B.xj,new A.aFL(g),l,!1,m,B.Xk,!0,j),j),j,j,16,j,18,j)],r),B.V,B.bE),B.o,b,j,j,h*0.6,j,j,d)
-i=A.bV(j,A.ez(A.jJ(A.a([s,i,A.bV(j,g.w.length!==0?A.hp(A.a([A.dG("typing game as meditation",j,j,j,j,B.bV.c9(B.hc),j,j,j),A.jW(B.hc,B.Ov,j,new A.aFM(g,a),j,j,j)],r),B.a_,B.aB,B.ak):A.hp(A.a([A.dG("share your achievement",j,j,j,j,B.bV.c9(B.hc),j,j,j),A.jW(B.hc,B.Oo,j,new A.aFN(),j,j,j)],r),B.a_,B.aB,B.ak),B.o,B.z,j,j,c,j,j,d)],r),B.a_,B.dM,B.ak,j,B.aZ),j,j),B.o,e,j,j,j,j,j,j)
-if(g.cx){e=A.a4(217,51,24,50)
-d=A.ez(A.bV(j,A.ez(A.jJ(A.a([A.hp(A.a([A.jW(B.j,B.qr,j,new A.aFO(g,a),j,j,"close"),A.aPS(A.dG("close",j,j,j,j,B.bV.a1G(B.j,B.bK),j,j,j),new A.aFP(g,a),j)],r),B.a_,B.dM,B.ak),B.Nu],r),B.a_,B.x6,B.ak,j,B.aZ),j,j),B.o,e,j,j,h*0.8,j,j,d),j,j)
-h=d}else h=B.Ij
-return A.ke(B.bX,A.a([f,i,h],r),B.V,B.bE)},
+s=A.bV(i,A.hp(A.a([a,A.pz(A.hp(A.a([s,A.jW(B.k0,B.Or,i,new A.aFK(f,a0),i,i,"next"),A.dG(f.x,i,i,i,i,B.bV,i,i,i)],r),B.a_,B.i4,B.ak),1)],r),B.a_,B.i5,B.ak),B.o,B.z,i,i,b,i,i,c)
+a=A.a4(220,241,228,232)
+q=h*0.75
+p=g*0.7
+o=$.C4
+o=A.qo(i,new A.cp(q,p,A.dG(o.length===0?f.w:"Hall of Fame\n\n"+o,i,B.bS,i,!0,B.bV,i,i,i),i),i,i,16,i,16,i)
+n=A.qo(i,new A.cp(c,g*0.75,A.bV(i,i,B.o,A.a4(f.ch,255,255,255),i,i,i,i,i,i),i),i,i,0,i,0,i)
+m=f.r
+m===$&&A.b()
+l=f.ay
+k=l<2?1:l*1.5
+l=l>39?B.IJ:B.IK
+j=B.bV.c9(f.Q)
+a=A.bV(i,A.ke(B.bX,A.a([o,n,A.qo(i,new A.cp(q,p,new A.Jp(f.e,m,B.OE,B.mX,j,!0,B.a5t,B.a5u,i,!0,B.xj,new A.aFL(f),k,!1,l,B.Xk,!0,i),i),i,i,16,i,18,i)],r),B.V,B.bE),B.o,a,i,i,g*0.6,i,i,c)
+d=A.bV(i,A.ez(A.jJ(A.a([s,a,A.bV(i,f.w.length!==0?A.hp(A.a([A.dG("typing game as meditation",i,i,i,i,B.bV.c9(B.hc),i,i,i),A.jW(B.hc,B.Ov,i,new A.aFM(f,a0),i,i,i)],r),B.a_,B.aB,B.ak):A.hp(A.a([A.dG("share your achievement",i,i,i,i,B.bV.c9(B.hc),i,i,i),A.jW(B.hc,B.Oo,i,new A.aFN(),i,i,i)],r),B.a_,B.aB,B.ak),B.o,B.z,i,i,b,i,i,c)],r),B.a_,B.dM,B.ak,i,B.aZ),i,i),B.o,d,i,i,i,i,i,i)
+if(f.cx){c=A.a4(217,51,24,50)
+h=A.ez(A.bV(i,A.ez(A.jJ(A.a([A.hp(A.a([A.jW(B.j,B.qr,i,new A.aFO(f,a0),i,i,"close"),A.aPS(A.dG("close",i,i,i,i,B.bV.a1G(B.j,B.bK),i,i,i),new A.aFP(f,a0),i)],r),B.a_,B.dM,B.ak),B.Nu],r),B.a_,B.x6,B.ak,i,B.aZ),i,i),B.o,c,i,i,g*0.5,i,i,h*0.9),i,i)}else h=B.Ij
+return A.ke(B.bX,A.a([e,d,h],r),B.V,B.bE)},
 $S:656}
 A.aFJ.prototype={
 $0(){var s=this.a
