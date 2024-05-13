@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
@@ -729,8 +728,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 showHelp
                     ? Center(
                   child: Container(
-                      width: constraints.maxWidth * 0.9,
-                      height: constraints.maxHeight * 0.9,
+                      width: constraints.maxWidth * 0.8,
+                      height: constraints.maxHeight * 0.8,
                       color: const Color(0xFF331832).withOpacity(0.85),
                       child: Center(
                         child: Column(
