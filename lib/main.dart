@@ -448,6 +448,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
+                                      Text(
+                                        originTitle,
+                                        style: commonTextStyle,
+                                      ),
+                                      SizedBox(width: 16.0),
                                       originText.isEmpty || colSat > 230
                                           ? IconButton(
                                         icon:
@@ -518,10 +523,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                           });
                                         },
                                       ),
-                                      Text(
-                                        originTitle,
-                                        style: commonTextStyle,
-                                      )
                                     ],
                                   )),
                             ],
