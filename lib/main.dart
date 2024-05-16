@@ -385,7 +385,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   'images/zendoclogo-min.PNG',
                   fit: BoxFit.scaleDown,
                 ),
-                tooltip: 'zendoc lab',
+                tooltip: 'works of zendoc',
                 color: Colors.white,
                 onPressed: () {
                   setState(() {
