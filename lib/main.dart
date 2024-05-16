@@ -17,6 +17,7 @@ late Box box;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -714,9 +715,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               IconButton(
                                   icon: const Icon(Icons.share),
                                   color: const Color(0xFF331832),
-                                  onPressed: () {
-                                    Share.shareUri(Uri.parse(
-                                        'https://zendoclab.github.io/typeodd/'));
+                                  onPressed: () {Share.shareUri(Uri.parse('https://zendoclab.github.io/typeodd/'));
                                   }),
                             ],
                           ),
