@@ -110086,7 +110086,7 @@ return A.r($async$B_,r)},
 N(a){var s,r,q=null
 this.a.toString
 s=A.dG("typeodd",q,q,q,q,B.bV.a1G(B.j,B.bK),q,q,q)
-r=A.a([new A.d1(B.kz,A.jW(B.j,new A.tZ(A.baq(q,q,new A.wE("images/zendoclogo-min.PNG",q,q)),q,q,B.fU,q,!1,q),q,new A.aFR(this,a),q,q,"zendoc lab"),q)],t.p)
+r=A.a([new A.d1(B.kz,A.jW(B.j,new A.tZ(A.baq(q,q,new A.wE("images/zendoclogo-min.PNG",q,q)),q,q,B.fU,q,!1,q),q,new A.aFR(this,a),q,q,"works of zendoc"),q)],t.p)
 return A.aX2(new A.Ct(B.abl,s,r,B.p_,new A.a5h(q,q,1/0,56),q),new A.pS(new A.aFS(this),q),q)}}
 A.aFB.prototype={
 $0(){var s=this.a,r=this.b
