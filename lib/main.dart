@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -391,7 +390,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return ListTile(
                     title: Text(data[index]['title']),
                     subtitle: Text(data[index]['description']),
-                      trailing: Icon(Icons.keyboard_arrow_right),
+                      trailing: const Icon(Icons.keyboard_arrow_right),
                     onTap: () async {
                       if (await canLaunchUrlString(data[index]['link'])) {
                         await launchUrlString(data[index]['link']);
