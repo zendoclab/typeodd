@@ -438,8 +438,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.white,
                 onPressed: () {
                   _key.currentState!.openEndDrawer();
-                  setState(() {
-                  });
                 }),
           ),
         ],
