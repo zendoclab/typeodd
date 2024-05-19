@@ -9,7 +9,7 @@ const RESOURCES = {"assets/AssetManifest.bin": "c26afde6d2f196c7ba64e1fc0f9090c8
 "assets/assets/sounds/typesound1.mp3": "88d82d9ca1c8f35c476b677795680a20",
 "assets/assets/sounds/typesound2.mp3": "19bb37ac2dad98f37efab47c160e17fc",
 "assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
-"assets/fonts/MaterialIcons-Regular.otf": "ffb3dee89e383d6591600fefac8ce864",
+"assets/fonts/MaterialIcons-Regular.otf": "7488bf9c897136107536264d2dec1026",
 "assets/images/zendoc.jpg": "bc6d655adb91f938c8a065fb812d0b5a",
 "assets/images/zendoclogo-min.PNG": "e0bb068615a01e98a8d66dfe54cc48dc",
 "assets/NOTICES": "5bdcdc99fa09eb222cf3b895a9885e18",
@@ -33,9 +33,9 @@ const RESOURCES = {"assets/AssetManifest.bin": "c26afde6d2f196c7ba64e1fc0f9090c8
 "icons/Icon-512.png": "bb902b77003328ad0fcb546398115ab2",
 "icons/Icon-maskable-192.png": "fb8a3b8bb2b63ffd4d73509f01789413",
 "icons/Icon-maskable-512.png": "bb902b77003328ad0fcb546398115ab2",
-"index.html": "932e81db94b4f0e54e5c11f37b607b4c",
-"/": "932e81db94b4f0e54e5c11f37b607b4c",
-"main.dart.js": "418baa8894845ef33282ba56aa1c7303",
+"index.html": "d967d0bb45b59e6cc5c744a291519710",
+"/": "d967d0bb45b59e6cc5c744a291519710",
+"main.dart.js": "3d077b9f93f357265c9792251b339503",
 "manifest.json": "570d4b279e15c24c1134179cfb624bee",
 "version.json": "3d9e8fc1a4552c1885e0c02fcf7394fb"};
 // The application shell files that are downloaded before a service worker can
