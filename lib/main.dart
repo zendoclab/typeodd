@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,10 +8,13 @@ import 'package:soundpool/soundpool.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'firebase_options.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 late FirebaseFirestore db;
 late Box box;
@@ -136,6 +140,8 @@ class _MyHomePageState extends State<MyHomePage> {
   TextStyle commonTextStyle = const TextStyle(
       letterSpacing: 2.0, fontSize: 16, color: Color(0xFF4a484d));
 
+  List data=[];
+
   final TextEditingController controller = TextEditingController();
 
   String text = '';
@@ -170,14 +176,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _typingSpeed = 60000 / difference; // 타이핑 속도를 분당 타이핑 수로 계산
     }
     _lastKeystroke = now;
-  }
-
-  Future<void> _launchUrl() async {
-    final Uri url = Uri.parse(
-        'https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html');
-    if (!await launchUrl(url)) {
-      throw Exception('Could not launch $url');
-    }
   }
 
   Soundpool? _pool;
@@ -237,6 +235,18 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     } else {
       showHelp = false;
+    }
+    fetchData();
+  }
+
+  fetchData() async {
+    http.Response response = await http.get(Uri.parse("https://zendoclab.github.io/worksofzendoc.json"));
+    if (response.statusCode == 200) {
+      setState(() {
+        data = json.decode(response.body);
+      });
+    } else {
+      throw Exception('Failed to load data');
     }
   }
 
@@ -362,9 +372,48 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
+      endDrawer: Drawer(
+        child: Column(
+          children: [Container(
+            alignment: Alignment.bottomCenter,
+              color: Colors.blue,
+          width: double.infinity,
+              child: Text("works of zendoc", style: commonTextStyle.copyWith(color: Colors.white54),)),
+            Expanded(
+              child: ListView.builder(
+                itemCount: data == null ? 0 : data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: Text(data[index]['title']),
+                    subtitle: Text(data[index]['description']),
+                      trailing: Icon(Icons.keyboard_arrow_right),
+                    onTap: () async {
+                      if (await canLaunchUrlString(data[index]['link'])) {
+                        await launchUrlString(data[index]['link']);
+                      } else {
+                        throw 'Could not launch ${data[index]['link']}';
+                      }
+                    }
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      onEndDrawerChanged: (isOpen) {
+        if(isOpen) {
+
+        } else {
+    FocusScope.of(context).requestFocus(myFocusNode);
+        }
+      },
       appBar: AppBar(
         backgroundColor: const Color(0xFF717075),
         title: Text(widget.title,
@@ -388,9 +437,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 tooltip: 'works of zendoc',
                 color: Colors.white,
                 onPressed: () {
+                  _key.currentState!.openEndDrawer();
                   setState(() {
-                    _launchUrl();
-                    FocusScope.of(context).requestFocus(myFocusNode);
                   });
                 }),
           ),
@@ -699,7 +747,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                     setState(() {
                                       showHelp = !showHelp;
                                     });
-                                    // _launchUrl();
                                     // FocusScope.of(context).requestFocus(myFocusNode);
                                   }),
                             ],
