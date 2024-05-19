@@ -40,7 +40,7 @@ dependencies:
   cloud_firestore: ^4.17.2
   firebase_auth: ^4.19.4
   hive: ^2.2.3
-  flutter_widget_from_html: ^0.15.0
+  flutter_inappwebview: ^6.0.0
   share_plus: ^9.0.0
 
 dev_dependencies:

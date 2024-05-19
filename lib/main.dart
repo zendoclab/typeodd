@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,7 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'firebase_options.dart';
 import 'package:hive/hive.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -772,8 +771,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 showHelp
                     ? Center(
                   child: Container(
-                      width: constraints.maxWidth * 0.9,
-                      height: constraints.maxHeight * 0.5,
+                      width: constraints.maxWidth * 0.8,
+                      height: constraints.maxHeight * 0.8,
                       color: const Color(0xFF331832).withOpacity(0.85),
                       child: Center(
                         child: Column(
@@ -813,10 +812,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ],
                             ),
-                            const Expanded(
-                              child: HtmlWidget(
-                                '<iframe src="https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html#main"></iframe>',
-                                renderMode: RenderMode.listView,
+                            Expanded(
+                              child: InAppWebView(initialUrlRequest:
+                              URLRequest(url: WebUri("https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html#main"))
                               ),
                             ),
                           ],
