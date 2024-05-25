@@ -860,7 +860,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             Expanded(
                               child: InAppWebView(initialUrlRequest:
-                              URLRequest(url: WebUri("https://zendoclab.github.io/typeodd-type-faster-than-anxiety"))
+                              URLRequest(url: WebUri("https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html#main"))
                               ),
                             ),
                           ],
