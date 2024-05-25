@@ -6,6 +6,7 @@ import 'package:soundpool/soundpool.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'firebase_options.dart';
 import 'package:hive/hive.dart';
@@ -139,6 +140,8 @@ class _MyHomePageState extends State<MyHomePage> {
       letterSpacing: 2.0, fontSize: 16, color: Color(0xFF4a484d));
 
   List data=[];
+  List dataMeditation=[];
+  List dataMedicine=[];
 
   final TextEditingController controller = TextEditingController();
 
@@ -237,11 +240,13 @@ class _MyHomePageState extends State<MyHomePage> {
     fetchData();
   }
 
-  fetchData() async {
+  void fetchData() async {
     http.Response response = await http.get(Uri.parse("https://zendoclab.github.io/worksofzendoc.json"));
     if (response.statusCode == 200) {
       setState(() {
         data = json.decode(response.body);
+        dataMeditation = data.where((element) => element["category"] == "meditation").toList();
+        dataMedicine = data.where((element) => element["category"] == "medicine").toList();
       });
     } else {
       throw Exception('Failed to load data');
@@ -377,27 +382,68 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       key: _key,
       endDrawer: Drawer(
+        backgroundColor: Colors.white.withOpacity(0.9),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(16.0),
+            bottomRight: Radius.circular(16.0),
+          ),
+        ),
+        elevation: 16.0,
         child: Column(
-          children: [Container(
-            alignment: Alignment.bottomCenter,
-              color: Colors.blue,
-          width: double.infinity,
-              child: Text("works of zendoc", style: commonTextStyle.copyWith(color: Colors.white54),)),
+          children: [
             Expanded(
+              child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  alignment: Alignment.bottomLeft,
+                  color: Colors.white.withOpacity(0.90),
+                  width: double.infinity,
+                  child: Text("Meditation")),
+            ),
+            Expanded(
+              flex: 10,
               child: ListView.builder(
-                itemCount: data == null ? 0 : data.length,
+                itemCount: dataMeditation == null ? 0 : dataMeditation.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
-                    title: Text(data[index]['title']),
-                    subtitle: Text(data[index]['description']),
+                      title: Text(dataMeditation[index]['title']),
+                      subtitle: Text(dataMeditation[index]['description']),
                       trailing: const Icon(Icons.keyboard_arrow_right),
-                    onTap: () async {
-                      if (await canLaunchUrlString(data[index]['link'])) {
-                        await launchUrlString(data[index]['link']);
-                      } else {
-                        throw 'Could not launch ${data[index]['link']}';
+                      onTap: () async {
+                        if (await canLaunchUrl(Uri.parse(data[index]['link']))) {
+                          await launchUrl(Uri.parse(data[index]['link']));
+                        } else {
+                          throw 'Could not launch ${data[index]['link']}';
+                        }
                       }
-                    }
+                  );
+                },
+              ),
+            ),
+            Expanded(
+              child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  alignment: Alignment.bottomLeft,
+                  color: Colors.white.withOpacity(0.90),
+                  width: double.infinity,
+                  child: Text("Medicine")),
+            ),
+            Expanded(
+              flex: 10,
+              child: ListView.builder(
+                itemCount: dataMedicine == null ? 0 : dataMedicine.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                      title: Text(dataMedicine[index]['title']),
+                      subtitle: Text(dataMedicine[index]['description']),
+                      trailing: const Icon(Icons.keyboard_arrow_right),
+                      onTap: () async {
+                        if (await canLaunchUrl(Uri.parse(data[index]['link']))) {
+                          await launchUrl(Uri.parse(data[index]['link']));
+                        } else {
+                          throw 'Could not launch ${data[index]['link']}';
+                        }
+                      }
                   );
                 },
               ),
