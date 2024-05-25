@@ -91172,7 +91172,7 @@ k=B.bA.bQ(g.ax)
 i=A.fr(j,A.nM(B.cs,A.b([p,o,A.uv(j,A.j_(new A.Cw(g.w,n,B.FD,B.kK,k,!0,B.OM,B.ON,j,!0,B.tM,new A.apG(g),l,!1,m,B.JF,!0,j),b,i),j,j,16,j,18,j)],q),B.aw,B.co),B.x,s,j,h*0.6,j,j,d)
 i=A.fr(j,A.mB(A.IK(A.b([r,i,A.fr(j,g.z.length!==0?A.uM(A.b([A.dL("typing game as meditation",j,j,j,j,B.bA.bQ(B.fh),j,j),A.tx(B.fh,B.Fs,new A.apH(g,a),j,j)],q),B.b4,B.cj,B.c4):A.uM(A.b([A.dL("share your achievement",j,j,j,j,B.bA.bQ(B.fh),j,j),A.tx(B.fh,B.Ft,new A.apI(),j,j)],q),B.b4,B.cj,B.c4),B.x,B.B,j,c,j,j,d)],q),B.b4,B.jT,B.c4),j,j),B.x,e,j,j,j,j,j)
 if(g.dx){e=A.a0(217,51,24,50)
-d=A.mB(A.fr(j,A.mB(A.IK(A.b([A.uM(A.b([A.tx(B.j,B.Fr,new A.apJ(g,a),j,"close"),A.axs(A.dL("close",j,j,j,j,B.bA.T5(B.j,B.cD),j,j),new A.apK(g,a),j)],q),B.b4,B.jT,B.c4),A.tf(A.aOW(A.axC(j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,A.kh("https://zendoclab.github.io/typeodd-type-faster-than-anxiety"))),1)],q),B.b4,B.tC,B.c4),j,j),B.x,e,j,h*0.8,j,j,d),j,j)
+d=A.mB(A.fr(j,A.mB(A.IK(A.b([A.uM(A.b([A.tx(B.j,B.Fr,new A.apJ(g,a),j,"close"),A.axs(A.dL("close",j,j,j,j,B.bA.T5(B.j,B.cD),j,j),new A.apK(g,a),j)],q),B.b4,B.jT,B.c4),A.tf(A.aOW(A.axC(j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,A.kh("https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html#main"))),1)],q),B.b4,B.tC,B.c4),j,j),B.x,e,j,h*0.8,j,j,d),j,j)
 h=d}else h=B.BI
 return A.nM(B.cs,A.b([f,i,h],q),B.aw,B.co)},
 $S:572}
