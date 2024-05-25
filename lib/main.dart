@@ -7,7 +7,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import 'firebase_options.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -394,15 +393,16 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Expanded(
               child: Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   alignment: Alignment.bottomLeft,
                   color: Colors.white.withOpacity(0.90),
                   width: double.infinity,
-                  child: Text("Meditation")),
+                  child: const Text("Meditation")),
             ),
             Expanded(
               flex: 10,
               child: ListView.builder(
+                padding: EdgeInsets.zero,
                 itemCount: dataMeditation == null ? 0 : dataMeditation.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
@@ -422,15 +422,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Expanded(
               child: Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   alignment: Alignment.bottomLeft,
                   color: Colors.white.withOpacity(0.90),
                   width: double.infinity,
-                  child: Text("Medicine")),
+                  child: const Text("Medicine")),
             ),
             Expanded(
               flex: 10,
               child: ListView.builder(
+                padding: EdgeInsets.zero,
                 itemCount: dataMedicine == null ? 0 : dataMedicine.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
@@ -859,7 +860,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             Expanded(
                               child: InAppWebView(initialUrlRequest:
-                              URLRequest(url: WebUri("https://zendoclab.blogspot.com/2024/04/typeodd-type-faster-than-anxiety.html#main"))
+                              URLRequest(url: WebUri("https://zendoclab.github.io/typeodd-type-faster-than-anxiety"))
                               ),
                             ),
                           ],
