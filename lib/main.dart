@@ -410,10 +410,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       subtitle: Text(dataMeditation[index]['description']),
                       trailing: const Icon(Icons.keyboard_arrow_right),
                       onTap: () async {
-                        if (await canLaunchUrl(Uri.parse(data[index]['link']))) {
-                          await launchUrl(Uri.parse(data[index]['link']));
+                        if (await canLaunchUrl(Uri.parse(dataMeditation[index]['link']))) {
+                          await launchUrl(Uri.parse(dataMeditation[index]['link']));
                         } else {
-                          throw 'Could not launch ${data[index]['link']}';
+                          throw 'Could not launch ${dataMeditation[index]['link']}';
                         }
                       }
                   );
@@ -439,10 +439,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       subtitle: Text(dataMedicine[index]['description']),
                       trailing: const Icon(Icons.keyboard_arrow_right),
                       onTap: () async {
-                        if (await canLaunchUrl(Uri.parse(data[index]['link']))) {
-                          await launchUrl(Uri.parse(data[index]['link']));
+                        if (await canLaunchUrl(Uri.parse(dataMedicine[index]['link']))) {
+                          await launchUrl(Uri.parse(dataMedicine[index]['link']));
                         } else {
-                          throw 'Could not launch ${data[index]['link']}';
+                          throw 'Could not launch ${dataMedicine[index]['link']}';
                         }
                       }
                   );
