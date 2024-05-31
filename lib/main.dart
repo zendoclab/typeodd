@@ -397,7 +397,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   alignment: Alignment.bottomLeft,
                   color: Colors.white.withOpacity(0.90),
                   width: double.infinity,
-                  child: const Text("Meditation")),
+                  child: Text("Meditation (${dataMeditation.length})")),
             ),
             Expanded(
               flex: 10,
@@ -426,7 +426,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   alignment: Alignment.bottomLeft,
                   color: Colors.white.withOpacity(0.90),
                   width: double.infinity,
-                  child: const Text("Medicine")),
+                  child: Text("Medicine (${dataMedicine.length})")),
             ),
             Expanded(
               flex: 10,
