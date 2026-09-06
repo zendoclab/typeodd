@@ -12,12 +12,12 @@ describe('Classic v2 balanced masking', () => {
       [200, 'c', 1, 9, 3],
       [300, 'd', 1, 12, 4],
       [400, 'e', 1, 15, 5],
-      [500, 'f', 1.24, 18, 6],
-      [600, 'g', 1.72, 21, 7],
-      [700, 'h', 2.44, 24, 8],
+      [500, 'f', 1.36, 18, 6],
+      [600, 'g', 2.08, 21, 7],
+      [700, 'h', 3.16, 24, 8],
       [800, 'X', 1, 27, 5],
       [900, '', 1, 30, 3],
-      [1100, 'i', 1.24, 33, 4]
+      [1100, 'i', 1.36, 33, 4]
     ] as const;
     for (const [t, value, width, veil, score] of trace) {
       g.input(value, t);
@@ -60,7 +60,7 @@ describe('Classic v2 balanced masking', () => {
     for (let i = 0; i < 100; i++) {
       const before = burst.state.width;
       burst.input('a', 0);
-      expect(burst.state.width - before).toBeLessThanOrEqual(3.6 + 1e-9);
+      expect(burst.state.width - before).toBeLessThanOrEqual(5.4 + 1e-9);
       expect(maskWidth(burst.state.width)).toBeLessThanOrEqual(120);
       if (i < 5) expect(maskWidth(burst.state.width)).toBe(1);
     }

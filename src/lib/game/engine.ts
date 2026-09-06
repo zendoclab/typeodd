@@ -25,6 +25,7 @@ export const rulesVersion = 'classic-v2' as const;
 export const balance = {
   maxWidth: 80,
   growthDivisor: 250,
+  growthMultiplier: 1.5,
   maxGrowthCpm: 900,
   warmupChars: 5,
   rampChars: 10,
@@ -115,7 +116,9 @@ export class Game {
         1,
         Math.max(0, (s.completedChars + 1 - balance.warmupChars) / balance.rampChars)
       );
-      const growth = Math.min(s.instantaneousCpm, balance.maxGrowthCpm) / balance.growthDivisor;
+      const growth =
+        (Math.min(s.instantaneousCpm, balance.maxGrowthCpm) / balance.growthDivisor) *
+        balance.growthMultiplier;
       s.width = Math.min(balance.maxWidth, s.width + growth * ramp);
       s.target = chars(s.target).slice(1).join('');
       s.typed = '';
