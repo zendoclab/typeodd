@@ -11,14 +11,18 @@
     localeNames,
     htmlLanguages,
     detectLocale,
+    direction,
+    stripLocale,
     localePath
   } from '$lib/i18n';
+  import { chromeCopy } from '$lib/i18n/chrome';
   let { children } = $props();
+  let ready = $state(false);
   const locale = $derived(isLocale(page.params.lang) ? page.params.lang : 'en');
   const copy = $derived(catalogs[locale]);
+  const chrome = $derived(chromeCopy[locale]);
   const link = (path = '/') => `${base}${localePath(locale, path)}`;
-  const restPath = () =>
-    page.url.pathname.slice(base.length).replace(/^\/(en|ko|ja|zh|es)(?=\/|$)/, '') || '/';
+  const restPath = () => stripLocale(page.url.pathname.slice(base.length)) || '/';
   function switchLanguage(value: string) {
     const next = isLocale(value) ? value : detectLocale(navigator.languages);
     try {
@@ -34,8 +38,10 @@
   }
   $effect(() => {
     document.documentElement.lang = htmlLanguages[locale];
+    document.documentElement.dir = direction(locale);
   });
   onMount(() => {
+    ready = true;
     if (!isLocale(page.params.lang)) {
       let saved: string | null = null;
       try {
@@ -84,20 +90,17 @@
       >◎</span
     ><select
       id="display-language"
+      disabled={!ready}
       value={locale}
       onchange={(e) => switchLanguage(e.currentTarget.value)}
-      >{#each locales as lang}<option value={lang}>{localeNames[lang]}</option>{/each}<option
-        value="auto">{copy.auto}</option
-      ></select
+      >{#each locales as lang}<option value={lang} lang={htmlLanguages[lang]} dir={direction(lang)}
+          >{localeNames[lang]}</option
+        >{/each}<option value="auto">{copy.auto}</option></select
     >
   </div>
 </header>
 <main id="main">{@render children()}</main>
 <footer class="site-footer wrap">
-  <div>
-    <a class="brand" href={link()}>typeodd<span class="brand-dot" aria-hidden="true">✳</span></a>
-    <p lang="en">One letter at a time. A little more present.</p>
-  </div>
   <nav aria-label={copy.about}>
     <a href={link('/faq/')}>{copy.faq}</a><a href={link('/privacy/')}>{copy.privacy}</a><a
       href="https://github.com/zendoclab/typeodd"
@@ -105,9 +108,9 @@
       rel="noreferrer">GitHub ↗</a
     >
   </nav>
-  <span class="footer-credit" lang="en"
-    >An experiment by zendoc<br /><a href="https://me.zendoc.uk/" target="_blank" rel="noreferrer"
-      >Works of zendoc ↗</a
+  <span class="footer-credit"
+    >{chrome.creator}<br /><a href="https://me.zendoc.uk/" target="_blank" rel="noreferrer"
+      >{chrome.works} ↗</a
     ><br />© {new Date().getFullYear()} Typeodd</span
   >
 </footer>

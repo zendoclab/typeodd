@@ -12,41 +12,9 @@ export default {
   title: 'Typeodd — 打得更快，记得更多。免费打字心理游戏',
   description:
     '打得慢，文字逐渐变淡；打得快，伸长的标记遮住后面的文字。来 Typeodd 挑战节奏、记忆与镇定。',
-  heroLead: '打得更快。',
-  heroStrong: '记得更多。',
-  heroBody: '慢了，文字变淡。快了，标记伸长，把文字盖住。提前阅读，相信记忆，保持镇定。',
   start: '立即挑战',
-  how: '了解规则',
-  free: '免费游玩',
-  languages: '英语 · 韩语',
-  minute: '完成整段文字',
-  artLabel: '灰色标记遮住接下来的文字，白色遮罩让段落变淡',
-  stripOne: '速度有代价。',
-  stripTwo: '记忆带你继续。',
   playground: '你能记住多少？',
   noSignup: '无需注册，无需安装。',
-  featureTitle: '两种压力，一个节奏。',
-  featureLead: '每个优势都会带来新的挑战。',
-  features: [
-    {
-      title: '太慢：文字变淡。',
-      body: '节奏低于阈值时，每次输入都会加深白色遮罩。恢复清晰的速度比失去清晰的速度更慢。'
-    },
-    {
-      title: '太快：标记变长。',
-      body: '快速且正确的输入会拉长标记，遮住后面的字。趁文字进入标记下方之前，提前阅读并记住。'
-    },
-    {
-      title: '风险越大，得分越高。',
-      body: '标记越宽，每个正确字的分数越高。但一次错误会扣除当前分数的30%，并重置标记宽度。'
-    }
-  ],
-  storyTitle: '手指输入，大脑记住。',
-  storyBody:
-    'Typeodd 考验预读、短期记忆和镇定。Classic 保留了原作将速度、视野和奖励连接起来的紧张感。',
-  storyLink: 'Typeodd 的创作理念',
-  faqTitle: '在文字消失之前。',
-  allQuestions: '查看全部问题',
   typingLanguage: '段落语言',
   soundOn: '开启打字音效',
   soundOff: '关闭打字音效',

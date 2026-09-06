@@ -40,6 +40,7 @@ test('opens directly into Classic and masks the actual upcoming letters', async 
 
 test('finishes only after the full passage and stores a versioned result', async ({ page }) => {
   await page.goto('en/');
+  await expect(page.locator('#typing-input')).toBeEnabled();
   const text = await page.locator('.passage').innerText();
   await page.locator('#typing-input').pressSequentially(text);
   await expect(page.locator('.result-view')).toBeVisible();

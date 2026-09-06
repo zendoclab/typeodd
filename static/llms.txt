@@ -11,6 +11,6 @@
 - [Source](https://github.com/zendoclab/typeodd): Historical Flutter source is preserved on the source branch.
 - [Works of zendoc](https://me.zendoc.uk/)
 
-Display languages: English /en/, Korean /ko/, Japanese /ja/, Simplified Chinese /zh/, Spanish /es/. The root selects the browser language. Display language is independent of passage language.
+Display languages: English /en/, Korean /ko/, Simplified Chinese /zh/, Spanish /es/, Hindi /hi/, Arabic /ar/, French /fr/, Portuguese /pt/, Bengali /bn/, Russian /ru/, Japanese /ja/, German /de/, Indonesian /id/, Urdu /ur/. Arabic and Urdu interfaces use right-to-left layout. Explicit language URLs take priority; unprefixed URLs use a saved preference, then browser language, then English. Display language is independent of the English and Korean passage languages.
 
 Solo finishes at the end of the passage without a countdown. A 1:1 race uses the same passage for both players and a server-confirmed first completion. Races have a 15-minute operational limit. There is no public ranking, account or chat. Solo results stay in the browser; anonymous match summaries expire after seven days. Typeodd does not claim medical effects. This index does not guarantee inclusion in AI search.

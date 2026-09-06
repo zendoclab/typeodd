@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { page } from '$app/state';
-  import { catalogs, isLocale } from '$lib/i18n';
+  import { catalogs, isLocale, detectLocale } from '$lib/i18n';
+  import { chromeCopy } from '$lib/i18n/chrome';
   import { site } from '$lib/content';
   import { PUBLIC_MATCH_URL } from '$env/static/public';
   import { matchCopy } from '$lib/i18n/match';
@@ -19,6 +20,7 @@
 
   const locale = $derived(isLocale(page.params.lang) ? page.params.lang : 'en');
   const copy = $derived(catalogs[locale]);
+  const chrome = $derived(chromeCopy[locale]);
   const duelCopy = $derived(matchCopy[locale]);
   let mode = $state<'solo' | 'duel'>('solo');
   let matchStatus = $state<
@@ -27,7 +29,8 @@
   let socket: WebSocket | undefined;
   let startsIn = $state(0);
   let opponent = $state(0);
-  let matchOutcome = $state('');
+  let matchOutcome = $state<'win' | 'lose' | 'draw' | ''>('');
+  let matchAbandoned = $state(false);
   let seat = 0;
   let sequence = 0;
   let matchText = '';
@@ -46,7 +49,13 @@
   let ready = $state(false);
   let results = $state<Result[]>([]);
   let result = $state<Result | null>(null);
-  let notice = $state('');
+  let notice = $state<
+    'saveFailed' | 'typeDirectly' | 'copied' | 'deleteFailed' | 'disconnected' | ''
+  >('');
+  let shareFallback = $state('');
+  const noticeText = $derived(
+    notice === 'disconnected' ? duelCopy.disconnected : notice ? copy[notice] : shareFallback
+  );
   let showDelete = $state(false);
   let audio: AudioContext | undefined;
   let seed = 0;
@@ -67,7 +76,7 @@
         elapsed: snapshot.elapsed
       };
       results = [result, ...results].slice(0, 50);
-      if (!saveResults(results)) notice = copy.saveFailed;
+      if (!saveResults(results)) notice = 'saveFailed';
       input?.blur();
     }
   }
@@ -80,6 +89,7 @@
     composing = false;
     lastComposition = { value: '', until: 0 };
     notice = '';
+    shareFallback = '';
     sync();
     if (input) input.value = '';
     if (focus) requestAnimationFrame(() => input?.focus({ preventScroll: true }));
@@ -106,7 +116,7 @@
     if (!game) return;
     if (mode === 'duel' && matchStatus !== 'playing') return;
     if (chars(value).length > 1) {
-      notice = copy.typeDirectly;
+      notice = 'typeDirectly';
     } else {
       if (mode === 'duel' && (value || game.state.typed)) {
         if (socket?.readyState !== WebSocket.OPEN) return;
@@ -137,12 +147,13 @@
   }
   async function share() {
     if (!result) return;
-    const text = `Typeodd Classic · ${result.title}\n${result.score} ${copy.points} · ${result.speed} ${result.language === 'en' ? 'WPM' : 'CPM'} · ${copy.accuracy} ${result.accuracy}%\n${site.url}/${locale}/`;
+    const text = `Typeodd Classic · ${result.title}\n${result.score.toLocaleString(locale)} ${copy.points} · ${result.speed.toLocaleString(locale)} ${result.language === 'en' ? chrome.wpm : chrome.cpm} · ${copy.accuracy} ${result.accuracy}%\n${site.url}/${locale}/`;
     try {
       await navigator.clipboard.writeText(text);
-      notice = copy.copied;
+      notice = 'copied';
     } catch {
-      notice = text;
+      notice = '';
+      shareFallback = text;
     }
   }
   function toggleSound() {
@@ -167,6 +178,7 @@
     closeMatch();
     matchStatus = 'idle';
     matchOutcome = '';
+    matchAbandoned = false;
     opponent = 0;
     reset();
   }
@@ -210,7 +222,7 @@
     ws.onclose = () => {
       if (matchStatus !== 'finished') {
         matchStatus = 'error';
-        notice = duelCopy.disconnected;
+        notice = 'disconnected';
       }
     };
     ws.onmessage = (event) => {
@@ -254,12 +266,8 @@
         } else {
           matchStatus = 'finished';
           matchOutcome =
-            message.winner === null
-              ? duelCopy.draw
-              : message.winner === seat
-                ? duelCopy.win
-                : duelCopy.lose;
-          if (message.reason === 'disconnect') matchOutcome += ` ${duelCopy.abandoned}`;
+            message.winner === null ? 'draw' : message.winner === seat ? 'win' : 'lose';
+          matchAbandoned = message.reason === 'disconnect';
           game.state.status = 'finished';
           sync();
           closeMatch();
@@ -271,8 +279,22 @@
     ready = true;
     seed = crypto.getRandomValues(new Uint32Array(1))[0];
     results = readResults();
+    const preferred = isLocale(page.params.lang)
+      ? page.params.lang
+      : detectLocale(navigator.languages);
+    settings = { language: preferred === 'ko' ? 'ko' : 'en' };
     try {
       sounds = localStorage.getItem('typeodd.sound') === 'true';
+      const saved = localStorage.getItem('typeodd.passageLanguage');
+      if (saved === 'en' || saved === 'ko') settings = { language: saved };
+      else if (!isLocale(page.params.lang)) {
+        settings = {
+          language:
+            detectLocale(navigator.languages, localStorage.getItem('typeodd.locale')) === 'ko'
+              ? 'ko'
+              : 'en'
+        };
+      }
     } catch {
       /* Optional. */
     }
@@ -294,11 +316,11 @@
   <div class="mode-tabs" aria-label="Typeodd">
     <button
       class:selected={mode === 'solo'}
-      disabled={matchBusy || (mode === 'solo' && snapshot.status === 'running')}
+      disabled={!ready || matchBusy || (mode === 'solo' && snapshot.status === 'running')}
       onclick={() => chooseMode('solo')}>{duelCopy.solo}</button
     ><button
       class:selected={mode === 'duel'}
-      disabled={matchBusy || (mode === 'solo' && snapshot.status === 'running')}
+      disabled={!ready || matchBusy || (mode === 'solo' && snapshot.status === 'running')}
       onclick={() => chooseMode('duel')}>{duelCopy.duel}</button
     >
   </div>
@@ -311,23 +333,33 @@
   </div>
   <div class="game-panel classic-panel">
     <div class="game-toolbar">
-      <div class="classic-badge">CLASSIC <span>{snapshot.title}</span></div>
+      <div class="classic-badge">
+        <bdi>CLASSIC</bdi> <span lang={settings.language} dir="ltr">{snapshot.title}</span>
+      </div>
       <div class="game-options">
         <label class="sr-only" for="language">{copy.typingLanguage}</label>
         <select
           id="language"
           value={settings.language}
-          disabled={matchBusy || snapshot.status === 'running'}
+          disabled={!ready || matchBusy || snapshot.status === 'running'}
           onchange={(e) => {
             settings = { language: e.currentTarget.value as Settings['language'] };
+            try {
+              localStorage.setItem('typeodd.passageLanguage', settings.language);
+            } catch {
+              /* Optional. */
+            }
             reset();
-          }}><option value="en">English</option><option value="ko">한국어</option></select
+          }}
+          ><option value="en" lang="en">English</option><option value="ko" lang="ko">한국어</option
+          ></select
         >
         <button
           class="sound-button"
+          disabled={!ready}
           aria-pressed={sounds}
           aria-label={sounds ? copy.soundOff : copy.soundOn}
-          onclick={toggleSound}>♪ {sounds ? 'ON' : 'OFF'}</button
+          onclick={toggleSound}>♪ {sounds ? chrome.on : chrome.off}</button
         >
       </div>
     </div>
@@ -335,7 +367,7 @@
       <div class="match-lobby" aria-live="polite">
         <h2>
           {matchStatus === 'finished'
-            ? matchOutcome
+            ? `${matchOutcome ? duelCopy[matchOutcome] : ''}${matchAbandoned ? ` ${duelCopy.abandoned}` : ''}`
             : matchStatus === 'queued'
               ? duelCopy.waiting
               : matchStatus === 'connecting'
@@ -364,7 +396,9 @@
         </div>
         <div class="metric">
           <span>{copy.rhythm}</span><strong
-            >{Math.round(snapshot.instantaneousCpm)}<small>cpm</small></strong
+            >{Math.round(snapshot.instantaneousCpm).toLocaleString(locale)}<small
+              >{chrome.cpm}</small
+            ></strong
           >
         </div>
         <div class="metric">
@@ -381,8 +415,11 @@
           <span class="eyebrow">{copy.sessionDone}</span>
           <h3>{copy.finished}</h3>
           <p>
-            {result.title} · {Math.round(result.elapsed)}s · {result.speed}
-            {result.language === 'en' ? 'WPM' : 'CPM'}
+            <bdi lang={result.language}>{result.title}</bdi> · {Math.round(
+              result.elapsed
+            ).toLocaleString(locale)}
+            {chrome.seconds} · {result.speed.toLocaleString(locale)}
+            {result.language === 'en' ? chrome.wpm : chrome.cpm}
           </p>
           <div class="result-actions">
             <button class="button button-lime" onclick={() => reset(false)}>{copy.again} ↻</button
@@ -398,7 +435,12 @@
                 : copy.readAhead}</span
             ><span>{snapshot.delta > 0 ? '+' : ''}{snapshot.delta} {copy.points}</span>
           </div>
-          <div class="classic-stage" class:has-error={snapshot.correct === false}>
+          <div
+            class="classic-stage"
+            lang={settings.language}
+            dir="ltr"
+            class:has-error={snapshot.correct === false}
+          >
             <div class="passage" aria-hidden="true" lang={settings.language}>{snapshot.target}</div>
             <div
               class="white-veil"
@@ -416,7 +458,9 @@
                   : 'rgba(180,180,180,.960784)'}
               ></span>
             </div>
-            <label class="sr-only" for="typing-input">{copy.inputLabel} {snapshot.target}</label>
+            <label class="sr-only" for="typing-input"
+              ><span lang={locale}>{copy.inputLabel}</span> {snapshot.target}</label
+            >
             <textarea
               bind:this={input}
               id="typing-input"
@@ -432,7 +476,7 @@
               }}
               onpaste={(e) => {
                 e.preventDefault();
-                notice = copy.typeDirectly;
+                notice = 'typeDirectly';
               }}
               ondrop={(e) => e.preventDefault()}
               disabled={!ready || (mode === 'duel' && matchStatus !== 'playing')}
@@ -471,7 +515,7 @@
   <div class="under-game">
     <p>{mode === 'solo' ? `${copy.errorHint} ${copy.noTimer}` : duelCopy.rule}</p>
   </div>
-  <p class="notice" role="status">{notice}</p>
+  <p class="notice" role="status">{noticeText}</p>
   <noscript><p>{copy.noJs}</p></noscript>
   {#if results.length}<div class="history">
       <div class="history-title">
@@ -483,15 +527,19 @@
                 if (clearResults()) {
                   results = [];
                   showDelete = false;
-                } else notice = copy.deleteFailed;
+                } else notice = 'deleteFailed';
               }}>{copy.delete}</button
             > <button onclick={() => (showDelete = false)}>{copy.cancel}</button></span
           >{:else}<button onclick={() => (showDelete = true)}>{copy.clearHistory}</button>{/if}
       </div>
       <div class="history-list">
         {#each results.slice(0, 5) as r}<div>
-            <span>Classic · {r.title}</span><b>{r.score.toLocaleString(locale)} {copy.points}</b
-            ><span>{r.speed} {r.language === 'en' ? 'WPM' : 'CPM'}</span><span>{r.accuracy}%</span>
+            <span><bdi>Classic</bdi> · <bdi lang={r.language}>{r.title}</bdi></span><b
+              >{r.score.toLocaleString(locale)} {copy.points}</b
+            ><span
+              >{r.speed.toLocaleString(locale)}
+              {r.language === 'en' ? chrome.wpm : chrome.cpm}</span
+            ><span>{r.accuracy}%</span>
           </div>{/each}
       </div>
     </div>{/if}

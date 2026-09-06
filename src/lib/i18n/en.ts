@@ -11,42 +11,9 @@ export default {
   title: 'Typeodd — A free typing game of speed and memory',
   description:
     'Slow down and the passage fades. Speed up and a growing mark hides the next letters. Play Typeodd, a free typing mind game of rhythm, memory and nerve.',
-  heroLead: 'Type faster.',
-  heroStrong: 'Remember more.',
-  heroBody:
-    'Too slow, and the words fade. Too fast, and they disappear beneath a growing mark. Read ahead. Trust your memory. Hold your nerve.',
   start: 'Take the challenge',
-  how: 'Learn the rules',
-  free: 'Free to play',
-  languages: 'English · Korean',
-  minute: 'Finish the passage',
-  artLabel: 'A gray mark covers upcoming letters while a white veil fades the passage',
-  stripOne: 'Speed has a price.',
-  stripTwo: 'Memory keeps you moving.',
   playground: 'How much can you remember?',
   noSignup: 'No sign-up. No download.',
-  featureTitle: 'Two pressures. One rhythm.',
-  featureLead: 'Every advantage brings a new challenge.',
-  features: [
-    {
-      title: 'Too slow: the passage fades.',
-      body: 'Below the rhythm threshold, each input strengthens a white veil. Above it, clarity recovers more slowly than it was lost.'
-    },
-    {
-      title: 'Too fast: the mark grows.',
-      body: 'Faster correct input lengthens an almost opaque mark over the next letters. Read ahead before they move underneath it.'
-    },
-    {
-      title: 'More risk. More points.',
-      body: 'A wider mark earns more points per correct letter. A mistake costs 30% of your score and resets the mark.'
-    }
-  ],
-  storyTitle: 'Your hands type. Your mind holds on.',
-  storyBody:
-    'Typeodd turns typing into a test of anticipation, short-term memory and composure. Its original rules connect speed, visibility and reward. Classic preserves that tension.',
-  storyLink: 'The idea behind Typeodd',
-  faqTitle: 'Before the words disappear.',
-  allQuestions: 'All questions',
   typingLanguage: 'Passage language',
   soundOn: 'Turn typing sound on',
   soundOff: 'Turn typing sound off',

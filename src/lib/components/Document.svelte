@@ -2,6 +2,7 @@
   import { page } from '$app/state';
   import { base } from '$app/paths';
   import { catalogs, isLocale } from '$lib/i18n';
+  import { chromeCopy } from '$lib/i18n/chrome';
   import { site } from '$lib/content';
   import Seo from './Seo.svelte';
   let { kind }: { kind: 'guide' | 'about' | 'faq' | 'privacy' } = $props();
@@ -34,7 +35,7 @@
 
 <Seo title={`Typeodd — ${title}`} description={lead} {path} {schema} />
 <article class="document-page">
-  <span class="eyebrow" lang="en">TYPEODD / {kind.toUpperCase()}</span>
+  <span class="eyebrow">Typeodd / {copy[kind]}</span>
   <h1>{title}</h1>
   <p class="lead">{lead}</p>
   {#each sections as section}<section>
@@ -42,6 +43,8 @@
       <p>{section.body}</p>
     </section>{/each}{#if kind === 'about'}<p class="project-links">
       <a href="https://github.com/zendoclab/typeodd" target="_blank" rel="noreferrer">GitHub ↗</a> ·
-      <a href="https://me.zendoc.uk/" target="_blank" rel="noreferrer">Works of zendoc ↗</a>
+      <a href="https://me.zendoc.uk/" target="_blank" rel="noreferrer"
+        >{chromeCopy[locale].works} ↗</a
+      >
     </p>{/if}<a class="button button-dark" href={`${base}/${locale}/#play`}>{copy.start} ↗</a>
 </article>

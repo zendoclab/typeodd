@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { locales, htmlLanguages, direction } from '../src/lib/i18n';
 
 test('plays without local storage and exposes only an inline save failure', async ({ page }) => {
   await page.addInitScript(() => {
@@ -10,6 +11,7 @@ test('plays without local storage and exposes only an inline save failure', asyn
     };
   });
   await page.goto('en/');
+  await expect(page.locator('#typing-input')).toBeEnabled();
   const text = await page.locator('.passage').innerText();
   await page.locator('#typing-input').pressSequentially(text);
   await expect(page.locator('.result-view')).toBeVisible();
@@ -20,21 +22,20 @@ test('prerenders localized SEO content, alternates and FAQ answers without JavaS
   browser,
   request
 }) => {
+  test.setTimeout(120000);
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  for (const locale of ['en', 'ko', 'ja', 'zh', 'es']) {
+  for (const locale of locales) {
     for (const path of ['', 'how-to-play/', 'faq/', 'about/', 'privacy/']) {
       expect((await page.goto(`http://127.0.0.1:4173/${locale}/${path}`))?.status()).toBe(200);
       await expect(page.locator('h1')).toHaveCount(1);
-      await expect(page.locator('html')).toHaveAttribute(
-        'lang',
-        locale === 'zh' ? 'zh-Hans' : locale
-      );
+      await expect(page.locator('html')).toHaveAttribute('lang', htmlLanguages[locale]);
+      await expect(page.locator('html')).toHaveAttribute('dir', direction(locale));
       await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
         'href',
         `https://typeodd.cording.ai/${locale}/${path}`
       );
-      await expect(page.locator('link[hreflang]')).toHaveCount(6);
+      await expect(page.locator('link[hreflang]')).toHaveCount(locales.length + 1);
       if (path === 'faq/') {
         const schema = JSON.parse(
           await page.locator('script[type="application/ld+json"]').innerText()

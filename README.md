@@ -4,7 +4,7 @@
 
 - 프런트: SvelteKit 2 / Svelte 5 / TypeScript / static adapter
 - 대전: Rust / Tokio / Axum WebSocket / SQLite WAL / Cloudflare Tunnel
-- 표시 언어: 브라우저 자동 선택과 수동 선택, en·ko·ja·zh·es
+- 표시 언어: NOWQ와 같은 14개 언어(en·ko·zh·es·hi·ar·fr·pt·bn·ru·ja·de·id·ur), 브라우저 자동 선택·수동 선택 기억·아랍어와 우르두어 RTL 지원
 - 지문: 현대적인 소재의 창작 지문 60개(한글 30개·영문 30개), 6개 주제
 - Works of zendoc: https://me.zendoc.uk/
 

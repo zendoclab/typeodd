@@ -3,7 +3,7 @@
   import Seo from '$lib/components/Seo.svelte';
   import Game from '$lib/components/Game.svelte';
   import { site } from '$lib/content';
-  import { catalogs, isLocale } from '$lib/i18n';
+  import { catalogs, isLocale, locales, htmlLanguages } from '$lib/i18n';
   const locale = $derived(isLocale(page.params.lang) ? page.params.lang : 'en');
   const copy = $derived(catalogs[locale]);
   const schema = $derived([
@@ -14,7 +14,7 @@
       description: copy.description,
       applicationCategory: 'GameApplication',
       operatingSystem: 'Web browser',
-      inLanguage: ['en', 'ko'],
+      inLanguage: locales.map((lang) => htmlLanguages[lang]),
       playMode: ['SinglePlayer', 'MultiPlayer'],
       isAccessibleForFree: true,
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },

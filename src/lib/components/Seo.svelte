@@ -40,7 +40,7 @@
     content={`${site.url}/og-card.png`}
   />
   <meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Typeodd — Type faster. Remember more." />
+  <meta property="og:image:alt" content={copy.title} />
   <meta name="twitter:card" content="summary_large_image" /><meta
     name="twitter:title"
     content={title ?? copy.title}

@@ -12,42 +12,9 @@ export default {
   title: 'Typeodd — Escribe más rápido. Recuerda más. Juego mental gratuito',
   description:
     'Si vas lento, el texto se desvanece. Si aceleras, una marca creciente oculta las próximas letras. Pon a prueba tu ritmo, memoria y calma en Typeodd.',
-  heroLead: 'Escribe más rápido.',
-  heroStrong: 'Recuerda más.',
-  heroBody:
-    'Despacio, las palabras se desvanecen. Deprisa, una marca las cubre. Lee por adelantado, confía en tu memoria y mantén la calma.',
   start: 'Aceptar el reto',
-  how: 'Ver las reglas',
-  free: 'Gratis',
-  languages: 'Inglés · Coreano',
-  minute: 'Completa el pasaje',
-  artLabel: 'Una marca gris cubre las próximas letras y un velo blanco atenúa el texto',
-  stripOne: 'La velocidad tiene un precio.',
-  stripTwo: 'La memoria te hace avanzar.',
   playground: '¿Cuánto puedes recordar?',
   noSignup: 'Sin registro ni instalación.',
-  featureTitle: 'Dos presiones. Un ritmo.',
-  featureLead: 'Cada ventaja trae un nuevo desafío.',
-  features: [
-    {
-      title: 'Muy lento: el texto se desvanece.',
-      body: 'Por debajo del umbral, cada entrada intensifica un velo blanco. Recuperar la claridad es más lento que perderla.'
-    },
-    {
-      title: 'Muy rápido: la marca crece.',
-      body: 'Los aciertos rápidos alargan una marca casi opaca que tapa las próximas letras. Léelas antes de que pasen debajo.'
-    },
-    {
-      title: 'Más riesgo. Más puntos.',
-      body: 'Una marca más ancha da más puntos por letra correcta. Un error cuesta el 30% de tu puntuación y reinicia la anchura.'
-    }
-  ],
-  storyTitle: 'Tus dedos escriben. Tu mente recuerda.',
-  storyBody:
-    'Typeodd pone a prueba la anticipación, la memoria a corto plazo y la calma. Classic conserva la tensión del original entre velocidad, visibilidad y recompensa.',
-  storyLink: 'La idea de Typeodd',
-  faqTitle: 'Antes de que desaparezcan las letras.',
-  allQuestions: 'Todas las preguntas',
   typingLanguage: 'Idioma del pasaje',
   soundOn: 'Activar sonido',
   soundOff: 'Desactivar sonido',

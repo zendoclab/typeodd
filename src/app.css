@@ -86,12 +86,12 @@ select:focus-visible {
 }
 .brand-dot {
   color: #8d739d;
-  margin-left: 5px;
+  margin-inline-start: 5px;
 }
 .site-header nav {
   display: flex;
   gap: 24px;
-  margin-left: auto;
+  margin-inline-start: auto;
   font-size: 12px;
 }
 .site-header nav a:first-child {
@@ -202,11 +202,11 @@ select:focus-visible {
 .metric small {
   font-size: 11px;
   font-weight: 400;
-  margin-left: 4px;
+  margin-inline-start: 4px;
   color: #817387;
 }
 .metric.score {
-  text-align: right;
+  text-align: end;
 }
 .typing-area {
   margin: 0 28px;
@@ -223,7 +223,7 @@ select:focus-visible {
   display: inline-block;
   width: 5px;
   height: 5px;
-  margin-right: 6px;
+  margin-inline-end: 6px;
   background: #a18ba9;
   border-radius: 50%;
 }
@@ -316,7 +316,7 @@ select:focus-visible {
 .pressure-readout b {
   color: #58465f;
   font-weight: 500;
-  margin-left: 5px;
+  margin-inline-start: 5px;
   font-variant-numeric: tabular-nums;
 }
 .game-bottom {
@@ -332,7 +332,7 @@ select:focus-visible {
   display: none;
 }
 .game-bottom > div {
-  margin-left: auto;
+  margin-inline-start: auto;
   display: flex;
   gap: 20px;
 }
@@ -371,7 +371,7 @@ select:focus-visible {
   font-weight: 500;
 }
 .history h3 span {
-  margin-left: 12px;
+  margin-inline-start: 12px;
   font-size: 10px;
   font-weight: 400;
   color: #938297;
@@ -459,7 +459,7 @@ select:focus-visible {
 }
 .footer-credit {
   font-size: 10px;
-  text-align: right;
+  text-align: end;
   line-height: 1.8;
 }
 .document-page {
@@ -594,7 +594,7 @@ select:focus-visible {
     font-size: 10px;
   }
   .pressure-readout b {
-    margin-left: 3px;
+    margin-inline-start: 3px;
   }
   .game-bottom {
     padding: 0 16px 12px;
@@ -629,4 +629,54 @@ select:focus-visible {
     transition: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* The interface follows its language; English/Korean gameplay always runs left to right. */
+.brand,
+.game-intro h1 {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.classic-stage {
+  text-align: left;
+}
+.game-toolbar,
+.game-bottom > div,
+.result-actions,
+.history-title {
+  flex-wrap: wrap;
+}
+.game-options {
+  flex-shrink: 0;
+}
+.metric {
+  min-width: 0;
+}
+.metric strong {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.metric.score strong {
+  justify-content: flex-end;
+}
+.metric > span,
+.document-page,
+.match-lobby,
+.site-footer {
+  overflow-wrap: break-word;
+}
+.history-list > div {
+  grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
+  overflow-wrap: anywhere;
+}
+:lang(ar),
+:lang(ur),
+:lang(hi),
+:lang(bn) {
+  letter-spacing: normal;
+}
+:lang(ar) .document-page,
+:lang(ur) .document-page {
+  line-height: 1.9;
 }
