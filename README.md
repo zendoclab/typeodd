@@ -5,7 +5,7 @@
 - 프런트: SvelteKit 2 / Svelte 5 / TypeScript / static adapter
 - 대전: Rust / Tokio / Axum WebSocket / SQLite WAL / Cloudflare Tunnel
 - 표시 언어: 브라우저 자동 선택과 수동 선택, en·ko·ja·zh·es
-- 지문: 원작 영문 30개 보존, 별도 한글 8개 추가
+- 지문: 현대적인 소재의 창작 지문 60개(한글 30개·영문 30개), 6개 주제
 - Works of zendoc: https://me.zendoc.uk/
 
 ## 로컬 실행
@@ -42,6 +42,8 @@ npx wrangler pages deploy build --project-name typeodd --branch main
 `typeodd.cording.ai`는 사용자 요청대로 기존 프록시 변경을 사용자가 진행한다. 사용자 도메인은 Pages에도 연결해야 한다. 상세 운영과 DNS는 [운영 문서](docs/OPERATIONS.md)를 참고한다. SSH 암호, Tunnel 토큰, DB 파일은 저장소에 넣지 않는다.
 
 ## 규칙과 원본
+
+지문은 `content/passages.json`에서 관리하며 솔로와 Rust 대전 서버가 같은 파일을 사용한다. [지문 작성 기준](docs/CONTENT.md)에 따라 작성했다. 원작 지문은 Git 이력과 원작 브랜치에서 확인할 수 있다.
 
 원작 기준은 `source@8959147`의 `lib/main.dart`, 배포 산출물은 `main@b858c44`의 `main.dart.js`다. 원작 브랜치는 유지한다. 규칙, 의도와 기술적 보완의 구분은 [검토 문서](docs/PROJECT_REVIEW.md), 디자인은 [DESIGN.md](DESIGN.md), 대전 구조는 [멀티플레이 문서](docs/MULTIPLAYER_PLAN.md)에 있다.
 

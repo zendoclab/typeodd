@@ -18,7 +18,6 @@ for (const locale of locales) {
   c.privacyLead = l.privacyLead;
   c.privacySections[1] = { title: l.serverTitle, body: l.serverBody };
   c.privacySections[3] = { title: l.futureTitle, body: l.futureBody };
-  c.aboutSections[2].body = l.aboutBody;
 }
 export const localeNames: Record<Locale, string> = {
   en: 'English',

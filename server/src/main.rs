@@ -243,7 +243,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         slots: Arc::new(Semaphore::new(256)),
         origins: Arc::new(origins),
         db,
-        passages: Arc::new(serde_json::from_str(include_str!("../passages.json"))?),
+        passages: Arc::new(serde_json::from_str(include_str!(
+            "../../content/passages.json"
+        ))?),
     };
     let routes = Router::new()
         .route(

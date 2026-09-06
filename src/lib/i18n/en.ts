@@ -5,10 +5,10 @@ export default {
   home: 'Typeodd home',
   play: 'Play',
   guide: 'How to play',
-  about: 'Our story',
+  about: 'About',
   faq: 'Questions & answers',
   privacy: 'Data & privacy',
-  title: 'Typeodd — Type faster. Remember more. Free typing mind game',
+  title: 'Typeodd — A free typing game of speed and memory',
   description:
     'Slow down and the passage fades. Speed up and a growing mark hides the next letters. Play Typeodd, a free typing mind game of rhythm, memory and nerve.',
   heroLead: 'Type faster.',
@@ -51,12 +51,12 @@ export default {
   soundOn: 'Turn typing sound on',
   soundOff: 'Turn typing sound off',
   progress: 'PROGRESS',
-  rhythm: 'INSTANT RHYTHM',
+  rhythm: 'TYPING PACE',
   accuracy: 'ACCURACY',
   score: 'SCORE',
   metrics: 'Game statistics',
   sessionDone: 'PASSAGE COMPLETE',
-  finished: 'You held the thread.',
+  finished: 'You made it to the end!',
   points: 'pt',
   again: 'Play again',
   copy: 'Copy result',
@@ -64,15 +64,15 @@ export default {
   typeDirectly:
     'Enter one character at a time. Correct a mistake with Backspace. Pasting is disabled.',
   clickType: 'Click the passage to type. Read ahead before the mark grows.',
-  readAhead: 'Read ahead. Remember. Keep moving.',
+  readAhead: 'Read a little ahead and keep typing.',
   restart: 'Restart',
   next: 'Next passage',
   errorHint: 'Mistakes cost 30% of your score. Use Backspace to correct them.',
   noTimer: 'No countdown. Complete the whole passage.',
-  mask: 'Mark',
-  veil: 'White veil',
-  reward: 'Next correct input',
-  ruleHint: 'Slow: fading words. Fast: hidden letters.',
+  mask: 'Cover length',
+  veil: 'Fading',
+  reward: 'Points per letter',
+  ruleHint: 'Type slowly and it fades. Type quickly and it gets covered.',
   noJs: 'JavaScript is needed to play. The guide and story work without it.',
   history: 'Completed passages',
   localOnly: 'Saved in this browser',
@@ -86,67 +86,67 @@ export default {
   faqs: [
     {
       q: 'What is Typeodd?',
-      a: 'Typeodd is a free typing mind game by zendoc. Slow typing makes the passage fade; fast correct typing grows a mark that covers upcoming letters. You must read ahead, remember hidden text and maintain your rhythm.'
+      a: 'A typing game about reading ahead and remembering the next letters. Slow typing makes the text fade; fast typing grows a gray cover over it. Remember the hidden part and keep going until you reach the end.'
     },
     {
-      q: 'Why are letters hidden when I type faster?',
-      a: 'The mark is the central challenge. Each correct input grows it according to the interval since the previous correct input. Correct letters are removed from the passage, moving the next letters under the mark. Greater width also earns more points.'
+      q: 'Why does the text get covered when I am doing well?',
+      a: 'That is the challenge: typing faster gives you more to remember. Correct letters disappear, pulling the next ones under the cover. Read a little ahead before they get hidden. A longer cover also earns you more points.'
     },
     {
-      q: 'How are fading and points calculated?',
-      a: 'At an internal mark width of 40 or more, each input reduces the white veil by 2 out of 255. Below 40, it increases by 3. A correct input earns the internal width divided by 10, rounded up. A mistake deducts 30% of the current score, rounded up, and resets width to 1.'
+      q: 'How do I earn and lose points?',
+      a: 'A longer cover gives you more points for each correct letter. A mistake costs 30% of your current score, rounded up. At 101 points, you lose 31. The original rules also deduct points when you use Backspace to delete a wrong letter.'
     },
     {
       q: 'Is there a time limit or pause?',
-      a: 'Classic ends when the whole passage is typed. There is no countdown or pause. The mark decays every second, even if you switch tabs. Restart resets the current passage; Next opens another one.'
+      a: 'Solo ends when you finish the passage, with no time limit. A 1:1 match can last up to 15 minutes. There is no pause, and the cover keeps shrinking if you switch tabs. Restart begins the same passage again.'
     },
     {
-      q: 'Does Korean input work on mobile?',
-      a: 'English and Korean passages are available independently of the display language. Korean syllables are evaluated after composition commits. Tap the passage to open the keyboard. Pasting and bulk input are disabled. The original English passages are preserved; Korean passages are an addition.'
+      q: 'Can I play in Korean on my phone?',
+      a: 'Yes. Choose Korean as the passage language and tap the text to open your keyboard. Korean letters are checked after composition finishes. The display language is a separate choice. There are 30 English and 30 Korean passages, newly written around everyday life and short stories.'
     },
     {
-      q: 'Are scores shared online?',
-      a: 'No. The latest 50 completed results are saved in this browser only, without an account or payment. Copy result lets you share manually. Live chat and multiplayer remain planned features.'
+      q: 'Where are results saved?',
+      a: 'Solo results are saved in this browser.'
     }
   ],
-  guideTitle: 'Read before it disappears.',
-  guideLead: 'Master the balance between fading text and a growing mark.',
+  guideTitle: 'How to play',
+  guideLead: 'Read ahead, remember the covered letters, and type your way to the end.',
   guideSections: [
     {
-      title: 'Start a passage',
-      body: 'Choose English or Korean, read ahead, then click the passage and type exactly. Each correct character disappears from the beginning, pulling the rest forward. Finish all the text to complete the challenge. Restart retries the same passage; Next selects another.'
+      title: '1. Choose a passage',
+      body: 'Pick English or Korean, then click the passage and type what you see. Correct letters disappear and the remaining text moves forward. Finish the whole passage to complete a round. Restart tries the same text again; Next passage gives you a different one.'
     },
     {
-      title: 'Two linked pressures',
-      body: 'Correct input adds 600 divided by the interval in milliseconds to the internal mark width. Every second, width loses 25%, rounded up. Displayed width is 1.5 times internal width when it is at least 2. At internal width 40 or more, the white veil recedes by 2 per input; below 40 it grows by 3, on a 0–255 scale. The veil changes on input, not on timer ticks.'
+      title: '2. Read a little ahead',
+      body: 'Slow typing makes the letters fade. Fast, accurate typing brings them back into focus, but also grows a gray cover over the next letters. Try to remember a few words before they move underneath it. Stopping makes the cover shrink, but the text may fade further when you start typing again.'
     },
     {
-      title: 'Reward and recovery',
-      body: 'A correct character earns ceil(width / 10) points. An error removes ceil(score × 0.30) points, with a minimum total of zero. Veil adjustment happens before an error resets width to 1, matching the original game. Backspace clears an erroneous character; that deletion is also evaluated as an incorrect change, as in the original.'
+      title: '3. Earn points and fix mistakes',
+      body: 'A longer cover means more points for each correct letter. A mistake takes away 30% of your current score and makes the cover short again. The amount lost is rounded up: at 101 points, you lose 31. Use Backspace to remove a wrong letter. Under the original rules, deleting it also costs points.'
     },
     {
-      title: 'Rhythm and records',
-      body: 'The live CPM value uses the interval between correct committed characters, not an average. The result shows average WPM for English (five characters per word) or CPM for Korean. Records use the Classic rule version and stay in this browser. There is no pause or clear-text switch during a challenge.'
+      title: '4. Play solo or race someone',
+      body: 'Solo has no time limit. In a 1:1 match, you and your opponent type the same passage in the same language. The first to finish wins. Leaving counts as a forfeit, and a match lasts at most 15 minutes. The live pace reflects your recent inputs; your solo result shows your average speed for the round.'
     }
   ],
-  aboutTitle: 'A mind game at your fingertips.',
-  aboutLead: 'Speed, memory and uncertainty, connected through a single mark.',
+  aboutTitle: 'What is Typeodd?',
+  aboutLead: 'A typing game that asks you to remember what comes next.',
   aboutSections: [
     {
-      title: 'The original idea',
-      body: 'Developer zendoc made Typeodd with two opposing pressures: slow input fades the passage, while fast input hides it behind a growing cursor. The same width determines the reward. Remembering what you read becomes part of typing it.'
+      title: 'Speed brings a new challenge',
+      body: 'Go slowly and the letters fade. Go quickly and a growing gray cover hides them. As your pace improves, you need to remember more of the text. Getting through a hidden phrase, or finding your rhythm after a mistake, is part of the fun.'
     },
     {
-      title: 'Classic in SvelteKit',
-      body: 'This edition preserves the original constants, event ordering, English passages and passage-completion rule. It replaces Flutter rendering with layered HTML and a deterministic engine. Korean composition handling, safe input boundaries and clean restarts address technical errors without removing the challenge.'
+      title: 'Stories that feel familiar',
+      body: 'A missed train stop, an unsent message, a playlist made with friends: the passages start with everyday moments. Some take a small turn into the unexpected. We wrote 30 English and 30 Korean passages for Typeodd. Play on your own or race an opponent on the same text.'
     },
     {
-      title: 'An open experiment',
-      body: 'Explore the code on GitHub or visit Works of zendoc. Typeodd explores memory and composure through play; it does not claim medical benefits. Real-time chat and multiplayer are plans, not currently available features.'
+      title: 'Made by zendoc',
+      body: 'Typeodd began with a simple idea: what if typing used your memory as well as your hands? This edition keeps the original covering and fading rules while refreshing the screen and the passages. Follow the links below to see the code and more projects.'
     }
   ],
-  faqPageTitle: 'The rules, explained.',
-  faqLead: 'Answers about the mark, fading, scoring and input.',
+  faqPageTitle: 'A few useful answers',
+  faqLead: 'What to know before your next round.',
   privacyTitle: 'Your records. Your browser.',
   privacyLead: 'Data handling in the current solo game.',
   privacySections: [

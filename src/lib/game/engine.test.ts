@@ -87,9 +87,20 @@ describe('Classic parity with source@8959147', () => {
     g.input('나', 100);
     expect(Number.isFinite(g.state.width)).toBe(true);
   });
-  it('ships all 30 original English passages plus separate Korean additions', () => {
-    expect(passages.filter((p) => p.language === 'en')).toHaveLength(30);
-    expect(passages[0].title).toBe('Ishmael');
-    expect(passages[0].text).toHaveLength(1107);
+  it('loads distinct, playable contemporary passages in both languages', () => {
+    expect(new Set(passages.map((p) => p.id)).size).toBe(passages.length);
+    expect(new Set(passages.map((p) => p.text)).size).toBe(passages.length);
+    for (const language of ['en', 'ko']) {
+      const pool = passages.filter((p) => p.language === language);
+      expect(pool).toHaveLength(30);
+      expect(new Set(pool.map((p) => p.topic)).size).toBe(6);
+      for (const p of pool) {
+        expect(p.text).toBe(p.text.trim().normalize('NFC'));
+        expect(p.text).not.toMatch(/[\n\r\t]| {2}/);
+        expect([...p.text].length).toBeGreaterThanOrEqual(language === 'en' ? 180 : 100);
+        expect([...p.text].length).toBeLessThanOrEqual(language === 'en' ? 320 : 180);
+        if (language === 'en') expect(p.text).toMatch(/^[\x20-\x7e]+$/);
+      }
+    }
   });
 });

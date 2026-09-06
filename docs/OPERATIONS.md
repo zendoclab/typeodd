@@ -23,6 +23,8 @@ curl http://127.0.0.1:8793/health
 
 소스 갱신 후 `cargo test --locked`와 `cargo build --release --locked -j 2`를 실행한다. 실행 중인 바이너리 경로를 직접 덮어쓰지 않도록 빌드 산출물과 서비스 실행 파일을 분리하고 임시 파일을 원자적으로 이름 변경한다. 재시작은 진행 중인 대전을 끊으므로 접속 여부를 확인한 뒤 배포한다.
 
+서버 빌드에는 `~/typeodd/content/passages.json`도 필요하다. 저장소의 `content/passages.json`을 같은 상대 경로에 업로드한다.
+
 ## Tunnel과 DNS
 
 - 이름: `typeodd-duel`
