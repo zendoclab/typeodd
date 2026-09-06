@@ -1,7 +1,7 @@
 import type { Settings } from './engine';
 
 export type Result = Settings & {
-  rules: 'classic-v1';
+  rules: 'classic-v1' | 'classic-v2';
   id: string;
   date: string;
   score: number;
@@ -21,7 +21,7 @@ export function readResults(): Result[] {
           r &&
           typeof r.id === 'string' &&
           typeof r.date === 'string' &&
-          r.rules === 'classic-v1' &&
+          ['classic-v1', 'classic-v2'].includes(r.rules) &&
           typeof r.title === 'string' &&
           ['en', 'ko'].includes(r.language) &&
           [r.score, r.speed, r.accuracy, r.elapsed].every(

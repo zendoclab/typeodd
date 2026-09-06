@@ -21,7 +21,17 @@ export type GameState = {
   correct: boolean | null;
 };
 export const chars = (value: string) => Array.from(value.normalize('NFC'));
-export const maskWidth = (width: number) => (width < 2 ? 1 : width * 1.5);
+export const rulesVersion = 'classic-v2' as const;
+export const balance = {
+  maxWidth: 80,
+  growthDivisor: 300,
+  maxGrowthCpm: 900,
+  warmupChars: 5,
+  rampChars: 10,
+  clarityThreshold: 12
+} as const;
+export const maskWidth = (width: number) =>
+  width < 2 ? 1 : Math.min(balance.maxWidth, width) * 1.5;
 export const accuracy = (s: GameState) =>
   s.attempts ? Math.round((s.completedChars / s.attempts) * 100) : 100;
 export const speed = (s: GameState, language: Language) =>
@@ -100,8 +110,13 @@ export class Game {
       if (this.lastCorrect !== null)
         s.instantaneousCpm = 60000 / Math.max(1, Math.floor(now) - Math.floor(this.lastCorrect));
       this.lastCorrect = now;
-      // 250 is a growth gate, not a hard clamp. The final addition may overshoot it.
-      if (s.width < 250) s.width += s.instantaneousCpm / 100;
+      // Ease into the challenge; batched browser/network input cannot create a giant mask.
+      const ramp = Math.min(
+        1,
+        Math.max(0, (s.completedChars + 1 - balance.warmupChars) / balance.rampChars)
+      );
+      const growth = Math.min(s.instantaneousCpm, balance.maxGrowthCpm) / balance.growthDivisor;
+      s.width = Math.min(balance.maxWidth, s.width + growth * ramp);
       s.target = chars(s.target).slice(1).join('');
       s.typed = '';
       s.completedChars++;
@@ -115,7 +130,13 @@ export class Game {
     }
     // Deliberately BEFORE error resets width: this ordering matches source@8959147.
     s.veil =
-      Math.trunc(s.width) > 39 ? (s.veil > 3 ? s.veil - 2 : 0) : s.veil < 252 ? s.veil + 3 : 255;
+      Math.trunc(s.width) > balance.clarityThreshold
+        ? s.veil > 3
+          ? s.veil - 2
+          : 0
+        : s.veil < 252
+          ? s.veil + 3
+          : 255;
     if (!s.correct) s.width = 1;
     if (!s.target) s.status = 'finished';
     return s;

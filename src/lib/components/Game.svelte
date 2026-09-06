@@ -13,6 +13,8 @@
     speed,
     chars,
     maskWidth,
+    balance,
+    rulesVersion,
     type Settings,
     type GameState
   } from '$lib/game/engine';
@@ -65,7 +67,7 @@
     snapshot = { ...game.state };
     if (mode === 'solo' && snapshot.status === 'finished' && !result) {
       result = {
-        rules: 'classic-v1',
+        rules: rulesVersion,
         ...settings,
         id: crypto.randomUUID(),
         date: new Date().toISOString(),
@@ -453,7 +455,7 @@
                 class="occlusion-mask"
                 data-width={snapshot.width}
                 style:width={`${maskWidth(snapshot.width)}px`}
-                style:background={snapshot.width > 39
+                style:background={snapshot.width > balance.clarityThreshold
                   ? 'rgba(100,100,100,.960784)'
                   : 'rgba(180,180,180,.960784)'}
               ></span>

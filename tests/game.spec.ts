@@ -12,7 +12,9 @@ test('opens directly into Classic and masks the actual upcoming letters', async 
   await expect(page.locator('iframe')).toHaveCount(0);
   await expect(page.locator('.hero,.features,.story-band')).toHaveCount(0);
   const text = await page.locator('.passage').innerText();
-  await input.pressSequentially(text.slice(0, 15), { delay: 20 });
+  await input.pressSequentially(text.slice(0, 5), { delay: 20 });
+  await expect(page.locator('.occlusion-mask')).toHaveCSS('width', '1px');
+  await input.pressSequentially(text.slice(5, 15), { delay: 20 });
   await expect(page.locator('.passage')).toHaveText(text.slice(15));
   await expect(input).toHaveValue('');
   const dimensions = await page.locator('.occlusion-mask').evaluate((el) => {
@@ -25,7 +27,8 @@ test('opens directly into Classic and masks the actual upcoming letters', async 
       background: getComputedStyle(el).backgroundColor
     };
   });
-  expect(dimensions.width).toBeGreaterThan(30);
+  expect(dimensions.width).toBeGreaterThan(10);
+  expect(dimensions.width).toBeLessThanOrEqual(27);
   expect(Math.abs(dimensions.left - dimensions.textLeft)).toBeLessThan(1);
   expect(dimensions.background).toMatch(/rgba\((100, 100, 100|180, 180, 180), 0\.96/);
   await page.screenshot({ path: '.codex-qa/classic-desktop.png', fullPage: true });

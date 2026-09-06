@@ -2,6 +2,8 @@
 
 느리면 희미해지고, 빠르면 마킹이 다음 글자를 가리는 타이핑 마인드게임. 원작 Flutter의 핵심 규칙을 SvelteKit으로 옮겼다. 화면은 게임 중심이며 솔로와 익명 1:1 자동 매칭을 제공한다.
 
+현재 `classic-v2`는 사용자의 피드백에 따라 초기 5글자 가림을 최소화하고 성장량을 ⅓로 완화했다. 가림막 표시 길이는 최대 120px이며 브라우저와 Rust 서버가 같은 규칙을 사용한다. 원본 대비 변경 수치는 [검토 문서](docs/PROJECT_REVIEW.md)에 기록한다.
+
 - 프런트: SvelteKit 2 / Svelte 5 / TypeScript / static adapter
 - 대전: Rust / Tokio / Axum WebSocket / SQLite WAL / Cloudflare Tunnel
 - 표시 언어: NOWQ와 같은 14개 언어(en·ko·zh·es·hi·ar·fr·pt·bn·ru·ja·de·id·ur), 브라우저 자동 선택·수동 선택 기억·아랍어와 우르두어 RTL 지원

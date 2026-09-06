@@ -206,7 +206,7 @@ async fn room(
         send(p, summary.clone());
     }
     let stats: Vec<_> = games.iter().map(|g| json!({"score":g.score,"completed":g.completed_chars,"attempts":g.attempts,"mistakes":g.mistakes})).collect();
-    let record = json!({"rules":"classic-v1","room":id,"language":passage.language,"title":passage.title,"winner":winner,"reason":reason,"players":stats,"elapsed":start.elapsed().as_millis()});
+    let record = json!({"rules":rules::VERSION,"room":id,"language":passage.language,"title":passage.title,"winner":winner,"reason":reason,"players":stats,"elapsed":start.elapsed().as_millis()});
     if db.send(record).await.is_err() {
         eprintln!("match result persistence unavailable");
     }
@@ -250,7 +250,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let routes = Router::new()
         .route(
             "/health",
-            get(|| async { axum::Json(json!({"ok":true,"rules":"classic-v1"})) }),
+            get(|| async { axum::Json(json!({"ok":true,"rules":rules::VERSION})) }),
         )
         .route("/v1/ws", get(upgrade))
         .with_state(app);

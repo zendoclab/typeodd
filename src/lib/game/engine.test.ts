@@ -2,26 +2,27 @@ import { describe, it, expect } from 'vitest';
 import { Game, defaults, maskWidth } from './engine';
 import { passages } from './passages';
 
-describe('Classic parity with source@8959147', () => {
-  it('matches the original fast-input, high-width error, deletion and recovery trace', () => {
+describe('Classic v2 balanced masking', () => {
+  it('eases into masking and retains error, deletion and recovery scoring', () => {
     const g = new Game(defaults, 0, 0, { title: 'trace', text: 'abcdefghijklmnop' });
-    // Golden values manually evaluated from original main.dart:172, 214, 677–754.
+    // Same trace is checked by the Rust referee. First five letters do not grow the mask.
     const trace = [
       [0, 'a', 1, 3, 1],
-      [100, 'b', 7, 6, 2],
-      [200, 'c', 13, 9, 4],
-      [300, 'd', 19, 12, 6],
-      [400, 'e', 25, 15, 9],
-      [500, 'f', 31, 18, 13],
-      [600, 'g', 37, 21, 17],
-      [700, 'h', 43, 19, 22],
-      [800, 'X', 1, 17, 15],
-      [900, '', 1, 20, 10],
-      [1100, 'i', 2.5, 23, 11]
+      [100, 'b', 1, 6, 2],
+      [200, 'c', 1, 9, 3],
+      [300, 'd', 1, 12, 4],
+      [400, 'e', 1, 15, 5],
+      [500, 'f', 1.2, 18, 6],
+      [600, 'g', 1.6, 21, 7],
+      [700, 'h', 2.2, 24, 8],
+      [800, 'X', 1, 27, 5],
+      [900, '', 1, 30, 3],
+      [1100, 'i', 1.2, 33, 4]
     ] as const;
     for (const [t, value, width, veil, score] of trace) {
       g.input(value, t);
-      expect([g.state.width, g.state.veil, g.state.score]).toEqual([width, veil, score]);
+      expect(g.state.width).toBeCloseTo(width);
+      expect([g.state.veil, g.state.score]).toEqual([veil, score]);
     }
     expect(g.state.target).toBe('jklmnop');
   });
@@ -45,22 +46,37 @@ describe('Classic parity with source@8959147', () => {
     expect(g.state.width).toBe(1);
     expect(g.state.status).toBe('ready');
   });
-  it('preserves the integer threshold, veil end cases and growth gate overshoot', () => {
+  it('keeps fading responsive to the gentler growth and caps bursts at 120 rendered pixels', () => {
     const g = new Game();
-    g.state.width = 39.9;
+    g.state.width = 12.9;
     g.state.veil = 252;
     g.input('X', 0);
     expect(g.state.veil).toBe(255);
-    g.state.width = 40;
+    g.state.width = 13;
     g.state.veil = 3;
     g.input('X', 1);
     expect(g.state.veil).toBe(0);
-    g.input('', 2);
-    g.input(g.state.target[0], 3);
-    g.state.width = 249;
-    g.input(g.state.target[0], 4);
-    expect(g.state.width).toBe(849);
-    expect(maskWidth(g.state.width)).toBe(1273.5);
+    const burst = new Game(defaults, 0, 0, { title: 'burst', text: 'a'.repeat(100) });
+    for (let i = 0; i < 100; i++) {
+      const before = burst.state.width;
+      burst.input('a', 0);
+      expect(burst.state.width - before).toBeLessThanOrEqual(3);
+      expect(maskWidth(burst.state.width)).toBeLessThanOrEqual(120);
+      if (i < 5) expect(maskWidth(burst.state.width)).toBe(1);
+    }
+    expect(burst.state.width).toBe(80);
+    expect(maskWidth(849)).toBe(120);
+  });
+  it('recovers clarity at a steady 300 CPM while keeping slow typing challenging', () => {
+    for (const [interval, clears] of [
+      [200, true],
+      [500, false]
+    ] as const) {
+      const g = new Game(defaults, 0, 0, { title: 'pace', text: 'a'.repeat(121) });
+      for (let i = 0; i < 120; i++) g.input('a', i * interval);
+      expect(g.state.veil === 0).toBe(clears);
+      expect(g.state.width).toBeLessThanOrEqual(80);
+    }
   });
   it('ends on passage completion only; retries start from a clean clock', () => {
     const g = new Game(defaults, 0, 0, { title: 'two', text: 'ab' });
