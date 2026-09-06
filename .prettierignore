@@ -1,0 +1,8 @@
+node_modules
+build
+.svelte-kit
+.codex-source
+.codex-qa
+package-lock.json
+test-results
+playwright-report

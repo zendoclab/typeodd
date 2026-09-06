@@ -1,0 +1,16 @@
+# Typeodd
+
+> A free typing mind game by zendoc. Slow input fades the passage beneath a white veil. Fast correct input grows an almost opaque mark over upcoming letters. Remembering hidden text is the central challenge. A wider mark earns more points; errors cost 30% of the current score.
+
+## Official pages
+- [Play](https://typeodd.cording.ai/en/): Solo Classic and anonymous 1:1 matching. Korean and English passages.
+- [Rules](https://typeodd.cording.ai/en/how-to-play/): Original marking, decay, veil, input and scoring rules.
+- [FAQ](https://typeodd.cording.ai/en/faq/): Answers including 1:1 races and records.
+- [About](https://typeodd.cording.ai/en/about/): Original Flutter game, SvelteKit edition and creator.
+- [Privacy](https://typeodd.cording.ai/en/privacy/): Solo browser records and anonymous match summaries.
+- [Source](https://github.com/zendoclab/typeodd): Historical Flutter source is preserved on the source branch.
+- [Works of zendoc](https://me.zendoc.uk/)
+
+Display languages: English /en/, Korean /ko/, Japanese /ja/, Simplified Chinese /zh/, Spanish /es/. The root selects the browser language. Display language is independent of passage language.
+
+Solo finishes at the end of the passage without a countdown. A 1:1 race uses the same passage for both players and a server-confirmed first completion. Races have a 15-minute operational limit. There is no public ranking, account or chat. Solo results stay in the browser; anonymous match summaries expire after seven days. Typeodd does not claim medical effects. This index does not guarantee inclusion in AI search.

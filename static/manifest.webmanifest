@@ -1,0 +1,16 @@
+{
+  "name": "Typeodd — Typing mind game",
+  "short_name": "Typeodd",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f5f2",
+  "theme_color": "#f6f5f2",
+  "lang": "en",
+  "description": "Type faster. Remember more. Solo Classic and 1:1 typing races.",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

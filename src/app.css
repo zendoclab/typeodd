@@ -1,0 +1,632 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600&display=swap');
+:root {
+  font-family: 'DM Sans', 'Noto Sans KR', sans-serif;
+  color: #302c36;
+  background: #f6f5f2;
+  font-synthesis: none;
+  --lime: #d3edaa;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+select {
+  cursor: pointer;
+}
+button {
+  border: 0;
+}
+button:disabled,
+select:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+button:focus-visible,
+a:focus-visible,
+select:focus-visible {
+  outline: 2px solid #695480;
+  outline-offset: 4px;
+}
+.wrap {
+  width: min(100% - 48px, 1000px);
+  margin-inline: auto;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 20;
+  background: white;
+  padding: 12px;
+}
+.skip-link:focus {
+  top: 10px;
+}
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  min-height: 76px;
+  border-bottom: 1px solid #e3dfe4;
+}
+.brand {
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+.brand-mark {
+  display: none;
+}
+.brand-dot {
+  color: #8d739d;
+  margin-left: 5px;
+}
+.site-header nav {
+  display: flex;
+  gap: 24px;
+  margin-left: auto;
+  font-size: 12px;
+}
+.site-header nav a:first-child {
+  display: none;
+}
+.language-picker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.language-picker select {
+  background: transparent;
+  color: #5d5365;
+  border: 0;
+  padding: 8px 0;
+  max-width: 155px;
+  font-size: 12px;
+}
+.game-intro {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-top: 30px;
+  gap: 16px;
+}
+.game-intro h1 {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: -0.8px;
+}
+.game-intro h1 span {
+  font-weight: 400;
+  color: #8c7b96;
+}
+.game-intro p {
+  font-size: 13px;
+  color: #706675;
+  margin: 0;
+}
+.play-section {
+  padding-top: 20px;
+}
+.section-heading {
+  display: none;
+}
+.game-panel {
+  background: white;
+  border: 1px solid #ddd5df;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px #49335106;
+}
+.game-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 24px;
+  gap: 12px;
+  border-bottom: 1px solid #eee8ee;
+}
+.classic-badge {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.classic-badge span {
+  font-size: 12px;
+  color: #877889;
+  letter-spacing: 0;
+}
+.game-options {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.game-options select,
+.sound-button {
+  background: none;
+  border: 0;
+  padding: 8px 0;
+  color: #695d6b;
+  font-size: 12px;
+}
+.game-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 22px 28px 18px;
+}
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.metric > span {
+  font-size: 10px;
+  color: #827286;
+  letter-spacing: 0.4px;
+}
+.metric strong {
+  font-size: 28px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.metric small {
+  font-size: 11px;
+  font-weight: 400;
+  margin-left: 4px;
+  color: #817387;
+}
+.metric.score {
+  text-align: right;
+}
+.typing-area {
+  margin: 0 28px;
+}
+.typing-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 5px 0 12px;
+  color: #817086;
+  font-size: 11px;
+}
+.live-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 6px;
+  background: #a18ba9;
+  border-radius: 50%;
+}
+.classic-stage {
+  position: relative;
+  height: clamp(260px, 42vh, 460px);
+  overflow: hidden;
+  background: #f1e4e8;
+  border-radius: 4px;
+}
+.classic-stage:focus-within {
+  outline: 2px solid #a18ba9;
+  outline-offset: 3px;
+}
+/* The original uses 16px type, 2px tracking and a cursor 2px below the passage. */
+.classic-stage .passage,
+.marking-layer,
+.classic-stage textarea {
+  font-family: 'DM Sans', 'Noto Sans KR', sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.classic-stage .passage {
+  position: absolute;
+  inset: 16px;
+  color: #4a484d;
+  overflow: hidden;
+}
+.white-veil {
+  position: absolute;
+  inset: 0;
+  background: white;
+  pointer-events: none;
+  z-index: 1;
+}
+.marking-layer {
+  position: absolute;
+  top: 18px;
+  left: 16px;
+  right: 16px;
+  z-index: 2;
+  color: #c83c51;
+  pointer-events: none;
+  line-height: 24px;
+}
+.occlusion-mask {
+  display: inline-block;
+  height: 19px;
+  vertical-align: -3px;
+}
+.classic-stage textarea {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  padding: 18px 16px;
+  margin: 0;
+  border: 0;
+  outline: none;
+  resize: none;
+  color: transparent;
+  background: transparent;
+  caret-color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.classic-stage textarea::selection {
+  background: transparent;
+}
+.input-invitation {
+  color: #817087;
+  font-size: 11px;
+  min-height: 17px;
+  margin: 13px 0 0;
+}
+.has-error {
+  box-shadow: inset 0 0 0 1px #c57580;
+}
+.pressure-readout {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 18px 28px;
+  font-size: 11px;
+  color: #88758d;
+}
+.pressure-readout b {
+  color: #58465f;
+  font-weight: 500;
+  margin-left: 5px;
+  font-variant-numeric: tabular-nums;
+}
+.game-bottom {
+  padding: 0 28px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  font-size: 11px;
+  color: #87748d;
+}
+.game-bottom > span {
+  display: none;
+}
+.game-bottom > div {
+  margin-left: auto;
+  display: flex;
+  gap: 20px;
+}
+.game-bottom button {
+  color: #6c5377;
+  padding: 8px 0;
+  background: transparent;
+  font-size: 12px;
+}
+.under-game p {
+  color: #85768c;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.notice {
+  font-size: 12px;
+  color: #876070;
+  white-space: pre-line;
+  margin: 6px 0;
+}
+.notice:empty {
+  display: none;
+}
+.history {
+  margin-top: 25px;
+  font-size: 12px;
+}
+.history-title {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+}
+.history h3 {
+  font-size: 13px;
+  font-weight: 500;
+}
+.history h3 span {
+  margin-left: 12px;
+  font-size: 10px;
+  font-weight: 400;
+  color: #938297;
+}
+.history button {
+  background: transparent;
+  color: #8b718b;
+  font-size: 11px;
+  padding: 8px;
+}
+.history-list > div {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 10px;
+  border-top: 1px solid #e5dee5;
+  padding: 11px 0;
+  font-size: 11px;
+}
+.history-list b {
+  font-weight: 500;
+}
+.result-view {
+  padding: 45px 28px 60px;
+  text-align: center;
+}
+.eyebrow {
+  font-size: 10px;
+  color: #9b80a3;
+  letter-spacing: 1px;
+}
+.result-view h3 {
+  font-size: 27px;
+  font-weight: 500;
+}
+.result-view p {
+  font-size: 13px;
+  color: #87738d;
+}
+.result-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 25px;
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 13px 20px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+.button-lime {
+  background: #d3edaa;
+  color: #354123;
+}
+.button-outline {
+  border: 1px solid #d8cbdd;
+  background: transparent;
+  color: #76617d;
+}
+.button-dark {
+  background: #46384d;
+  color: white;
+}
+.site-footer {
+  margin-top: 38px;
+  padding: 20px 0 30px;
+  border-top: 1px solid #e3dfe4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  color: #8e7d94;
+  font-size: 11px;
+}
+.site-footer > div {
+  display: none;
+}
+.site-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-credit {
+  font-size: 10px;
+  text-align: right;
+  line-height: 1.8;
+}
+.document-page {
+  max-width: 720px;
+  width: calc(100% - 48px);
+  margin: 50px auto;
+}
+.document-page h1 {
+  font-size: 36px;
+  line-height: 1.25;
+}
+.document-page .lead {
+  color: #7f6c88;
+  font-size: 17px;
+  line-height: 1.8;
+}
+.document-page section {
+  margin: 32px 0;
+}
+.document-page h2 {
+  font-size: 19px;
+}
+.document-page p {
+  font-size: 14px;
+  line-height: 1.9;
+  color: #6c5f73;
+}
+.mode-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.mode-tabs button {
+  border-radius: 5px;
+  padding: 10px 23px;
+  background: transparent;
+  color: #8b7693;
+  font-size: 13px;
+}
+.mode-tabs button.selected {
+  background: #e8dfea;
+  color: #52375e;
+}
+.match-lobby {
+  text-align: center;
+  padding: 50px 28px;
+}
+.match-lobby p {
+  font-size: 13px;
+  color: #88748e;
+}
+.match-lobby .button {
+  margin-top: 15px;
+}
+.race-track {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  padding: 15px 28px;
+  border-bottom: 1px solid #eee8ee;
+}
+.race-track label {
+  font-size: 11px;
+  color: #88748e;
+}
+.race-track progress {
+  display: block;
+  width: 100%;
+  height: 5px;
+  margin-top: 7px;
+  accent-color: #9975a8;
+}
+.race-track .opponent progress {
+  accent-color: #7c9e64;
+}
+@media (max-width: 600px) {
+  .wrap {
+    width: calc(100% - 28px);
+  }
+  .site-header {
+    gap: 12px;
+    min-height: 62px;
+    flex-wrap: wrap;
+  }
+  .site-header nav {
+    gap: 14px;
+    font-size: 11px;
+  }
+  .site-header nav a:last-child {
+    display: none;
+  }
+  .language-picker select {
+    max-width: 100px;
+    font-size: 11px;
+  }
+  .brand {
+    font-size: 21px;
+  }
+  .game-intro {
+    padding-top: 22px;
+    display: block;
+  }
+  .game-intro p {
+    font-size: 12px;
+    margin-top: 7px;
+  }
+  .game-toolbar {
+    padding: 12px 16px;
+  }
+  .game-metrics {
+    padding: 17px 16px;
+    gap: 8px;
+  }
+  .metric > span {
+    font-size: 9px;
+  }
+  .metric strong {
+    font-size: 24px;
+  }
+  .metric small {
+    font-size: 9px;
+  }
+  .typing-area {
+    margin-inline: 16px;
+  }
+  .classic-stage {
+    height: clamp(250px, 40vh, 360px);
+  }
+  .pressure-readout {
+    padding: 16px;
+    gap: 12px;
+    font-size: 10px;
+  }
+  .pressure-readout b {
+    margin-left: 3px;
+  }
+  .game-bottom {
+    padding: 0 16px 12px;
+  }
+  .history h3 span {
+    display: block;
+    margin: 5px 0 0;
+  }
+  .race-track {
+    padding-inline: 16px;
+    gap: 16px;
+  }
+  .footer-credit {
+    max-width: 135px;
+  }
+  .site-footer nav {
+    gap: 10px;
+    font-size: 10px;
+  }
+  .document-page {
+    width: calc(100% - 32px);
+  }
+  .document-page h1 {
+    font-size: 28px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
