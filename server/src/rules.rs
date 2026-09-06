@@ -3,7 +3,7 @@ use unicode_normalization::UnicodeNormalization;
 
 pub const VERSION: &str = "classic-v2";
 const MAX_WIDTH: f64 = 80.;
-const GROWTH_DIVISOR: f64 = 300.;
+const GROWTH_DIVISOR: f64 = 250.;
 const MAX_GROWTH_CPM: f64 = 900.;
 const WARMUP_CHARS: usize = 5;
 const RAMP_CHARS: f64 = 10.;
@@ -117,14 +117,14 @@ mod tests {
         for (i, c) in "abcdefgh".chars().enumerate() {
             g.input(&c.to_string(), i as u64 * 100);
         }
-        assert!((g.width - 2.2).abs() < 1e-9);
+        assert!((g.width - 2.44).abs() < 1e-9);
         assert_eq!((g.veil, g.score), (24, 8));
         g.input("X", 800);
         assert_eq!((g.width, g.veil, g.score), (1., 27, 5));
         g.input("", 900);
         assert_eq!((g.width, g.veil, g.score), (1., 30, 3));
         g.input("i", 1100);
-        assert!((g.width - 1.2).abs() < 1e-9);
+        assert!((g.width - 1.24).abs() < 1e-9);
         assert_eq!((g.veil, g.score), (33, 4));
     }
     #[test]
@@ -149,7 +149,7 @@ mod tests {
         for i in 0..100 {
             let before = g.width;
             g.input("a", 0);
-            assert!(g.width - before <= 3.);
+            assert!(g.width - before <= 3.6 + 1e-9);
             assert!(g.width <= 80.);
             if i < 5 {
                 assert_eq!(g.width, 1.);

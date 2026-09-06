@@ -28,7 +28,7 @@ test('opens directly into Classic and masks the actual upcoming letters', async 
     };
   });
   expect(dimensions.width).toBeGreaterThan(10);
-  expect(dimensions.width).toBeLessThanOrEqual(27);
+  expect(dimensions.width).toBeLessThanOrEqual(32);
   expect(Math.abs(dimensions.left - dimensions.textLeft)).toBeLessThan(1);
   expect(dimensions.background).toMatch(/rgba\((100, 100, 100|180, 180, 180), 0\.96/);
   await page.screenshot({ path: '.codex-qa/classic-desktop.png', fullPage: true });

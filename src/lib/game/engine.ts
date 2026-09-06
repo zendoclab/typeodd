@@ -24,7 +24,7 @@ export const chars = (value: string) => Array.from(value.normalize('NFC'));
 export const rulesVersion = 'classic-v2' as const;
 export const balance = {
   maxWidth: 80,
-  growthDivisor: 300,
+  growthDivisor: 250,
   maxGrowthCpm: 900,
   warmupChars: 5,
   rampChars: 10,
